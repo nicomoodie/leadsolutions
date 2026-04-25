@@ -63,14 +63,22 @@
     position: fixed;
     top: 0; left: 0; right: 0;
     z-index: 900;
-    padding: 0 5vw;
+    padding: 0 2rem;
     height: 72px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     background: rgba(10,10,10,0.85);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
+  }
+
+  .nav-inner {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .nav-logo {
@@ -164,7 +172,7 @@
     min-height: 100vh;
     display: flex;
     align-items: center;
-    padding: 120px 5vw 80px;
+    padding: 120px 2rem 80px;
     position: relative;
     overflow: hidden;
   }
@@ -458,13 +466,20 @@
   .trust-bar {
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
-    padding: 18px 5vw;
+    padding: 18px 2rem;
+    background: var(--dark);
+    display: flex;
+    justify-content: center;
+  }
+
+  .trust-bar-inner {
+    width: 100%;
+    max-width: 1200px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 3rem;
     flex-wrap: wrap;
-    background: var(--dark);
   }
 
   .trust-item {
@@ -487,15 +502,15 @@
 
   /* ── SECTIONS SHARED ── */
   section {
-    padding: 100px 5vw;
+    padding: 100px 0;
   }
 
+  /* Universal inner wrapper — all sections use this */
   .container {
     width: 100%;
-    max-width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
-    padding-left: max(2rem, calc((100vw - 1200px) / 2 + 2rem));
-    padding-right: max(2rem, calc((100vw - 1200px) / 2 + 2rem));
+    padding: 0 2rem;
     box-sizing: border-box;
   }
 
@@ -966,7 +981,7 @@
   /* ── CTA SECTION ── */
   #contact {
     background: var(--dark);
-    padding: 100px 5vw;
+    padding: 100px 0;
   }
 
   .cta-wrap {
@@ -1039,8 +1054,15 @@
 
   /* ── FOOTER ── */
   footer {
-    padding: 2rem 5vw;
+    padding: 2rem;
     border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: center;
+  }
+
+  .footer-inner {
+    width: 100%;
+    max-width: 1200px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1595,8 +1617,7 @@
     #contact { padding: 60px 5vw; }
 
     /* Hero */
-    #hero { padding: 100px 5vw 60px; min-height: auto; }
-    .hero-inner { gap: 2rem; }
+    #hero { padding: 100px 5vw 60px; min-height: auto; }    .hero-inner { gap: 2rem; }
     .hero-h1 { font-size: clamp(2.2rem, 9vw, 2.8rem); line-height: 1.1; }
     .hero-sub { font-size: 0.95rem; margin-bottom: 2rem; }
     .hero-actions { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
@@ -1802,7 +1823,95 @@
 
   /* ── END PARALLAX STYLES ─────────────────────── */
 
-  /* mobile rules consolidated above */
+  @media (max-width: 640px) {
+    /* Nav */
+    nav { padding: 0 1.25rem; height: 64px; }
+    .nav-inner { max-width: 100%; }
+    .nav-links { display: none; }
+    .nav-links.open {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 64px; left: 0; right: 0;
+      background: var(--dark);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 1.25rem;
+      gap: 1rem;
+      z-index: 800;
+    }
+    .hamburger { display: flex; }
+
+    /* Container */
+    .container { padding: 0 1.25rem; }
+
+    /* Sections */
+    section { padding: 60px 0; }
+    #contact { padding: 60px 0; }
+
+    /* Hero */
+    #hero { padding: 100px 1.25rem 60px; min-height: auto; }
+    .hero-inner { gap: 2rem; }
+    .hero-h1 { font-size: clamp(2.2rem, 9vw, 2.8rem); line-height: 1.1; }
+    .hero-sub { font-size: 0.95rem; margin-bottom: 2rem; }
+    .hero-actions { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+    .btn-primary { width: 100%; justify-content: center; }
+    .hero-free-badge { right: 12px; top: -18px; font-size: 0.65rem; }
+
+    /* Hero card */
+    .hero-card-footer { flex-wrap: wrap; gap: 0.75rem; }
+    .hcf-stat { min-width: 80px; }
+
+    /* Trust bar */
+    .trust-bar { padding: 16px 1.25rem; }
+    .trust-bar-inner { flex-direction: column; gap: 0.75rem; align-items: flex-start; }
+
+    /* Footer */
+    footer { padding: 1.5rem; }
+    .footer-inner { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+    .footer-links { flex-wrap: wrap; gap: 1rem; }
+
+    /* Services */
+    .services-grid { grid-template-columns: 1fr; }
+    .svc-card { padding: 1.5rem; }
+
+    /* Section headings */
+    .sec-h2 { font-size: clamp(1.75rem, 7vw, 2.2rem); }
+    .sec-sub { font-size: 0.95rem; margin-bottom: 2rem; }
+
+    /* Why section */
+    .why-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .why-card-wrap { padding: 1.5rem; }
+    .why-quote { font-size: 1.2rem; }
+    .why-stats { grid-template-columns: 1fr 1fr; }
+
+    /* Portfolio */
+    .portfolio-intro { flex-direction: column; align-items: flex-start; }
+    .before-after { grid-template-columns: 1fr; }
+    .ba-side:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+    .ba-showcase { grid-template-columns: 1fr; }
+    .ba-showcase-side img { height: 260px; }
+    .ba-divider { display: none; }
+
+    /* Work cards */
+    .work-grid { grid-template-columns: 1fr; gap: 16px; max-width: 100%; }
+
+    /* Packages */
+    .pkg-grid { grid-template-columns: 1fr !important; }
+    .pkg-card { padding: 1.5rem; }
+    .pkg-price { font-size: 2.2rem; }
+    .free-banner { flex-direction: column; align-items: flex-start; padding: 1.25rem; }
+    .free-banner a { width: 100%; text-align: center; }
+    .bespoke-note { padding: 1rem 1.25rem; }
+
+    /* Process */
+    .process-grid { grid-template-columns: 1fr; }
+    .process-step { padding: 1.5rem 1.25rem; }
+
+    /* CTA / Contact */
+    .cta-cards { grid-template-columns: 1fr 1fr; }
+    .cta-wrap .sec-h2 { font-size: clamp(1.75rem, 7vw, 2.2rem); }
+    .cta-email { font-size: clamp(1rem, 5vw, 1.4rem); word-break: break-all; }
+  }
 </style>
 </head>
 <body>
@@ -1810,6 +1919,7 @@
 <!-- NAV -->
 <div id="scroll-progress"></div>
 <nav id="navbar">
+  <div class="nav-inner">
   <a href="#" class="nav-logo">
     <svg class="nav-logo-mark" viewBox="0 0 1500 1500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <defs><clipPath id="ls-clip-1"><path d="M 422 247.808594 L 875 247.808594 L 875 652 L 422 652 Z M 422 247.808594 " clip-rule="nonzero"/></clipPath><clipPath id="ls-clip-2"><path d="M 328.570312 314 L 927 314 L 927 1169 L 328.570312 1169 Z M 328.570312 314 " clip-rule="nonzero"/></clipPath><clipPath id="ls-clip-3"><path d="M 435 800 L 1171.570312 800 L 1171.570312 1252.058594 L 435 1252.058594 Z M 435 800 " clip-rule="nonzero"/></clipPath></defs><g clip-path="url(#ls-clip-1)"><path fill="#ffffff" d="M 843.941406 247.835938 C 788.195312 247.835938 683.917969 251.152344 649.4375 251.152344 C 610.824219 251.152344 520.800781 247.835938 453.691406 247.835938 C 432.214844 247.835938 422.097656 250.050781 422.097656 257.636719 C 422.097656 265.375 430.769531 267.589844 446.460938 267.589844 C 465.046875 267.589844 482.179688 268.695312 493.542969 270.75 C 524.933594 275.808594 540.417969 285.28125 548.257812 302.027344 C 548.464844 302.34375 548.671875 302.816406 548.875 303.289062 C 551.769531 309.929688 553.417969 317.820312 554.449219 326.832031 C 554.65625 327.9375 554.65625 329.199219 554.863281 330.464844 L 555.070312 334.414062 C 555.6875 343.730469 556.304688 363.167969 556.71875 386.554688 L 556.921875 418.148438 C 556.921875 418.304688 556.921875 418.304688 556.921875 418.46875 C 557.542969 451.324219 557.746094 490.824219 557.746094 533.480469 C 557.746094 533.636719 557.746094 533.636719 557.746094 533.636719 C 563.941406 539.957031 571.582031 546.75 580.257812 553.859375 C 601.109375 570.605469 630.019531 589.40625 670.699219 613.265625 L 710.550781 636.167969 C 719.636719 641.382812 728.515625 646.441406 736.769531 651.492188 C 736.769531 554.167969 736.976562 456.058594 737.800781 393.808594 L 737.800781 392.546875 L 738.417969 368.691406 C 738.625 352.414062 739.035156 340.253906 739.65625 332.988281 C 740.066406 329.039062 740.480469 325.558594 740.890625 322.5625 C 741.097656 320.664062 741.304688 318.929688 741.714844 317.195312 C 741.921875 315.613281 742.128906 314.351562 742.539062 312.925781 L 742.746094 312.453125 C 742.953125 311.191406 743.160156 310.082031 743.570312 308.820312 L 746.671875 299.976562 C 748.320312 296.023438 750.390625 292.546875 752.65625 289.550781 L 752.863281 289.550781 C 760.917969 279.59375 773.304688 273.59375 792.507812 270.75 C 809.648438 268.695312 832.5625 267.589844 848.261719 267.589844 C 865.402344 267.589844 874.070312 265.375 874.070312 257.636719 C 874.09375 250.042969 863.96875 247.835938 843.941406 247.835938 Z M 843.941406 247.835938 " fill-opacity="1" fill-rule="nonzero"/></g><g clip-path="url(#ls-clip-2)"><path fill="#c9a84c" d="M 879.257812 330.144531 C 854.890625 325.085938 820.617188 318.613281 773.535156 314.980469 C 773.328125 315.613281 773.328125 316.242188 773.125 316.875 C 772.09375 321.617188 771.269531 326.984375 770.648438 334.730469 C 770.238281 338.835938 769.621094 348 769.414062 369.171875 L 769.207031 378.335938 C 797.496094 389.550781 814.835938 404.246094 826.40625 415.460938 C 856.34375 443.894531 863.574219 477.863281 863.574219 487.660156 C 863.574219 500.777344 867.707031 507.40625 877.824219 507.40625 C 889.175781 507.40625 893.511719 498.558594 893.511719 474.546875 C 893.511719 389.234375 899.292969 357.480469 899.292969 343.257812 C 899.285156 335.511719 892.054688 332.351562 879.257812 330.144531 Z M 380.1875 1006.332031 C 372.957031 987.683594 367.175781 964.78125 367.175781 950.558594 C 367.175781 941.710938 365.734375 931.914062 352.925781 931.914062 C 341.574219 931.914062 337.238281 943.917969 335.785156 960.347656 C 334.34375 977.886719 328.5625 1043.613281 328.5625 1103.644531 C 328.5625 1127.820312 332.898438 1133.1875 355.820312 1140.925781 C 405.582031 1157.828125 457 1165.890625 518.730469 1168.414062 C 518.9375 1167.625 519.144531 1166.679688 519.351562 1165.726562 C 519.144531 1165.574219 519.554688 1164.300781 519.761719 1163.203125 C 521.824219 1149.769531 523.273438 1134.449219 524.304688 1114.859375 C 524.304688 1113.914062 524.511719 1112.808594 524.511719 1111.855469 C 459.679688 1100.492188 404.34375 1068.578125 380.1875 1006.332031 Z M 767.753906 701.886719 C 758.050781 695.410156 747.726562 688.617188 736.785156 681.824219 C 722.746094 673.132812 707.878906 664.289062 691.980469 655.125 L 651.925781 632.054688 C 611.253906 608.359375 580.480469 588.289062 557.773438 570.125 C 545.175781 560.019531 534.851562 550.382812 526.804688 541.21875 C 507.394531 518.785156 500.378906 497.933594 500.378906 474.546875 C 500.378906 450.0625 509.257812 428.257812 525.980469 410.566406 L 525.773438 386.871094 C 525.363281 363.964844 524.742188 344.847656 524.125 335.523438 C 420.679688 369.015625 358.734375 435.6875 358.734375 518.3125 C 358.734375 598.253906 402.917969 668.402344 527.019531 750.402344 C 536.722656 756.875 547.046875 763.351562 557.988281 769.992188 C 562.121094 772.515625 566.25 775.050781 570.371094 777.574219 L 636.039062 817.070312 C 647.1875 823.710938 657.507812 830.023438 667.007812 836.660156 C 667.214844 836.660156 667.417969 836.816406 667.625 836.980469 C 669.894531 838.558594 672.167969 840.140625 674.4375 841.71875 C 678.980469 844.71875 683.523438 847.878906 687.652344 851.039062 C 689.921875 852.617188 692.195312 854.351562 694.257812 855.933594 C 706.238281 865.097656 716.355469 873.789062 725.226562 882.316406 C 726.464844 883.425781 727.914062 884.6875 729.152344 886.265625 C 731.839844 888.953125 734.519531 891.480469 736.796875 894.167969 C 737.621094 894.957031 738.238281 895.902344 738.863281 896.691406 C 740.101562 898.117188 741.554688 899.535156 742.789062 901.117188 C 744.027344 902.542969 745.273438 903.957031 746.300781 905.539062 C 747.125 906.328125 747.746094 907.117188 748.15625 907.910156 C 748.363281 908.226562 748.570312 908.699219 748.980469 909.015625 C 749.601562 909.652344 750.011719 910.28125 750.425781 910.914062 C 752.28125 913.285156 753.9375 915.808594 755.378906 918.179688 C 755.585938 918.335938 755.792969 918.652344 755.792969 918.816406 C 758.480469 922.921875 760.746094 926.871094 762.601562 930.824219 C 762.808594 931.292969 763.015625 931.765625 763.222656 932.25 C 764.457031 934.773438 765.703125 937.144531 766.527344 939.675781 L 767.765625 942.992188 C 774.164062 959.421875 776.230469 975.695312 776.230469 992.125 C 776.230469 1003.976562 773.542969 1016.136719 768.382812 1027.988281 C 768.382812 1028.144531 768.382812 1028.144531 768.382812 1028.144531 C 768.589844 1042.203125 769 1055.164062 769.621094 1067.167969 C 771.0625 1095.449219 773.957031 1116.464844 777.882812 1130.996094 C 782.628906 1128.945312 787.171875 1126.890625 791.921875 1124.519531 C 894.957031 1073.171875 926.34375 997.65625 926.34375 934.144531 C 926.328125 847.078125 883.378906 779.9375 767.753906 701.886719 Z M 767.753906 701.886719 " fill-opacity="1" fill-rule="nonzero"/></g><g clip-path="url(#ls-clip-3)"><path fill="#ffffff" d="M 1171.425781 1096.703125 C 1171.425781 1108.875 1161.515625 1190.863281 1149.949219 1222.625 C 1141.480469 1246.636719 1134.257812 1252.167969 1059.917969 1252.167969 C 956.886719 1252.167969 882.546875 1249.953125 818.332031 1248.851562 C 753.910156 1246.636719 702.492188 1245.539062 643.851562 1245.539062 C 628.164062 1245.539062 596.566406 1245.539062 562.292969 1246.644531 C 529.457031 1246.644531 492.296875 1248.863281 463.59375 1248.863281 C 445.011719 1248.863281 435.101562 1245.546875 435.101562 1237.964844 C 435.101562 1232.433594 440.671875 1229.117188 457.816406 1229.117188 C 479.285156 1229.117188 496.429688 1227.066406 509.4375 1224.847656 C 528.644531 1221.84375 538.140625 1210 544.128906 1192.933594 L 544.128906 1192.78125 C 546.609375 1185.667969 548.257812 1177.929688 549.90625 1169.238281 C 550.113281 1167.660156 550.523438 1166.234375 550.730469 1164.652344 C 552.792969 1151.386719 554.242188 1134.957031 555.273438 1115.839844 C 555.6875 1108.410156 556.097656 1100.355469 556.304688 1092.144531 C 557.953125 1047.589844 557.953125 992.132812 557.953125 931.628906 L 557.953125 800.496094 L 617.007812 835.726562 C 627.742188 842.199219 637.652344 848.367188 646.945312 854.679688 C 651.488281 857.683594 655.824219 860.683594 659.957031 863.6875 C 664.292969 866.695312 668.425781 869.691406 672.339844 872.699219 C 683.074219 880.917969 692.574219 888.972656 700.835938 897.027344 C 703.316406 899.234375 705.585938 901.605469 707.441406 903.820312 C 709.707031 906.027344 711.570312 908.089844 713.425781 910.296875 C 715.488281 912.347656 717.351562 914.566406 718.792969 916.617188 C 720.441406 918.824219 722.101562 920.886719 723.542969 922.9375 C 729.324219 930.675781 733.660156 938.578125 736.761719 946.480469 C 736.761719 975.230469 736.761719 1000.988281 737.171875 1024.046875 C 737.585938 1040.003906 737.996094 1054.699219 738.617188 1067.96875 C 740.265625 1100.355469 743.570312 1125.003906 749.558594 1142.222656 C 752.863281 1151.539062 757.199219 1158.652344 762.570312 1163.554688 C 763.804688 1164.816406 765.257812 1165.925781 766.699219 1166.871094 C 791.0625 1183.144531 828.234375 1190.882812 939.734375 1190.882812 C 1015.515625 1190.882812 1071.46875 1189.773438 1107.1875 1160.230469 C 1124.328125 1146.007812 1141.464844 1115.367188 1144.359375 1094.667969 C 1145.800781 1084.714844 1148.695312 1078.238281 1160.046875 1078.238281 C 1169.984375 1078.222656 1171.425781 1083.589844 1171.425781 1096.703125 Z M 1171.425781 1096.703125 " fill-opacity="1" fill-rule="nonzero"/></g>
@@ -1829,6 +1939,7 @@
   </ul>
   <div class="hamburger" id="hamburger" onclick="toggleMenu()">
     <span></span><span></span><span></span>
+  </div>
   </div>
 </nav>
 
@@ -1886,11 +1997,13 @@
 
 <!-- TRUST BAR -->
 <div class="trust-bar">
+  <div class="trust-bar-inner">
   <div class="trust-item"><div class="trust-dot"></div>Industry-trained specialist</div>
   <div class="trust-item"><div class="trust-dot"></div>24–48hr turnaround</div>
   <div class="trust-item"><div class="trust-dot"></div>Remote services UK-wide</div>
   <div class="trust-item"><div class="trust-dot"></div>Manchester-based, UK-wide</div>
   <div class="trust-item"><div class="trust-dot"></div>First image enhanced free</div>
+  </div>
 </div>
 
 <!-- SERVICES -->
@@ -2231,6 +2344,7 @@
 
 <!-- FOOTER -->
 <footer>
+  <div class="footer-inner">
   <a href="#" class="footer-logo">Lead<span>.</span>Solutions</a>
   <ul class="footer-links">
     <li><a href="#services">Services</a></li>
@@ -2240,6 +2354,7 @@
     <li><a href="#">Contact</a></li>
   </ul>
   <p class="footer-copy">© 2026 Lead Solutions · Manchester, UK</p>
+  </div>
 </footer>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>

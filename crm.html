@@ -38,9 +38,21 @@ body{overflow:hidden}
   .stats-row{grid-template-columns:1fr 1fr!important}
   .pipeline{grid-template-columns:1fr!important}
   .form-row-2{grid-template-columns:1fr!important}
-  .modal{width:95vw;padding:20px}
+  .modal{width:95vw;padding:20px;max-height:85vh;overflow-y:auto}
   .hamburger{display:flex!important}
   .stat-value{font-size:22px}
+  .stat-card{padding:12px}
+  .stat-label{font-size:9px}
+  .topbar-title{font-size:14px}
+  .topbar-btn{padding:7px 10px;font-size:11px}
+  .template-body{font-size:11px}
+  .pipeline-col{min-height:60px}
+  .login-card{width:92vw;padding:32px 24px}
+  .login-title{font-size:19px}
+  .login-input{font-size:16px;padding:16px}
+  .login-btn{padding:16px;font-size:13px}
+  .login-orb-1{width:300px;height:300px}
+  .login-orb-2{width:220px;height:220px}
 }
 
 /* SIDEBAR */
@@ -335,6 +347,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   text-align:center;margin-top:24px;font-size:10px;
   color:#333330;letter-spacing:0.08em;text-transform:uppercase;
 }
+
 
 /* Gold line animation at top of card */
 .login-card-line {
@@ -1189,6 +1202,49 @@ document.getElementById('sidebar-date').textContent=days[n.getDay()]+' '+n.getDa
   }
   // ── END PROMPTS ───────────────────────────────────────────────────────────
 
+// ── VAULT TRANSITION ─────────────────────────────────────────────────────────────
+function runVaultTransition(onComplete) {
+  var overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:999999;overflow:hidden;pointer-events:all';
+
+  var topDoor = document.createElement('div');
+  topDoor.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:50.5%;background:#0f0f0f;border-bottom:2px solid #C9A84C;transform:translateY(-100%);transition:transform 0.35s cubic-bezier(0.76,0,0.24,1)';
+
+  var botDoor = document.createElement('div');
+  botDoor.style.cssText = 'position:absolute;bottom:0;left:0;width:100%;height:50.5%;background:#0f0f0f;border-top:2px solid #C9A84C;transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.76,0,0.24,1)';
+
+  overlay.appendChild(topDoor);
+  overlay.appendChild(botDoor);
+  document.body.appendChild(overlay);
+
+  // Step 1 — doors slide in and close
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      topDoor.style.transform = 'translateY(0)';
+      botDoor.style.transform = 'translateY(0)';
+
+      setTimeout(function(){
+        // Hide login once doors are closed
+        var ls = document.getElementById('login-screen');
+        if(ls) ls.style.display = 'none';
+
+        // Brief pause then doors open
+        setTimeout(function(){
+          topDoor.style.transition = 'transform 0.8s cubic-bezier(0.76,0,0.24,1)';
+          botDoor.style.transition = 'transform 0.8s cubic-bezier(0.76,0,0.24,1)';
+          topDoor.style.transform = 'translateY(-100%)';
+          botDoor.style.transform = 'translateY(100%)';
+
+          setTimeout(function(){
+            document.body.removeChild(overlay);
+            onComplete();
+          }, 480);
+        }, 80);
+      }, 370);
+    });
+  });
+}
+
 // ── LOGIN ─────────────────────────────────────────────────────────────────────
 (function(){
   var pc = document.getElementById('login-particles');
@@ -1203,36 +1259,24 @@ document.getElementById('sidebar-date').textContent=days[n.getDay()]+' '+n.getDa
       pc.appendChild(p);
     }
   }
-
-  var PASS='LS817';
-  var KEY='ls_auth';
-
-  function showCRM(){
-    var ls=document.getElementById('login-screen');
-    if(ls){ls.classList.add('hidden');setTimeout(function(){ls.style.display='none';},600);}
-    loadAll();
-  }
-
-  setTimeout(function(){var el=document.getElementById('login-input');if(el)el.focus();},800);
-
-  window.doLogin=function(){
-    var val=document.getElementById('login-input').value;
-    var err=document.getElementById('login-error');
-    if(val===PASS){
-      err.classList.remove('show');
-      showCRM();
-    } else {
-      err.classList.remove('show');
-      void err.offsetWidth;
-      err.classList.add('show');
-      document.getElementById('login-input').value='';
-      document.getElementById('login-input').focus();
-    }
-  };
+  setTimeout(function(){ var el=document.getElementById('login-input'); if(el) el.focus(); }, 800);
 })();
 
+function doLogin(){
+  var val = document.getElementById('login-input').value;
+  var err = document.getElementById('login-error');
+  if(val === 'LS817'){
+    err.classList.remove('show');
+    runVaultTransition(function(){ loadAll(); });
+  } else {
+    err.classList.remove('show');
+    void err.offsetWidth;
+    err.classList.add('show');
+    document.getElementById('login-input').value = '';
+    document.getElementById('login-input').focus();
+  }
+}
 
 </script>
 </body>
 </html>
-

@@ -1594,11 +1594,155 @@
     .before-after { grid-template-columns: 1fr; }
     .ba-side:first-child { border-right: none; border-bottom: 1px solid var(--border); }
   }
+
+  /* ── ANIMATION STYLES ────────────────────────── */
+  .tw-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 0.85em;
+    background: var(--gold);
+    margin-left: 2px;
+    vertical-align: middle;
+    animation: tw-blink 0.75s infinite;
+  }
+  @keyframes tw-blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  .step-anim {
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .step-anim.anim-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .glow-card {
+    position: relative;
+    overflow: hidden;
+  }
+  .glow-card::after {
+    content: '';
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle, rgba(201,168,76,0.1), transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    left: var(--gx, 50%);
+    top: var(--gy, 50%);
+  }
+  .glow-card:hover::after { opacity: 1; }
+  .glow-card:hover { border-color: rgba(201,168,76,0.35) !important; }
+
+  .btn-fill {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-fill::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.15);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+  }
+  .btn-fill:hover::before { transform: scaleX(1); }
+  .btn-fill:active { transform: scale(0.97); }
+
+
+
+  .why-stat { position: relative; }
+
+  /* ── END ANIMATION STYLES ───────────────────── */
+
+  /* ── PARALLAX & SCROLL ANIMATIONS ─────────────── */
+
+  /* Progress bar at top */
+  #scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(90deg, #C9A84C, #F5E6C0, #C9A84C);
+    z-index: 9999;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 8px rgba(201,168,76,0.4);
+  }
+
+  /* Hero parallax wrapper */
+  .hero-parallax {
+    will-change: transform;
+    transition: transform 0.05s linear;
+  }
+
+  /* Reveal animations for sections */
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+  }
+  .scroll-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Stagger children inside revealed sections */
+  .scroll-reveal-stagger > * {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1);
+  }
+  .scroll-reveal-stagger.revealed > * {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .scroll-reveal-stagger.revealed > *:nth-child(1) { transition-delay: 0s; }
+  .scroll-reveal-stagger.revealed > *:nth-child(2) { transition-delay: 0.1s; }
+  .scroll-reveal-stagger.revealed > *:nth-child(3) { transition-delay: 0.2s; }
+  .scroll-reveal-stagger.revealed > *:nth-child(4) { transition-delay: 0.3s; }
+  .scroll-reveal-stagger.revealed > *:nth-child(5) { transition-delay: 0.4s; }
+  .scroll-reveal-stagger.revealed > *:nth-child(6) { transition-delay: 0.5s; }
+
+  /* Nav shrink on scroll */
+  nav {
+    transition: padding 0.4s ease, background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+  }
+  nav.nav-scrolled {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    background: rgba(10,10,10,0.98) !important;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.4) !important;
+  }
+
+  /* Floating card parallax */
+  .hero-card-wrap {
+    will-change: transform;
+  }
+
+  /* Section eye/label slide in from left */
+  .sec-eye {
+    opacity: 0;
+    transform: translateX(-16px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .sec-eye.revealed {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* ── END PARALLAX STYLES ─────────────────────── */
 </style>
 </head>
 <body>
 
 <!-- NAV -->
+<div id="scroll-progress"></div>
 <nav id="navbar">
   <a href="#" class="nav-logo">
     <svg class="nav-logo-mark" viewBox="0 0 1500 1500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -1628,11 +1772,11 @@
   <div class="hero-grid"></div>
   <div class="hero-inner">
     <div class="hero-text">
-      <p class="hero-eyebrow">Property Marketing Specialists — Manchester</p>
+      <p class="hero-eyebrow" id="hero-typewriter">Property Marketing Specialists — Manchester</p>
       <h1 class="hero-h1">Your listing<br>deserves to<br>be <em>seen.</em></h1>
       <p class="hero-sub">We help estate agents and landlords turn average listings into high-converting assets — professional visuals, faster enquiries, better results.</p>
       <div class="hero-actions">
-        <a href="#packages" class="btn-primary">See Our Packages →</a>
+        <a href="#packages" class="btn-primary btn-fill">See Our Packages →</a>
         <a href="#" class="btn-ghost" id="hero-email">Get a free sample image</a>
       </div>
     </div>
@@ -1691,7 +1835,7 @@
       <h2 class="sec-h2">Everything your listing<br>needs to perform.</h2>
       <p class="sec-sub">From a quick image refresh to a complete listing optimisation — we handle the visual and marketing side so your property gets the attention it deserves.</p>
     </div>
-    <div class="reveal services-grid">
+    <div class="reveal scroll-reveal-stagger services-grid">
       <div class="svc-card">
         <div class="svc-icon">✦</div>
         <div class="svc-name">Image Enhancement</div>
@@ -1835,11 +1979,11 @@
           </p>
           <div class="why-stats">
             <div class="why-stat">
-              <span class="why-stat-val">24h</span>
+              <span class="why-stat-val" data-count="24" data-suffix="h">24h</span>
               <span class="why-stat-lbl">Remote edit turnaround</span>
             </div>
             <div class="why-stat">
-              <span class="why-stat-val">100%</span>
+              <span class="why-stat-val" data-count="100" data-suffix="%">100%</span>
               <span class="why-stat-lbl">Direct access to specialist</span>
             </div>
             <div class="why-stat">
@@ -1908,8 +2052,8 @@
       <a href="#">Send a photo →</a>
     </div>
 
-    <div class="reveal pkg-grid">
-      <div class="pkg-card">
+    <div class="reveal scroll-reveal-stagger pkg-grid">
+      <div class="pkg-card glow-card">
         <div class="pkg-badge">Starter · Remote</div>
         <div class="pkg-name">Listing Boost</div>
         <p class="pkg-desc">The quickest way to make your existing photos work harder. No visit required.</p>
@@ -1927,7 +2071,7 @@
         <a href="#" id="pkg1-email" class="pkg-cta">Get Started →</a>
       </div>
 
-      <div class="pkg-card dark-pkg">
+      <div class="pkg-card dark-pkg glow-card">
         <div class="pkg-badge">Pro · Remote</div>
         <div class="pkg-name">Listing Optimisation</div>
         <p class="pkg-desc">The complete package for agents who want results, not just better photos.</p>
@@ -1961,22 +2105,22 @@
       <p class="sec-sub">No lengthy onboarding. No complicated process. Getting your first listing improved takes minutes to arrange.</p>
     </div>
     <div class="reveal process-grid">
-      <div class="process-step">
+      <div class="process-step step-anim">
         <div class="process-num">01</div>
         <h4>Get in touch</h4>
         <p>Email us with your property details and we'll recommend the right package. We'll confirm everything and get started straight away.</p>
       </div>
-      <div class="process-step">
+      <div class="process-step step-anim">
         <div class="process-num">02</div>
         <h4>Send your assets</h4>
         <p>For remote packages, simply send your existing photos via email or a shared link. No special formats or file sizes needed — we handle everything.</p>
       </div>
-      <div class="process-step">
+      <div class="process-step step-anim">
         <div class="process-num">03</div>
         <h4>We get to work</h4>
         <p>Your enhanced images are returned within 24–48 hours. No chasing required.</p>
       </div>
-      <div class="process-step">
+      <div class="process-step step-anim">
         <div class="process-num">04</div>
         <h4>Ready to publish</h4>
         <p>You receive a complete download-ready folder with everything organised and labelled. Upload to Rightmove and go live. That's it.</p>
@@ -1998,7 +2142,7 @@
       <p class="cta-detail">
         Based in Manchester &nbsp;·&nbsp; Remote services available UK-wide
       </p>
-      <a href="#" class="btn-primary" id="main-cta-email" style="margin:0 auto;display:inline-flex;">
+      <a href="#" class="btn-primary btn-fill" id="main-cta-email" style="margin:0 auto;display:inline-flex;">
         Start a conversation →
       </a>
       <div class="cta-cards">
@@ -2158,6 +2302,178 @@
 
   document.querySelectorAll('[data-slider]').forEach(initSlider);
   initHeroSlider();
+
+  // ── ANIMATIONS ──────────────────────────────────────────────────
+
+  // 1. Typewriter
+  (function(){
+    var el = document.getElementById('hero-typewriter');
+    if (!el) return;
+    var phrases = [
+      'Property Marketing Specialists — Manchester',
+      'Better listings. More enquiries.',
+      'We make your properties stand out.',
+      'Remote services. UK-wide.',
+      'First image completely free.'
+    ];
+    var pi = 0, ci = 0, deleting = false;
+    el.innerHTML = '<span id="tw-txt"></span><span class="tw-cursor"></span>';
+    var txtEl = document.getElementById('tw-txt');
+    function tick() {
+      var phrase = phrases[pi];
+      if (!deleting) {
+        ci++;
+        txtEl.textContent = phrase.substring(0, ci);
+        if (ci === phrase.length) { deleting = true; setTimeout(tick, 2200); return; }
+      } else {
+        ci--;
+        txtEl.textContent = phrase.substring(0, ci);
+        if (ci === 0) { deleting = false; pi = (pi+1) % phrases.length; setTimeout(tick, 300); return; }
+      }
+      setTimeout(tick, deleting ? 35 : 65);
+    }
+    setTimeout(tick, 1200);
+  })();
+
+  // 2. Stat counters + bars
+  (function(){
+    var triggered = false;
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting && !triggered) {
+          triggered = true;
+          document.querySelectorAll('.why-stat-val[data-count]').forEach(function(el) {
+            var target = parseInt(el.dataset.count);
+            var suffix = el.dataset.suffix || '';
+            var start = 0, steps = 60, dur = 1200;
+            var step = target / steps;
+            var t = setInterval(function() {
+              start = Math.min(start + step, target);
+              el.textContent = Math.round(start) + suffix;
+              if (start >= target) clearInterval(t);
+            }, dur / steps);
+          });
+
+        }
+      });
+    }, { threshold: 0.3 });
+    var whySec = document.querySelector('.why-stats');
+    if (whySec) obs.observe(whySec);
+  })();
+
+  // 3. Step reveal on scroll
+  (function(){
+    var steps = document.querySelectorAll('.step-anim');
+    if (!steps.length) return;
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('anim-visible');
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    steps.forEach(function(s, i) {
+      s.style.transitionDelay = (i * 0.13) + 's';
+      obs.observe(s);
+    });
+  })();
+
+  // 4. Glow cursor on package cards
+  (function(){
+    document.querySelectorAll('.glow-card').forEach(function(card) {
+      card.addEventListener('mousemove', function(e) {
+        var r = card.getBoundingClientRect();
+        card.style.setProperty('--gx', (e.clientX - r.left) + 'px');
+        card.style.setProperty('--gy', (e.clientY - r.top) + 'px');
+      });
+    });
+  })();
+
+  // ── END ANIMATIONS ───────────────────────────────────────────────
+
+
+  // ── PARALLAX & SCROLL ANIMATIONS ─────────────────────────────────
+
+  // Progress bar
+  var progressBar = document.getElementById('scroll-progress');
+  var navEl = document.querySelector('nav');
+
+  // Collect all scroll-reveal elements
+  var revealEls = document.querySelectorAll('.reveal, .sec-eye');
+
+  var ticking = false;
+
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(updateScroll);
+      ticking = true;
+    }
+  }
+
+  function updateScroll() {
+    var scrollY = window.scrollY || window.pageYOffset;
+    var docH = document.documentElement.scrollHeight - window.innerHeight;
+
+    // 1. Progress bar
+    if (progressBar) {
+      progressBar.style.width = Math.min((scrollY / docH) * 100, 100) + '%';
+    }
+
+    // 2. Nav shrink
+    if (navEl) {
+      if (scrollY > 60) navEl.classList.add('nav-scrolled');
+      else navEl.classList.remove('nav-scrolled');
+    }
+
+    // 3. Hero parallax — text moves up slower than scroll
+    var heroText = document.querySelector('.hero-content');
+    if (heroText && scrollY < window.innerHeight) {
+      heroText.style.transform = 'translateY(' + (scrollY * 0.18) + 'px)';
+    }
+
+    // 4. Hero card floats opposite direction (subtle)
+    var heroCard = document.querySelector('.hero-card-wrap');
+    if (heroCard && scrollY < window.innerHeight) {
+      heroCard.style.transform = 'translateY(' + (scrollY * -0.08) + 'px)';
+    }
+
+    // 5. Scroll reveal for sections
+    revealEls.forEach(function(el) {
+      var rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.88) {
+        el.classList.add('revealed');
+      }
+    });
+
+    // 6. Stagger reveals
+    document.querySelectorAll('.scroll-reveal-stagger').forEach(function(el) {
+      var rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.88) {
+        el.classList.add('revealed');
+      }
+    });
+
+    // 7. sec-eye labels
+    document.querySelectorAll('.sec-eye').forEach(function(el) {
+      var rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.9) {
+        el.classList.add('revealed');
+      }
+    });
+
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  // Run once on load
+  setTimeout(updateScroll, 100);
+
+  // ── END PARALLAX ─────────────────────────────────────────────────
+
+
+
+
 </script>
 </body>
 </html>

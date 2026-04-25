@@ -451,15 +451,24 @@
 
   .hero-free-badge {
     position: absolute;
-    top: -22px;
-    right: 24px;
-    background: var(--gold);
-    color: var(--black);
-    font-size: 0.7rem;
-    font-weight: 500;
-    padding: 6px 14px;
+    top: -44px;
+    right: 0;
+    background: #0E0E0E;
+    color: var(--off-white);
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 8px 18px;
     border-radius: 100px;
+    border: 2px solid var(--gold);
     white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    letter-spacing: 0.02em;
+  }
+  .hfb-star {
+    color: var(--gold);
+    font-size: 11px;
   }
 
   /* ── TRUST BAR ── */
@@ -1622,7 +1631,7 @@
     .hero-sub { font-size: 0.95rem; margin-bottom: 2rem; }
     .hero-actions { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
     .btn-primary { width: 100%; justify-content: center; }
-    .hero-free-badge { right: 12px; top: -18px; font-size: 0.65rem; }
+    .hero-free-badge { right: 0; top: -44px; font-size: 0.65rem; }
 
     /* Hero card */
     .hero-card-footer { flex-wrap: wrap; gap: 0.75rem; }
@@ -1862,7 +1871,7 @@
     .hero-sub { font-size: 0.95rem; margin-bottom: 2rem; }
     .hero-actions { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
     .btn-primary { width: 100%; justify-content: center; }
-    .hero-free-badge { right: 12px; top: -18px; font-size: 0.65rem; }
+    .hero-free-badge { right: 0; top: -44px; font-size: 0.65rem; }
 
     /* Hero card */
     .hero-card-footer { flex-wrap: wrap; gap: 0.75rem; }
@@ -1956,7 +1965,7 @@
   <div class="hero-grid"></div>
   <div class="hero-inner">
     <div class="hero-text">
-      <p class="hero-eyebrow" id="hero-typewriter">Property Marketing Specialists — Manchester</p>
+      <p class="hero-eyebrow" id="hero-typewriter">Property Marketing Specialists — UK-Wide</p>
       <h1 class="hero-h1">Your listing<br>deserves to<br>be <em>seen.</em></h1>
       <p class="hero-sub">We help estate agents and landlords turn average listings into high-converting assets — professional visuals, faster enquiries, better results.</p>
       <div class="hero-actions">
@@ -1965,7 +1974,7 @@
       </div>
     </div>
     <div class="hero-visual">
-      <div class="hero-free-badge">✦ First image free</div>
+      <div class="hero-free-badge"><span class="hfb-star">✦</span> First image free <span class="hfb-star">✦</span></div>
       <div class="hero-card">
         <div class="hero-card-header">
           <div class="dot dot-r"></div>
@@ -1993,7 +2002,7 @@
             <span class="hcf-lbl">remote service</span>
           </div>
           <div class="hcf-stat">
-            <span class="hcf-val">Manchester</span>
+            <span class="hcf-val">UK-Wide</span>
             <span class="hcf-lbl">based locally</span>
           </div>
         </div>
@@ -2008,7 +2017,7 @@
   <div class="trust-item"><div class="trust-dot"></div>Industry-trained specialist</div>
   <div class="trust-item"><div class="trust-dot"></div>24–48hr turnaround</div>
   <div class="trust-item"><div class="trust-dot"></div>Remote services UK-wide</div>
-  <div class="trust-item"><div class="trust-dot"></div>Manchester-based, UK-wide</div>
+  <div class="trust-item"><div class="trust-dot"></div>Remote · UK-Wide</div>
   <div class="trust-item"><div class="trust-dot"></div>First image enhanced free</div>
   </div>
 </div>
@@ -2178,7 +2187,7 @@
             </div>
             <div class="why-stat">
               <span class="why-stat-val">MCR</span>
-              <span class="why-stat-lbl">Manchester based</span>
+              <span class="why-stat-lbl">UK-Wide</span>
             </div>
           </div>
         </div>
@@ -2204,8 +2213,8 @@
           <div class="why-point">
             <div class="why-num">03</div>
             <div class="why-point-content">
-              <h4>Manchester-based, UK-wide</h4>
-              <p>Based in Manchester, serving agents and landlords remotely across the entire UK with no additional cost.</p>
+              <h4>Remote. UK-Wide.</h4>
+              <p>Serving estate agents and landlords remotely across the entire UK with no additional cost.</p>
             </div>
           </div>
           <div class="why-point">
@@ -2326,7 +2335,7 @@
       </p>
       <a href="#" id="cta-email-link" class="cta-email"><span class="__cf_email__" data-cfemail="66080f0509260a03070215090a13120f09081548130d">[email&#160;protected]</span></a>
       <p class="cta-detail">
-        Based in Manchester &nbsp;·&nbsp; Remote services available UK-wide
+        Remote services available across the UK
       </p>
       <a href="#" class="btn-primary btn-fill" id="main-cta-email" style="margin:0 auto;display:inline-flex;">
         Start a conversation →
@@ -2360,7 +2369,7 @@
     <li><a href="#process">How It Works</a></li>
     <li><a href="#">Contact</a></li>
   </ul>
-  <p class="footer-copy">© 2026 Lead Solutions · Manchester, UK</p>
+  <p class="footer-copy">© 2026 Lead Solutions · UK-Wide</p>
   </div>
 </footer>
 
@@ -2498,7 +2507,7 @@
     var el = document.getElementById('hero-typewriter');
     if (!el) return;
     var phrases = [
-      'Property Marketing Specialists — Manchester',
+      'Property Marketing Specialists — UK-Wide',
       'Better listings. More enquiries.',
       'We make your properties stand out.',
       'Remote services. UK-wide.',

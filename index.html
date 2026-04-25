@@ -169,10 +169,10 @@
 
   /* ── HERO ── */
   #hero {
-    min-height: auto;
+    min-height: 100vh;
     display: flex;
     align-items: center;
-    padding: 140px 2rem 100px;
+    padding: 120px 2rem 80px;
     position: relative;
     overflow: hidden;
   }
@@ -502,7 +502,7 @@
 
   /* ── SECTIONS SHARED ── */
   section {
-    padding: 80px 0;
+    padding: 100px 0;
   }
 
   /* Universal inner wrapper — all sections use this */
@@ -981,7 +981,7 @@
   /* ── CTA SECTION ── */
   #contact {
     background: var(--dark);
-    padding: 80px 0;
+    padding: 100px 0;
   }
 
   .cta-wrap {
@@ -1822,6 +1822,13 @@
   }
 
   /* ── END PARALLAX STYLES ─────────────────────── */
+
+  /* ── LARGE SCREEN (Studio Display, 4K, etc.) ── */
+  @media (min-width: 1800px) {
+    #hero { min-height: auto; padding: 140px 2rem 100px; }
+    section { padding: 80px 0; }
+    #contact { padding: 80px 0; }
+  }
 
   @media (max-width: 640px) {
     /* Nav */

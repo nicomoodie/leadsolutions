@@ -1568,7 +1568,7 @@
     .why-inner { grid-template-columns: 1fr; gap: 3rem; }
     .pkg-grid { grid-template-columns: 1fr; }
     .process-grid { grid-template-columns: repeat(2, 1fr); }
-    .services-grid { grid-template-columns: 1fr 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
     .cta-cards { grid-template-columns: 1fr; }
   }
 
@@ -1588,8 +1588,8 @@
       z-index: 800;
     }
     .hamburger { display: flex; }
-    .services-grid { grid-template-columns: 1fr 1fr; }
-    .process-grid { grid-template-columns: 1fr 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
+    .process-grid { grid-template-columns: 1fr; }
     .trust-bar { gap: 1.5rem; }
     .before-after { grid-template-columns: 1fr; }
     .ba-side:first-child { border-right: none; border-bottom: 1px solid var(--border); }
@@ -1737,6 +1737,19 @@
   }
 
   /* ── END PARALLAX STYLES ─────────────────────── */
+
+  @media (max-width: 640px) {
+    .work-grid { grid-template-columns: 1fr; }
+    .why-grid { grid-template-columns: 1fr; }
+    .pkg-grid { grid-template-columns: 1fr !important; }
+    .why-stats { grid-template-columns: 1fr 1fr; }
+    .svc-desc { font-size: 0.82rem; }
+    .svc-name { font-size: 0.95rem; }
+    .hero-h1 { font-size: 2.6rem; }
+    .sec-h2 { font-size: 1.8rem; }
+    .pkg-price { font-size: 2rem; }
+    .work-grid { gap: 16px; }
+  }
 </style>
 </head>
 <body>

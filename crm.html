@@ -926,22 +926,24 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 </div>
 
 <script>
-// ── SUPABASE CONFIG ──────────────────────────────────────────────────────────
-var SB_URL = 'https://toeffdzepbfjsztsarqm.supabase.co';
-var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZWZmZHplcGJmanN6dHNhcnFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxMTYxNjksImV4cCI6MjA5MjY5MjE2OX0.cwHzcUeaEvWhJeWKnLFaMSswC6HS8eeskuRq9fgUTs8';
+// ── JSONBIN CONFIG ───────────────────────────────────────────────────────────
+var JB_KEY = '$2a$10$SmT06RVWBg8Mdphc1Ezs1eSuM9Z6f4YgDDqDxQJOB8dCmow49I6lK';
+var JB_BIN = '69ee07dbaaba8821973c4a2c';
+var JB_URL = 'https://api.jsonbin.io/v3/b/' + JB_BIN;
 
-function sbFetch(path, method, body) {
-  return fetch(SB_URL + '/rest/v1/' + path, {
-    method: method || 'GET',
+function jbGet() {
+  return fetch(JB_URL + '/latest', {
     cache: 'no-store',
-    headers: {
-      'apikey': SB_KEY,
-      'Authorization': 'Bearer ' + SB_KEY,
-      'Content-Type': 'application/json',
-      'Prefer': method === 'POST' ? 'return=representation' : 'return=minimal'
-    },
-    body: body ? JSON.stringify(body) : undefined
-  }).then(function(r) { return r.json().catch(function(){return []}); });
+    headers: { 'X-Master-Key': JB_KEY }
+  }).then(function(r) { return r.json(); }).then(function(d) { return d.record || d; });
+}
+
+function jbSet(data) {
+  return fetch(JB_URL, {
+    method: 'PUT',
+    headers: { 'X-Master-Key': JB_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  }).then(function(r) { return r.json(); });
 }
 
 // ── DATA ─────────────────────────────────────────────────────────────────────
@@ -961,44 +963,43 @@ function showLoading(show) {
 async function loadAll() {
   showLoading(true);
   try {
-    var results = await Promise.all([
-      sbFetch('contacts?order=created.asc'),
-      sbFetch('jobs?order=created.asc'),
-      sbFetch('templates?order=created.asc'),
-    ]);
-    DB.contacts  = results[0] || [];
-    DB.jobs      = results[1] || [];
-    DB.templates = results[2] && results[2].length ? results[2] : getDefaultTemplates();
-    if (!results[2] || !results[2].length) {
-      await saveDefaultTemplates();
+    var data = await jbGet();
+    DB.contacts  = data.contacts  || [];
+    DB.jobs      = data.jobs      || [];
+    DB.templates = data.templates && data.templates.length ? data.templates : getDefaultTemplates();
+    if (!data.templates || !data.templates.length) {
+      await jbSave();
     }
   } catch(e) { console.error('Load error', e); }
   showLoading(false);
   render();
 }
 
+async function jbSave() {
+  try {
+    await jbSet({ contacts: DB.contacts, jobs: DB.jobs, templates: DB.templates });
+  } catch(e) { console.error('Save error', e); }
+}
+
 async function saveDefaultTemplates() {
-  var defaults = getDefaultTemplates();
-  for (var i=0; i<defaults.length; i++) {
-    await sbFetch('templates', 'POST', defaults[i]);
-  }
+  DB.templates = getDefaultTemplates();
+  await jbSave();
 }
 
 async function save(table, obj) {
   var existing = DB[table] ? DB[table].find(function(x){return x.id===obj.id;}) : null;
   if (existing) {
-    await sbFetch(table + '?id=eq.' + obj.id, 'PATCH', obj);
     var idx = DB[table].findIndex(function(x){return x.id===obj.id;});
     if (idx>=0) DB[table][idx] = obj;
   } else {
-    await sbFetch(table, 'POST', obj);
     if (DB[table]) DB[table].push(obj);
   }
+  await jbSave();
 }
 
 async function deleteRecord(table, id) {
-  await sbFetch(table + '?id=eq.' + id, 'DELETE');
   if (DB[table]) DB[table] = DB[table].filter(function(x){return x.id!==id;});
+  await jbSave();
 }
 
 function getDefaultTemplates(){

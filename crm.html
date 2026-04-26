@@ -79,6 +79,9 @@ body.light-mode .badge-locked{background:#E8E4DC;color:#555551;border-color:#C8C
 body.light-mode .copy-btn{background:rgba(168,130,58,0.1);border-color:rgba(168,130,58,0.3);color:#A8823A}
 body.light-mode .pwa-more-screen{background:#F5F2EC}
 body.light-mode .notes-popout-card{background:#FFFFFF;border-color:#C8C4BC}
+body.light-mode .platform-dropdown{background:#FFFFFF;border-color:#D8D4CC}
+body.light-mode .platform-opt{color:#1a1a18}
+body.light-mode .platform-opt:hover{background:#F0EDE6}
 body.light-mode .notes-popout-textarea{background:#F5F2EC;border-color:#D8D4CC;color:#1a1a18}
 body.light-mode .inline-date input[type=date]{color:#1a1a18}
 body.light-mode .inline-date input[type=date]::-webkit-calendar-picker-indicator{filter:none}
@@ -250,8 +253,12 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .platform-pill{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;padding:2px 7px;border-radius:100px;letter-spacing:0.06em;text-transform:uppercase;margin-top:4px;cursor:pointer;transition:opacity 0.15s}
 .platform-pill:hover{opacity:0.75}
 
-/* Inline platform dropdown */
-.inline-platform-select{font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;background:transparent;border:none;outline:none;cursor:pointer;font-family:var(--body);color:inherit;padding:0;-webkit-appearance:none;appearance:none}
+/* Custom platform dropdown */
+.platform-dropdown{position:fixed;background:var(--dark2);border:1px solid var(--border2);border-radius:8px;padding:4px;z-index:9999;min-width:160px;box-shadow:0 8px 24px rgba(0,0,0,0.5);display:none}
+.platform-dropdown.open{display:block}
+.platform-opt{padding:8px 10px;border-radius:5px;cursor:pointer;font-size:12px;color:var(--off-white);transition:background 0.1s;display:flex;align-items:center;gap:8px}
+.platform-opt:hover{background:var(--border2)}
+.platform-opt svg{flex-shrink:0}
 
 /* Inline date cell */
 .inline-date{font-size:12px;color:var(--text-mid);cursor:pointer;padding:2px 6px;border-radius:6px;transition:background 0.15s;border:1px solid transparent;display:inline-block}
@@ -914,7 +921,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     <button class="hamburger" id="hamburger" onclick="toggleSidebar()"><span></span><span></span><span></span></button>
     <div class="topbar-title" id="topbar-title">Dashboard</div>
     <button class="topbar-btn outline" id="topbar-secondary" style="display:none" onclick="topbarSecondary()"></button>
-    <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+    <button class="theme-toggle" id="theme-toggle" title="Toggle theme" onclick="event.stopPropagation();toggleTheme()">🌙</button>
     <button class="topbar-btn" id="topbar-action" onclick="topbarAction()">+ Add</button>
   </div>
   <div class="content">
@@ -1226,6 +1233,12 @@ function showLoading(show) {
 }
 
 async function loadAll() {
+  // Step 0 — apply theme instantly from quick cache
+  try {
+    var qt = localStorage.getItem('ls_theme_quick');
+    if(qt) { DB.theme = qt; applyTheme(qt); }
+  } catch(e) {}
+
   // Step 1 — load from local cache instantly
   try {
     var cached = localStorage.getItem('ls_crm_cache');
@@ -1458,6 +1471,103 @@ function platformPill(platform) {
   var cls = PLATFORM_CLASSES[platform] || 'pill-other';
   var icon = PLATFORM_ICONS[platform] || '';
   return '<span class="platform-pill '+cls+'" style="display:inline-flex;align-items:center;gap:3px">'+icon+platform+'</span>';
+}
+
+function inlinePlatformPill(c) {
+  var cls = {Instagram:'pill-instagram',Email:'pill-email',LinkedIn:'pill-linkedin',WhatsApp:'pill-whatsapp',Phone:'pill-phone'}[c.platform]||'pill-other';
+  var icon = (PLATFORM_ICONS[c.platform]||'');
+  return '<span class="platform-pill '+cls+'" style="display:inline-flex;align-items:center;gap:4px;cursor:pointer" onclick="showPlatformDropdown(event,\''+c.id+'\')" title="Change platform">'+icon+(c.platform||'Set platform')+' ▾</span>';
+}
+
+function inlineDateCell(c, field) {
+  var val = c[field] || '';
+  var label = field === 'contacted' ? 'Add date' : 'Add date';
+  var color = field==='followup'&&val&&val<=today() ? 'var(--red)' : val ? 'var(--text-mid)' : 'var(--border2)';
+  return '<span class="inline-date" style="color:'+color+'"><input type="date" value="'+val+'" onchange="inlineUpdateDate(this,\''+c.id+'\',\''+field+'\')" onclick="event.stopPropagation()" title="'+(field==='contacted'?'Date contacted':'Follow up date')+'"></span>';
+}
+
+var platformDropdownId = null;
+function showPlatformDropdown(e, id) {
+  e.stopPropagation();
+  platformDropdownId = id;
+  var dd = document.getElementById('platform-dropdown');
+  var platforms = ['Instagram','Email','LinkedIn','WhatsApp','Phone'];
+  var c = DB.contacts.find(function(x){return x.id===id;});
+  dd.innerHTML = platforms.map(function(p){
+    var icon = PLATFORM_ICONS[p]||'';
+    var active = c&&c.platform===p;
+    return '<div class="platform-opt" onclick="selectPlatform(\'' +p+ '\')">'+
+      '<span style="width:16px;height:16px;display:flex;align-items:center;justify-content:center">'+icon+'</span>'+
+      '<span>'+p+'</span>'+(active?'<span style="margin-left:auto;color:var(--gold)">✓</span>':'')+
+    '</div>';
+  }).join('');
+  var rect = e.currentTarget.getBoundingClientRect();
+  var ddHeight = 220;
+  var spaceBelow = window.innerHeight - rect.bottom;
+  var topPos = spaceBelow < ddHeight ? (rect.top - ddHeight - 4) : (rect.bottom + 4);
+  // Make sure it doesn't go off right edge of screen
+  var leftPos = Math.min(rect.left, window.innerWidth - 180);
+  dd.style.top = topPos + 'px';
+  dd.style.left = leftPos + 'px';
+  dd.style.width = '170px';
+  dd.classList.add('open');
+}
+
+function selectPlatform(platform) {
+  var dd = document.getElementById('platform-dropdown');
+  dd.classList.remove('open');
+  if(!platformDropdownId) return;
+  var c = DB.contacts.find(function(x){return x.id===platformDropdownId;});
+  if(!c) return;
+  c.platform = platform;
+  save('contacts', c);
+  renderContacts();
+  renderPipeline();
+  platformDropdownId = null;
+}
+
+function inlineUpdatePlatform(select, id) {
+  var c = DB.contacts.find(function(x){return x.id===id;});
+  if(!c) return;
+  c.platform = select.value;
+  save('contacts', c);
+  renderContacts();
+  renderPipeline();
+}
+
+function inlineUpdateDate(input, id, field) {
+  var c = DB.contacts.find(function(x){return x.id===id;});
+  if(!c) return;
+  c[field] = input.value;
+  save('contacts', c);
+  renderContacts();
+}
+
+var notesPopoutId = null;
+function openNotesPopout(id) {
+  var c = DB.contacts.find(function(x){return x.id===id;});
+  if(!c) return;
+  notesPopoutId = id;
+  document.getElementById('notes-popout-name').textContent = (c.name||c.instagram||c.agency||'Contact');
+  document.getElementById('notes-popout-textarea').value = c.notes || '';
+  document.getElementById('notes-popout').classList.add('open');
+  setTimeout(function(){ document.getElementById('notes-popout-textarea').focus(); }, 250);
+}
+
+function closeNotesPopout(e) {
+  if(e.target === document.getElementById('notes-popout')) {
+    document.getElementById('notes-popout').classList.remove('open');
+  }
+}
+
+function saveNotesPopout() {
+  if(!notesPopoutId) return;
+  var c = DB.contacts.find(function(x){return x.id===notesPopoutId;});
+  if(!c) return;
+  c.notes = document.getElementById('notes-popout-textarea').value.trim();
+  save('contacts', c);
+  document.getElementById('notes-popout').classList.remove('open');
+  renderContacts();
 }
 
 function renderContacts(){
@@ -1805,6 +1915,12 @@ document.getElementById('sidebar-date').textContent=days[n.getDay()]+' '+n.getDa
   }
   // ── END PROMPTS ───────────────────────────────────────────────────────────
 
+// ── INIT ─────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  var tb = document.getElementById('theme-toggle');
+  if(tb) tb.addEventListener('click', function(e){ e.stopPropagation(); toggleTheme(); });
+});
+
 // ── VAULT TRANSITION ─────────────────────────────────────────────────────────────
 function runVaultTransition(onComplete) {
   var overlay = document.createElement('div');
@@ -1882,6 +1998,9 @@ function doLogin(){
 
 </script>
 
+<!-- PLATFORM DROPDOWN -->
+<div id="platform-dropdown" class="platform-dropdown"></div>
+
 <!-- NOTES POPOUT -->
 <div class="notes-popout" id="notes-popout" onclick="closeNotesPopout(event)">
   <div class="notes-popout-card">
@@ -1920,8 +2039,8 @@ function toggleTheme() {
   var isLight = document.body.classList.contains('light-mode');
   var newTheme = isLight ? 'dark' : 'light';
   applyTheme(newTheme);
-  // Save to JSONBin via DB
   DB.theme = newTheme;
+  localStorage.setItem('ls_theme_quick', newTheme);
   jbSave();
 }
 
@@ -1935,16 +2054,14 @@ function inlinePlatformPill(c) {
   var platforms = ['Instagram','Email','LinkedIn','WhatsApp','Phone'];
   var cls = {Instagram:'pill-instagram',Email:'pill-email',LinkedIn:'pill-linkedin',WhatsApp:'pill-whatsapp',Phone:'pill-phone'}[c.platform]||'pill-other';
   var icon = (PLATFORM_ICONS[c.platform]||'');
-  var opts = platforms.map(function(p){ return '<option value="'+p+'"'+(c.platform===p?' selected':'')+'>'+p+'</option>'; }).join('');
-  return '<span class="platform-pill '+cls+'" style="display:inline-flex;align-items:center;gap:4px">'+icon+
-    '<select class="inline-platform-select" onchange="inlineUpdatePlatform(this,''+c.id+'')" onclick="event.stopPropagation()">'+opts+'</select></span>';
+  return '<span class="platform-pill '+cls+'" style="display:inline-flex;align-items:center;gap:4px;cursor:pointer" onclick="showPlatformDropdown(event,\'' +c.id+ '\')">'+icon+(c.platform||'Set')+'  ▾</span>';
 }
 
 function inlineDateCell(c, field) {
   var val = c[field] || '';
   var label = field === 'contacted' ? 'Add date' : 'Add date';
   var color = field==='followup'&&val&&val<=today() ? 'var(--red)' : val ? 'var(--text-mid)' : 'var(--border2)';
-  return '<span class="inline-date" style="color:'+color+'"><input type="date" value="'+val+'" onchange="inlineUpdateDate(this,''+c.id+'',''+field+'')" onclick="event.stopPropagation()" title="'+(field==='contacted'?'Date contacted':'Follow up date')+'"></span>';
+  return '<span class="inline-date" style="color:'+color+'"><input type="date" value="'+val+'" onchange="inlineUpdateDate(this,\'' +c.id+ '\',\'' +field+ '\')" onclick="event.stopPropagation()" title="'+(field==='contacted'?'Date contacted':'Follow up date')+'"></span>';
 }
 
 function inlineUpdatePlatform(select, id) {

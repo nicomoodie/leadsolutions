@@ -78,6 +78,10 @@ body.light-mode .pwa-more-menu{background:#FFFFFF;border-color:#D8D4CC}
 body.light-mode .badge-locked{background:#E8E4DC;color:#555551;border-color:#C8C4BC}
 body.light-mode .copy-btn{background:rgba(168,130,58,0.1);border-color:rgba(168,130,58,0.3);color:#A8823A}
 body.light-mode .pwa-more-screen{background:#F5F2EC}
+body.light-mode .notes-popout-card{background:#FFFFFF;border-color:#C8C4BC}
+body.light-mode .notes-popout-textarea{background:#F5F2EC;border-color:#D8D4CC;color:#1a1a18}
+body.light-mode .inline-date input[type=date]{color:#1a1a18}
+body.light-mode .inline-date input[type=date]::-webkit-calendar-picker-indicator{filter:none}
 body.light-mode .pwa-menu-group{background:#FFFFFF;border-color:#D8D4CC}
 body.light-mode .pwa-menu-item{border-color:#D8D4CC}
 body.light-mode .pwa-menu-item:active{background:#F0EDE6}
@@ -243,7 +247,28 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .pipeline-card{cursor:grab}
 .pipeline-card:active{cursor:grabbing;opacity:0.7}
 .pipeline-card-platform{font-size:9px;color:var(--text-muted);margin-top:2px;letter-spacing:0.04em}
-.platform-pill{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;padding:2px 7px;border-radius:100px;letter-spacing:0.06em;text-transform:uppercase;margin-top:4px}
+.platform-pill{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;padding:2px 7px;border-radius:100px;letter-spacing:0.06em;text-transform:uppercase;margin-top:4px;cursor:pointer;transition:opacity 0.15s}
+.platform-pill:hover{opacity:0.75}
+
+/* Inline platform dropdown */
+.inline-platform-select{font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;background:transparent;border:none;outline:none;cursor:pointer;font-family:var(--body);color:inherit;padding:0;-webkit-appearance:none;appearance:none}
+
+/* Inline date cell */
+.inline-date{font-size:12px;color:var(--text-mid);cursor:pointer;padding:2px 6px;border-radius:6px;transition:background 0.15s;border:1px solid transparent;display:inline-block}
+.inline-date:hover{background:var(--dark2);border-color:var(--border)}
+.inline-date input[type=date]{font-size:12px;background:transparent;border:none;outline:none;color:var(--off-white);font-family:var(--body);cursor:pointer;width:100%}
+.inline-date input[type=date]::-webkit-calendar-picker-indicator{filter:invert(0.5);cursor:pointer}
+
+/* Notes popout */
+.notes-popout{position:fixed;inset:0;z-index:5000;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,0.6);opacity:0;pointer-events:none;transition:opacity 0.2s}
+.notes-popout.open{opacity:1;pointer-events:all}
+.notes-popout-card{background:var(--dark);border:1px solid var(--border2);border-radius:20px 20px 0 0;padding:24px;width:100%;max-width:560px;max-height:70vh;display:flex;flex-direction:column;transform:translateY(20px);transition:transform 0.2s}
+.notes-popout.open .notes-popout-card{transform:translateY(0)}
+.notes-popout-title{font-family:var(--display);font-size:17px;font-weight:700;color:var(--off-white);margin-bottom:4px}
+.notes-popout-name{font-size:12px;color:var(--text-muted);margin-bottom:16px}
+.notes-popout-textarea{flex:1;background:var(--dark2);border:1px solid var(--border2);border-radius:10px;padding:12px;color:var(--off-white);font-family:var(--body);font-size:13px;resize:none;outline:none;min-height:140px;line-height:1.6}
+.notes-popout-textarea:focus{border-color:rgba(201,168,76,0.4)}
+.notes-popout-actions{display:flex;gap:10px;margin-top:14px;justify-content:flex-end}
 .pill-instagram{background:rgba(131,58,180,0.15);color:#a855f7}
 .pill-email{background:rgba(59,130,246,0.15);color:#60a5fa}
 .pill-linkedin{background:rgba(10,102,194,0.15);color:#5b9bd5}
@@ -1441,7 +1466,11 @@ function renderContacts(){
   tbody.innerHTML=DB.contacts.length?DB.contacts.map(function(c){
     var fu=c.followup?'<span style="color:'+(c.followup<=today()?'var(--red)':'var(--text-mid)')+'">'+c.followup+'</span>':'—';
     var ct=c.contacted?'<span style="color:var(--text-muted)">'+c.contacted+'</span>':'—';
-    return '<tr><td><span style="cursor:pointer;font-weight:500" onclick="editContact(\''+c.id+'\')">'+displayName(c)+'</span>'+(c.instagram&&c.name?'<br><span style="font-size:10px;color:var(--gold)">'+c.instagram+'</span>':'')+'</td><td style="color:var(--text-muted)">'+(c.agency||'—')+'</td><td>'+platformPill(c.platform)+'</td><td>'+statusBadge(c.status,c.id)+'</td><td style="font-size:12px">'+ct+'</td><td style="font-size:12px">'+fu+'</td><td style="color:var(--text-muted);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(c.notes||'—')+'</td><td><button class="del-btn" onclick="deleteContact(\''+c.id+'\')">✕</button></td></tr>';
+    var platformCell='<td>'+inlinePlatformPill(c)+'</td>';
+    var contactedCell='<td>'+inlineDateCell(c,'contacted')+'</td>';
+    var followupCell='<td>'+inlineDateCell(c,'followup')+'</td>';
+    var notesCell='<td style="cursor:pointer" onclick="openNotesPopout(\''+c.id+'\')" title="Click to view/edit notes"><span style="color:'+(c.notes?'var(--text-mid)':'var(--border2)')+';font-size:11px;max-width:100px;display:inline-block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(c.notes||'+ Add note')+'</span></td>';
+    return '<tr><td><span style="cursor:pointer;font-weight:500" onclick="editContact(\''+c.id+'\')">'+displayName(c)+'</span>'+(c.instagram&&c.name?'<br><span style="font-size:10px;color:var(--gold)">'+c.instagram+'</span>':'')+'</td><td style="color:var(--text-muted)">'+(c.agency||'—')+'</td>'+platformCell+'<td>'+statusBadge(c.status,c.id)+'</td>'+contactedCell+followupCell+notesCell+'<td><button class="del-btn" onclick="deleteContact(\''+c.id+'\')">✕</button></td></tr>';
   }).join(''):'<tr><td colspan="8"><div class="empty"><div class="empty-icon">◈</div><div class="empty-text">No contacts yet.</div></div></td></tr>';
 
   // Mobile
@@ -1853,6 +1882,19 @@ function doLogin(){
 
 </script>
 
+<!-- NOTES POPOUT -->
+<div class="notes-popout" id="notes-popout" onclick="closeNotesPopout(event)">
+  <div class="notes-popout-card">
+    <div class="notes-popout-title">Notes</div>
+    <div class="notes-popout-name" id="notes-popout-name"></div>
+    <textarea class="notes-popout-textarea" id="notes-popout-textarea" placeholder="Add notes about this contact..."></textarea>
+    <div class="notes-popout-actions">
+      <button class="topbar-btn outline" onclick="document.getElementById('notes-popout').classList.remove('open')">Cancel</button>
+      <button class="topbar-btn" onclick="saveNotesPopout()">Save Notes</button>
+    </div>
+  </div>
+</div>
+
 <script>
 if('serviceWorker' in navigator){
   window.addEventListener('load', function(){
@@ -1886,6 +1928,67 @@ function toggleTheme() {
 function loadTheme() {
   var theme = DB.theme || 'dark';
   applyTheme(theme);
+}
+
+// ── INLINE CONTACT INTERACTIONS ──────────────────────────────────────────────
+function inlinePlatformPill(c) {
+  var platforms = ['Instagram','Email','LinkedIn','WhatsApp','Phone'];
+  var cls = {Instagram:'pill-instagram',Email:'pill-email',LinkedIn:'pill-linkedin',WhatsApp:'pill-whatsapp',Phone:'pill-phone'}[c.platform]||'pill-other';
+  var icon = (PLATFORM_ICONS[c.platform]||'');
+  var opts = platforms.map(function(p){ return '<option value="'+p+'"'+(c.platform===p?' selected':'')+'>'+p+'</option>'; }).join('');
+  return '<span class="platform-pill '+cls+'" style="display:inline-flex;align-items:center;gap:4px">'+icon+
+    '<select class="inline-platform-select" onchange="inlineUpdatePlatform(this,''+c.id+'')" onclick="event.stopPropagation()">'+opts+'</select></span>';
+}
+
+function inlineDateCell(c, field) {
+  var val = c[field] || '';
+  var label = field === 'contacted' ? 'Add date' : 'Add date';
+  var color = field==='followup'&&val&&val<=today() ? 'var(--red)' : val ? 'var(--text-mid)' : 'var(--border2)';
+  return '<span class="inline-date" style="color:'+color+'"><input type="date" value="'+val+'" onchange="inlineUpdateDate(this,''+c.id+'',''+field+'')" onclick="event.stopPropagation()" title="'+(field==='contacted'?'Date contacted':'Follow up date')+'"></span>';
+}
+
+function inlineUpdatePlatform(select, id) {
+  var c = DB.contacts.find(function(x){return x.id===id;});
+  if(!c) return;
+  c.platform = select.value;
+  save('contacts', c);
+  renderContacts();
+  renderPipeline();
+}
+
+function inlineUpdateDate(input, id, field) {
+  var c = DB.contacts.find(function(x){return x.id===id;});
+  if(!c) return;
+  c[field] = input.value;
+  save('contacts', c);
+  renderContacts();
+}
+
+var notesPopoutId = null;
+function openNotesPopout(id) {
+  var c = DB.contacts.find(function(x){return x.id===id;});
+  if(!c) return;
+  notesPopoutId = id;
+  document.getElementById('notes-popout-name').textContent = (c.name||c.instagram||c.agency||'Contact');
+  document.getElementById('notes-popout-textarea').value = c.notes || '';
+  document.getElementById('notes-popout').classList.add('open');
+  setTimeout(function(){ document.getElementById('notes-popout-textarea').focus(); }, 250);
+}
+
+function closeNotesPopout(e) {
+  if(e.target === document.getElementById('notes-popout')) {
+    document.getElementById('notes-popout').classList.remove('open');
+  }
+}
+
+function saveNotesPopout() {
+  if(!notesPopoutId) return;
+  var c = DB.contacts.find(function(x){return x.id===notesPopoutId;});
+  if(!c) return;
+  c.notes = document.getElementById('notes-popout-textarea').value.trim();
+  save('contacts', c);
+  document.getElementById('notes-popout').classList.remove('open');
+  renderContacts();
 }
 
 // ── RELOAD ON APP RESUME ─────────────────────────────────────────────────────

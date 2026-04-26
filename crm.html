@@ -1536,6 +1536,28 @@ if('serviceWorker' in navigator){
   });
 }
 
+// ── RELOAD ON APP RESUME ─────────────────────────────────────────────────────
+document.addEventListener('visibilitychange', function() {
+  if(document.visibilityState === 'visible') {
+    var loginVisible = document.getElementById('login-screen') &&
+      document.getElementById('login-screen').style.display !== 'none';
+    if(!loginVisible) {
+      loadAll();
+    }
+  }
+});
+
+// Also reload when PWA comes back from background
+window.addEventListener('pageshow', function(e) {
+  if(e.persisted) {
+    var loginVisible = document.getElementById('login-screen') &&
+      document.getElementById('login-screen').style.display !== 'none';
+    if(!loginVisible) {
+      loadAll();
+    }
+  }
+});
+
 // ── PWA NAV ───────────────────────────────────────────────────────────────────
 var PWA_TABS = ['dashboard','contacts','jobs','pipeline'];
 

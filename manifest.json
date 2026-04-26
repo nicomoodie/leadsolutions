@@ -1,0 +1,23 @@
+{
+  "name": "Lead Solutions CRM",
+  "short_name": "LS CRM",
+  "description": "Lead Solutions property marketing CRM",
+  "start_url": "/leadsolutions/crm.html",
+  "scope": "/leadsolutions/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0E0E0E",
+  "theme_color": "#C9A84C",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

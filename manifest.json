@@ -2,22 +2,24 @@
   "name": "Lead Solutions CRM",
   "short_name": "LS CRM",
   "description": "Lead Solutions property marketing CRM",
-  "start_url": "/leadsolutions/crm.html",
-  "scope": "/leadsolutions/",
+  "start_url": "https://nicomoodie.github.io/leadsolutions/crm.html",
+  "scope": "https://nicomoodie.github.io/leadsolutions/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0E0E0E",
   "theme_color": "#C9A84C",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "https://nicomoodie.github.io/leadsolutions/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "icon-512.png",
+      "src": "https://nicomoodie.github.io/leadsolutions/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }

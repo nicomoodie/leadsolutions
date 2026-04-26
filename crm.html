@@ -1248,14 +1248,14 @@ document.addEventListener('click', function(e){
 
 var currentPage = 'dashboard';
 var pageCfg = {
-  dashboard: {title:'Dashboard',   btn:'+ Add Contact', sec:null},
-  goals:     {title:'Trials',       btn:null,            sec:null},
-  contacts:  {title:'Contacts',    btn:'+ Add Contact', sec:'Export CSV'},
-  pipeline:  {title:'Pipeline',    btn:'+ Add Contact', sec:null},
-  templates: {title:'Templates',   btn:'+ Add Template',sec:null},
-  prompts:   {title:'AI Prompts',    btn:null,            sec:null},
-  jobs:      {title:'Jobs',        btn:'+ Add Job',     sec:null},
-  finance:   {title:'Finance',     btn:'+ Add Job',     sec:null},
+  dashboard: {title:'Dashboard',   btn:null,              sec:null},
+  goals:     {title:'Trials',      btn:null,              sec:null},
+  contacts:  {title:'Contacts',    btn:'+ Add Contact',   sec:'Export CSV'},
+  pipeline:  {title:'Pipeline',    btn:null,              sec:null},
+  templates: {title:'Templates',   btn:'+ Add Template',  sec:null},
+  prompts:   {title:'AI Prompts',  btn:null,              sec:null},
+  jobs:      {title:'Jobs',        btn:'+ Add Job',       sec:null},
+  finance:   {title:'Finance',     btn:'+ Add Job',       sec:null},
 };
 
 function nav(page){
@@ -1866,27 +1866,27 @@ function updatePwaDarkToggle() {
 <!-- ── PWA BOTTOM TAB BAR ── -->
 <div class="pwa-tabbar" id="pwa-tabbar">
   <div class="pwa-tab active" id="tab-dashboard" onclick="pwaNav('dashboard')">
-    <span class="pwa-tab-icon">⬛</span>
+    <span class="pwa-tab-icon">🏠</span>
     <span class="pwa-tab-label">Home</span>
     <span class="pwa-tab-dot"></span>
   </div>
   <div class="pwa-tab" id="tab-contacts" onclick="pwaNav('contacts')">
-    <span class="pwa-tab-icon">◈</span>
+    <span class="pwa-tab-icon">👤</span>
     <span class="pwa-tab-label">Contacts</span>
     <span class="pwa-tab-dot"></span>
   </div>
   <div class="pwa-tab" id="tab-jobs" onclick="pwaNav('jobs')">
-    <span class="pwa-tab-icon">✦</span>
+    <span class="pwa-tab-icon">💼</span>
     <span class="pwa-tab-label">Jobs</span>
     <span class="pwa-tab-dot"></span>
   </div>
   <div class="pwa-tab" id="tab-pipeline" onclick="pwaNav('pipeline')">
-    <span class="pwa-tab-icon">◐</span>
+    <span class="pwa-tab-icon">📊</span>
     <span class="pwa-tab-label">Pipeline</span>
     <span class="pwa-tab-dot"></span>
   </div>
   <div class="pwa-tab" id="tab-more" onclick="openPwaMore()">
-    <span class="pwa-tab-icon">•••</span>
+    <span class="pwa-tab-icon">···</span>
     <span class="pwa-tab-label">More</span>
     <span class="pwa-tab-dot"></span>
   </div>
@@ -1898,7 +1898,7 @@ function updatePwaDarkToggle() {
 
     <div class="pwa-menu-group">
       <div class="pwa-menu-item" id="more-goals" onclick="pwaNavMore('goals')">
-        <div class="pwa-menu-icon-wrap" style="background:rgba(201,168,76,0.12)">◎</div>
+        <div class="pwa-menu-icon-wrap" style="background:rgba(201,168,76,0.12)">🏆</div>
         <div class="pwa-menu-text">
           <div class="pwa-menu-name">Trials</div>
           <div class="pwa-menu-sub">Track your milestones</div>
@@ -1906,7 +1906,7 @@ function updatePwaDarkToggle() {
         <span class="pwa-menu-arrow">›</span>
       </div>
       <div class="pwa-menu-item" id="more-templates" onclick="pwaNavMore('templates')">
-        <div class="pwa-menu-icon-wrap" style="background:rgba(82,132,224,0.12)">◻</div>
+        <div class="pwa-menu-icon-wrap" style="background:rgba(82,132,224,0.12)">💬</div>
         <div class="pwa-menu-text">
           <div class="pwa-menu-name">Templates</div>
           <div class="pwa-menu-sub">6 outreach messages</div>
@@ -1914,7 +1914,7 @@ function updatePwaDarkToggle() {
         <span class="pwa-menu-arrow">›</span>
       </div>
       <div class="pwa-menu-item" id="more-prompts" onclick="pwaNavMore('prompts')">
-        <div class="pwa-menu-icon-wrap" style="background:rgba(76,175,80,0.12)">✎</div>
+        <div class="pwa-menu-icon-wrap" style="background:rgba(76,175,80,0.12)">✨</div>
         <div class="pwa-menu-text">
           <div class="pwa-menu-name">AI Prompts</div>
           <div class="pwa-menu-sub">7 staging prompts</div>
@@ -1922,7 +1922,7 @@ function updatePwaDarkToggle() {
         <span class="pwa-menu-arrow">›</span>
       </div>
       <div class="pwa-menu-item" id="more-finance" onclick="pwaNavMore('finance')">
-        <div class="pwa-menu-icon-wrap" style="background:rgba(201,168,76,0.12)">£</div>
+        <div class="pwa-menu-icon-wrap" style="background:rgba(201,168,76,0.12)">💰</div>
         <div class="pwa-menu-text">
           <div class="pwa-menu-name">Finance</div>
           <div class="pwa-menu-sub" id="more-finance-sub">£0 total earned</div>

@@ -1209,7 +1209,7 @@ async function jbSave() {
 
 async function saveDefaultTemplates() {
   DB.templates = getDefaultTemplates();
-  await jbSave();
+  jbSave();
 }
 
 async function save(table, obj) {
@@ -1220,12 +1220,14 @@ async function save(table, obj) {
   } else {
     if (DB[table]) DB[table].push(obj);
   }
-  await jbSave();
+  // Update UI instantly, save in background
+  jbSave();
 }
 
 async function deleteRecord(table, id) {
   if (DB[table]) DB[table] = DB[table].filter(function(x){return x.id!==id;});
-  await jbSave();
+  // Update UI instantly, save in background
+  jbSave();
 }
 
 function getDefaultTemplates(){
@@ -1350,7 +1352,7 @@ function saveContact(){
   if(!obj.name&&!obj.instagram&&!obj.agency){alert('Please enter at least a name, Instagram handle, or agency.');return;}
   var idx=DB.contacts.findIndex(function(c){return c.id===id;});
   if(idx>=0)DB.contacts[idx]=obj;else DB.contacts.push(obj);
-  save('contacts', obj).then(function(){closeModal('modal-contact');render();});
+  closeModal('modal-contact');render();save('contacts',obj);
 }
 
 function editContact(id){
@@ -1416,7 +1418,7 @@ function saveTemplate(){
   if(!obj.name||!obj.body)return;
   var idx=DB.templates.findIndex(function(t){return t.id===id;});
   if(idx>=0)DB.templates[idx]=obj;else DB.templates.push(obj);
-  save('templates', obj).then(function(){closeModal('modal-template');render();});
+  closeModal('modal-template');render();save('templates',obj);
 }
 
 function deleteTemplate(id){
@@ -1455,7 +1457,7 @@ function saveJob(){
   if(!obj.client)return;
   var idx=DB.jobs.findIndex(function(j){return j.id===id;});
   if(idx>=0)DB.jobs[idx]=obj;else DB.jobs.push(obj);
-  save('jobs', obj).then(function(){closeModal('modal-job');render();});
+  closeModal('modal-job');render();save('jobs',obj);
 }
 
 function deleteJob(id){

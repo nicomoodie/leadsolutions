@@ -161,8 +161,88 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .copy-btn.copied{background:rgba(76,175,80,0.15);border-color:rgba(76,175,80,0.3);color:#4CAF50}
 
 /* GOALS */
-.goal-card{background:var(--dark);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:12px}
-.goal-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.goals-header{text-align:center;padding:8px 0 28px;border-bottom:1px solid var(--border);margin-bottom:28px}
+.goals-header-title{font-family:var(--display);font-size:22px;font-weight:700;color:var(--off-white);letter-spacing:0.02em}
+.goals-header-sub{font-size:11px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-top:4px}
+.goals-xp-bar-wrap{margin-top:14px;background:#111;border-radius:100px;height:6px;overflow:hidden;max-width:300px;margin-inline:auto}
+.goals-xp-bar{height:100%;background:linear-gradient(90deg,#C9A84C,#fff8e1);border-radius:100px;transition:width 1s ease}
+.goals-xp-label{font-size:10px;color:var(--gold);letter-spacing:0.08em;margin-top:6px;text-align:center}
+
+.trial-card{
+  position:relative;background:#111111;
+  border:1px solid #1f1f1d;border-radius:16px;
+  padding:20px 20px 20px 24px;margin-bottom:14px;
+  overflow:hidden;transition:border-color 0.3s,transform 0.2s;
+  display:flex;align-items:center;gap:18px;
+}
+.trial-card:hover{transform:translateX(4px);border-color:rgba(201,168,76,0.3)}
+.trial-card.trial-done{border-color:rgba(201,168,76,0.4);background:#131210}
+.trial-card.trial-done:hover{border-color:rgba(201,168,76,0.7)}
+
+/* Left accent line */
+.trial-card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:#2a2a28;border-radius:3px 0 0 3px;transition:background 0.3s;
+}
+.trial-card.trial-done::before{background:linear-gradient(180deg,#C9A84C,#a8853a)}
+.trial-card.trial-active::before{background:linear-gradient(180deg,#C9A84C88,#C9A84C22);animation:trialPulse 2s ease-in-out infinite}
+@keyframes trialPulse{0%,100%{opacity:0.5}50%{opacity:1}}
+
+/* Icon */
+.trial-icon{
+  width:48px;height:48px;flex-shrink:0;border-radius:12px;
+  background:#1a1a18;border:1px solid #2a2a28;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;position:relative;transition:all 0.3s;
+}
+.trial-card.trial-done .trial-icon{
+  background:rgba(201,168,76,0.1);border-color:rgba(201,168,76,0.4);
+}
+.trial-icon-complete{
+  position:absolute;inset:0;border-radius:11px;
+  background:rgba(201,168,76,0.9);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;opacity:0;transition:opacity 0.3s;
+}
+.trial-card.trial-done .trial-icon-complete{opacity:1}
+
+/* Content */
+.trial-content{flex:1;min-width:0}
+.trial-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;gap:8px}
+.trial-name{font-family:var(--display);font-size:14px;font-weight:700;color:var(--off-white);letter-spacing:0.01em}
+.trial-card.trial-done .trial-name{color:#C9A84C}
+.trial-badge{
+  font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  padding:3px 8px;border-radius:100px;flex-shrink:0;
+}
+.badge-done{background:rgba(201,168,76,0.15);color:#C9A84C;border:1px solid rgba(201,168,76,0.3)}
+.badge-active{background:rgba(201,168,76,0.08);color:#C9A84C88;border:1px solid rgba(201,168,76,0.15);animation:badgePulse 2s ease-in-out infinite}
+.badge-locked{background:#1a1a18;color:#333330;border:1px solid #222}
+@keyframes badgePulse{0%,100%{opacity:0.6}50%{opacity:1}}
+.trial-desc{font-size:11px;color:var(--muted);margin-bottom:10px;letter-spacing:0.01em}
+
+/* Progress bar */
+.trial-progress-wrap{background:#1a1a18;border-radius:100px;height:5px;overflow:hidden;margin-bottom:6px}
+.trial-progress-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,#C9A84C88,#C9A84C);transition:width 1.2s cubic-bezier(0.16,1,0.3,1)}
+.trial-progress-fill.done{background:linear-gradient(90deg,#C9A84C,#fff8dc)}
+.trial-meta{display:flex;align-items:center;justify-content:space-between}
+.trial-progress-text{font-size:10px;color:var(--muted);letter-spacing:0.04em}
+.trial-pct{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:0.04em}
+
+/* Shine effect on complete */
+.trial-shine{
+  position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 40%,rgba(201,168,76,0.06) 50%,transparent 60%);
+  pointer-events:none;
+}
+
+/* Milestone divider */
+.trial-divider{
+  display:flex;align-items:center;gap:12px;
+  margin:20px 0 14px;
+}
+.trial-divider-line{flex:1;height:1px;background:#1f1f1d}
+.trial-divider-label{font-size:9px;color:#333330;letter-spacing:0.15em;text-transform:uppercase;white-space:nowrap}
 .goal-name{font-size:14px;font-weight:600;color:var(--off-white)}
 .goal-desc{font-size:11px;color:var(--text-muted);margin-top:3px}
 .goal-pct{font-family:var(--display);font-size:22px;font-weight:700;color:var(--gold)}
@@ -414,7 +494,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   <nav class="sidebar-nav">
     <div class="nav-section">Overview</div>
     <div class="nav-item active" onclick="nav('dashboard')"><span class="nav-icon">⬛</span>Dashboard</div>
-    <div class="nav-item" onclick="nav('goals')"><span class="nav-icon">◎</span>Goals</div>
+    <div class="nav-item" onclick="nav('goals')"><span class="nav-icon">◎</span>Trials</div>
     <div class="nav-section">Outreach</div>
     <div class="nav-item" onclick="nav('contacts')"><span class="nav-icon">◈</span>Contacts</div>
     <div class="nav-item" onclick="nav('pipeline')"><span class="nav-icon">◐</span>Pipeline</div>
@@ -806,7 +886,7 @@ document.addEventListener('click', function(e){
 var currentPage = 'dashboard';
 var pageCfg = {
   dashboard: {title:'Dashboard',   btn:'+ Add Contact', sec:null},
-  goals:     {title:'Goals',       btn:null,            sec:null},
+  goals:     {title:'Trials',       btn:null,            sec:null},
   contacts:  {title:'Contacts',    btn:'+ Add Contact', sec:'Export CSV'},
   pipeline:  {title:'Pipeline',    btn:'+ Add Contact', sec:null},
   templates: {title:'Templates',   btn:'+ Add Template',sec:null},
@@ -1058,25 +1138,60 @@ function renderGoals(){
   paidJobs=DB.jobs.filter(function(j){return j.paid==='Paid'&&j.price>0;}).length;
 
   var goals=[
-    {name:'Stage 1 — First Client',desc:'Land your first paying client',target:1,current:clients,unit:'clients',milestone:true},
-    {name:'Stage 2 Unlock',desc:'5 clients to move to £99 / £199 pricing',target:5,current:clients,unit:'clients',milestone:true},
-    {name:'Stage 3 Unlock',desc:'10 clients to move to £129 / £249 pricing',target:10,current:clients,unit:'clients',milestone:true},
-    {name:'Monthly Goal',desc:'£1,000 revenue this month',target:1000,current:monthRevenue,unit:'£',prefix:'£',milestone:false},
-    {name:'First £500 Total',desc:'Total revenue milestone',target:500,current:totalRevenue,unit:'£',prefix:'£',milestone:false},
-    {name:'First £1,000 Total',desc:'Total revenue milestone',target:1000,current:totalRevenue,unit:'£',prefix:'£',milestone:false},
-    {name:'10 Jobs Delivered',desc:'Total paid jobs completed',target:10,current:paidJobs,unit:'jobs',milestone:false},
+    {name:'First Client',desc:'Land your first paying client',target:1,current:clients,unit:'clients',icon:'⚔️',cat:'milestone'},
+    {name:'Stage 2 Unlock',desc:'Reach 5 clients — unlocks Stage 2 pricing: £99 / £199',target:5,current:clients,unit:'clients',icon:'🛡️',cat:'milestone'},
+    {name:'Stage 3 Unlock',desc:'Reach 10 clients — unlocks Stage 3 pricing: £129 / £249',target:10,current:clients,unit:'clients',icon:'👑',cat:'milestone'},
+    {name:'Monthly Goal',desc:'Hit £1,000 in revenue this month',target:1000,current:monthRevenue,unit:'£',prefix:'£',icon:'📅',cat:'revenue'},
+    {name:'First £500',desc:'Earn your first £500 in total revenue',target:500,current:totalRevenue,unit:'£',prefix:'£',icon:'💰',cat:'revenue'},
+    {name:'First £1,000',desc:'Crack £1,000 in total revenue',target:1000,current:totalRevenue,unit:'£',prefix:'£',icon:'🏆',cat:'revenue'},
+    {name:'10 Jobs Delivered',desc:'Complete 10 paid jobs',target:10,current:paidJobs,unit:'jobs',icon:'✅',cat:'delivery'},
   ];
 
-  document.getElementById('goals-list').innerHTML=goals.map(function(g){
-    var pct=Math.min((g.current/g.target)*100,100);
-    var done=g.current>=g.target;
-    var valStr=g.prefix?'£'+g.current.toFixed(2):g.current;
-    var targetStr=g.prefix?'£'+g.target.toLocaleString():g.target+' '+g.unit;
-    return '<div class="goal-card">'+
-      '<div class="goal-top"><div><div class="goal-name">'+(done?'✓ ':'')+g.name+(done?' <span style="color:var(--green);font-size:12px">Complete</span>':'')+'</div><div class="goal-desc">'+g.desc+'</div></div><div class="goal-pct">'+Math.round(pct)+'%</div></div>'+
-      '<div class="progress-wrap"><div class="progress-fill'+(done?' green':'')+'" style="width:'+pct+'%"></div></div>'+
-      '<div class="goal-meta"><span>'+valStr+' of '+targetStr+'</span>'+(done?'<span style="color:var(--green)">Achieved ★</span>':'<span>'+(g.target-g.current>0?(g.prefix?'£'+(g.target-g.current).toFixed(2)+' to go':(g.target-Math.floor(g.current))+' to go'):'')+'</span>')+'</div></div>';
-  }).join('');
+  var totalDone = goals.filter(function(g){return g.current>=g.target;}).length;
+  var xpPct = Math.round((totalDone/goals.length)*100);
+
+  var html = '<div class="goals-header">' +
+    '<div class="goals-header-title">Trials</div>' +
+    '<div class="goals-xp-bar-wrap"><div class="goals-xp-bar" style="width:'+xpPct+'%"></div></div>' +
+    '<div class="goals-xp-label">'+totalDone+' / '+goals.length+' Trials Complete</div>' +
+    '</div>';
+
+  var lastCat = null;
+  var catLabels = {milestone:'⚔️ Milestone Trials', revenue:'💰 Revenue Trials', delivery:'📦 Delivery Trials'};
+
+  goals.forEach(function(g){
+    var pct = Math.min((g.current/g.target)*100,100);
+    var done = g.current >= g.target;
+    var active = !done && g.current > 0;
+    var valStr = g.prefix ? '£'+g.current.toFixed(2) : g.current;
+    var targetStr = g.prefix ? '£'+g.target.toLocaleString() : g.target+' '+g.unit;
+    var toGo = done ? '' : (g.prefix ? '£'+(g.target-g.current).toFixed(2)+' to go' : (g.target-Math.floor(g.current))+' to go');
+    var cardClass = 'trial-card'+(done?' trial-done':active?' trial-active':'');
+    var badgeHtml = done ?
+      '<span class="trial-badge badge-done">✦ Complete</span>' :
+      active ? '<span class="trial-badge badge-active">In Progress</span>' :
+      '<span class="trial-badge badge-locked">Locked</span>';
+
+    if(g.cat !== lastCat){
+      html += '<div class="trial-divider"><div class="trial-divider-line"></div><span class="trial-divider-label">'+catLabels[g.cat]+'</span><div class="trial-divider-line"></div></div>';
+      lastCat = g.cat;
+    }
+
+    html += '<div class="'+cardClass+'">' +
+      '<div class="trial-shine"></div>' +
+      '<div class="trial-icon"><span>'+g.icon+'</span><div class="trial-icon-complete">✦</div></div>' +
+      '<div class="trial-content">' +
+        '<div class="trial-top"><span class="trial-name">'+g.name+'</span>'+badgeHtml+'</div>' +
+        '<div class="trial-desc">'+g.desc+'</div>' +
+        '<div class="trial-progress-wrap"><div class="trial-progress-fill'+(done?' done':'')+'" style="width:'+pct+'%"></div></div>' +
+        '<div class="trial-meta"><span class="trial-progress-text">'+valStr+' of '+targetStr+'</span>' +
+        (done ? '<span class="trial-pct">100%</span>' : '<span class="trial-pct">'+Math.round(pct)+'%</span>') +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  });
+
+  document.getElementById('goals-list').innerHTML = html;
 }
 
 // ── DASHBOARD ─────────────────────────────────────────────────────────────────

@@ -21,6 +21,90 @@
   --display:'Playfair Display',serif;--body:'DM Sans',sans-serif;
   --sidebar:220px;
 }
+
+/* ── LIGHT MODE ────────────────────────────────────────────────────────────── */
+body.light-mode {
+  --black:#F5F2EC;--dark:#FFFFFF;--dark2:#F0EDE6;--dark3:#E8E4DC;
+  --border:#D8D4CC;--border2:#C8C4BC;
+  --gold:#A8823A;--gold-dim:rgba(168,130,58,0.12);
+  --off-white:#1a1a18;--text-mid:#555551;--text-muted:#888880;
+  background:#F5F2EC;color:#1a1a18;
+}
+
+/* Theme toggle button */
+.theme-toggle {
+  display:flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:8px;
+  background:transparent;border:1px solid var(--border);
+  cursor:pointer;font-size:16px;
+  transition:background 0.15s,border-color 0.15s;
+  flex-shrink:0;
+}
+.theme-toggle:hover{background:var(--gold-dim);border-color:rgba(201,168,76,0.4)}
+
+/* Light mode specific overrides */
+body.light-mode .sidebar{background:#FFFFFF;border-color:#D8D4CC}
+body.light-mode .topbar{background:#FFFFFF;border-color:#D8D4CC}
+body.light-mode .card{background:#FFFFFF;border-color:#D8D4CC}
+body.light-mode .stat-card{background:#FFFFFF;border-color:#D8D4CC}
+body.light-mode .modal{background:#FFFFFF;border-color:#C8C4BC}
+body.light-mode .form-input,
+body.light-mode .form-select,
+body.light-mode .form-textarea{background:#F5F2EC;border-color:#C8C4BC;color:#1a1a18}
+body.light-mode .nav-item{color:#555551}
+body.light-mode .nav-item:hover{background:#F0EDE6;color:#1a1a18}
+body.light-mode .nav-item.active{background:rgba(168,130,58,0.12);color:#A8823A}
+body.light-mode .pipeline-col{background:#FFFFFF;border-color:#D8D4CC}
+body.light-mode .pipeline-card{background:#F5F2EC;border-color:#D8D4CC}
+body.light-mode .template-card{background:#FFFFFF;border-color:#D8D4CC}
+body.light-mode .template-body{border-color:#C8C4BC;color:#555551}
+body.light-mode table th{border-color:#D8D4CC}
+body.light-mode table td{border-color:#D8D4CC}
+body.light-mode tr:hover td{background:rgba(0,0,0,0.02)}
+body.light-mode .status-dropdown{background:#FFFFFF;border-color:#C8C4BC}
+body.light-mode .topbar-btn.outline{color:#A8823A;border-color:rgba(168,130,58,0.4)}
+body.light-mode .sidebar-date{color:#888880}
+body.light-mode .nav-section{color:#888880}
+body.light-mode .trial-card{background:#FFFFFF;border-color:#D8D4CC}
+body.light-mode .trial-card.trial-done{background:#FDFAF4;border-color:rgba(168,130,58,0.4)}
+body.light-mode .trial-icon{background:#F5F2EC;border-color:#D8D4CC}
+body.light-mode .trial-progress-wrap{background:#E8E4DC}
+body.light-mode .goals-xp-bar-wrap{background:#E8E4DC}
+body.light-mode .login-screen{background:#F5F2EC}
+body.light-mode .pwa-tabbar{background:#FFFFFF;border-color:#D8D4CC}
+body.light-mode .pwa-tab{color:#888880}
+body.light-mode .pwa-tab.active{color:#A8823A}
+body.light-mode .pwa-more-menu{background:#FFFFFF;border-color:#D8D4CC}
+body.light-mode .badge-locked{background:#E8E4DC;color:#555551;border-color:#C8C4BC}
+body.light-mode .copy-btn{background:rgba(168,130,58,0.1);border-color:rgba(168,130,58,0.3);color:#A8823A}
+body.light-mode .pwa-more-screen{background:#F5F2EC}
+body.light-mode .pwa-menu-group{background:#FFFFFF;border-color:#D8D4CC}
+body.light-mode .pwa-menu-item{border-color:#D8D4CC}
+body.light-mode .pwa-menu-item:active{background:#F0EDE6}
+body.light-mode .pwa-menu-name{color:#1a1a18}
+body.light-mode .pwa-menu-sub{color:#888880}
+body.light-mode .pwa-menu-arrow{color:#C8C4BC}
+body.light-mode .pwa-toggle-switch{background:#C8C4BC}
+body.light-mode .pwa-toggle-knob{background:#FFFFFF}
+body.light-mode .contact-row-mobile{background:#FFFFFF;border-color:#D8D4CC}
+body.light-mode .pwa-search{background:#FFFFFF;border-color:#D8D4CC}
+body.light-mode .pwa-search input{color:#1a1a18}
+body.light-mode .pwa-filter-pill{background:#FFFFFF;border-color:#D8D4CC;color:#888880}
+body.light-mode .pwa-qa-btn{background:#FFFFFF;border-color:#D8D4CC}
+body.light-mode .pwa-qa-btn:active{background:#F0EDE6}
+body.light-mode .pwa-goal-card{background:#FFFFFF;border-color:rgba(168,130,58,0.25)}
+body.light-mode .pwa-goal-bar{background:#E8E4DC}
+body.light-mode .pwa-summary-strip .pwa-strip-card{background:#FFFFFF;border-color:#D8D4CC}
+body.light-mode .job-card-mobile{background:#FFFFFF;border-color:#D8D4CC}
+body.light-mode .job-prog-wrap{background:#E8E4DC}
+body.light-mode .sidebar-logo-name span[style*="color:#F5F2EC"],
+body.light-mode .sidebar-logo-name span[style*="color: #F5F2EC"]{color:#1a1a18!important}
+body.light-mode .login-logo-text span[style*="color:#F5F2EC"],
+body.light-mode .login-logo-text span[style*="color: #F5F2EC"]{color:#1a1a18!important}
+body.light-mode .sidebar-logo-wrap svg path[fill="#ffffff"],
+body.light-mode .sidebar-logo-wrap svg path[fill="#FFFFFF"]{fill:#1a1a18!important}
+body.light-mode .login-logo svg path[fill="#ffffff"],
+body.light-mode .login-logo svg path[fill="#FFFFFF"]{fill:#1a1a18!important}
 html,body{height:100%;background:var(--black);color:var(--off-white);font-family:var(--body);font-size:14px}
 body{overflow:hidden}
 .app{display:flex;height:100vh}
@@ -447,126 +531,264 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 
 /* ── PWA APP MODE (home screen only) ───────────────────────────────────────── */
 @media all and (display-mode: standalone) {
-  /* Safe area for iPhone notch/home bar */
   :root {
     --safe-top: env(safe-area-inset-top, 0px);
     --safe-bot: env(safe-area-inset-bottom, 20px);
   }
 
   body { overflow: hidden; }
-
-  /* Hide desktop sidebar and topbar hamburger entirely */
   .sidebar { display: none !important; }
   .hamburger { display: none !important; }
-
-  /* Main takes full screen */
   .app { flex-direction: column; height: 100vh; }
   .main { padding-top: 0; width: 100%; }
 
-  /* Top status bar area */
+  /* ── APP TOPBAR ── */
   .topbar {
     position: fixed; top: 0; left: 0; right: 0;
-    height: calc(52px + var(--safe-top));
+    height: calc(56px + var(--safe-top));
     padding-top: var(--safe-top);
     padding-left: 16px; padding-right: 16px;
-    background: #0E0E0E;
-    border-bottom: 1px solid #1f1f1d;
+    background: var(--black);
+    border-bottom: 1px solid var(--border);
     z-index: 300;
     display: flex; align-items: flex-end; padding-bottom: 10px;
+    gap: 10px;
   }
-
   .topbar-title {
     font-family: 'Playfair Display', serif;
-    font-size: 20px; font-weight: 700;
-    color: #F5F2EC; flex: 1;
+    font-size: 22px; font-weight: 700;
+    color: var(--off-white); flex: 1;
+  }
+  .topbar-btn {
+    padding: 8px 14px; font-size: 12px; border-radius: 10px;
+  }
+  .topbar-btn.outline {
+    padding: 7px 12px;
+  }
+  .theme-toggle {
+    width: 34px; height: 34px; border-radius: 10px;
   }
 
-  /* Content area — padded for topbar and bottom nav */
+  /* ── CONTENT ── */
   .content {
-    padding: 16px 16px 0;
-    padding-top: calc(52px + var(--safe-top) + 16px);
+    padding: 16px;
+    padding-top: calc(56px + var(--safe-top) + 16px);
     padding-bottom: calc(72px + var(--safe-bot));
     overflow-y: auto;
     height: 100vh;
     -webkit-overflow-scrolling: touch;
   }
 
-  /* Bottom tab bar */
-  .pwa-tabbar {
-    display: flex !important;
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    height: calc(56px + var(--safe-bot));
-    padding-bottom: var(--safe-bot);
-    background: #111111;
-    border-top: 1px solid #1f1f1d;
-    z-index: 300;
+  /* ── STAT CARDS ── */
+  .stats-row { grid-template-columns: 1fr 1fr !important; gap: 10px; }
+  .stat-card { border-radius: 16px; padding: 14px; }
+  .stat-value { font-size: 24px; }
+  .stat-label { font-size: 9px; }
+
+  /* ── CONTACT CARDS — mobile card style ── */
+  .contact-row-mobile {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--dark); border: 1px solid var(--border);
+    border-radius: 16px; padding: 13px 14px;
+    margin-bottom: 8px; cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: border-color 0.15s;
+  }
+  .contact-row-mobile:active { border-color: rgba(201,168,76,0.4); }
+  .contact-avatar {
+    width: 40px; height: 40px; border-radius: 13px;
+    background: rgba(201,168,76,0.12);
+    border: 1px solid rgba(201,168,76,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; color: var(--gold);
+    flex-shrink: 0; font-family: 'DM Sans', sans-serif;
+  }
+  .contact-info-mobile { flex: 1; min-width: 0; }
+  .contact-name-mobile {
+    font-size: 14px; font-weight: 600; color: var(--off-white);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .contact-sub-mobile {
+    font-size: 11px; color: var(--text-muted); margin-top: 2px;
   }
 
+  /* ── QUICK ACTIONS ── */
+  .pwa-quick-actions {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 8px; margin-bottom: 14px;
+  }
+  .pwa-qa-btn {
+    background: var(--dark); border: 1px solid var(--border);
+    border-radius: 14px; padding: 12px 6px;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 5px; cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .pwa-qa-btn:active { border-color: rgba(201,168,76,0.4); background: var(--dark2); }
+  .pwa-qa-icon { font-size: 18px; }
+  .pwa-qa-label { font-size: 9px; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase; }
+
+  /* ── SEARCH BAR ── */
+  .pwa-search {
+    background: var(--dark); border: 1px solid var(--border);
+    border-radius: 12px; padding: 10px 14px;
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 12px;
+  }
+  .pwa-search input {
+    background: transparent; border: none; outline: none;
+    font-family: 'DM Sans', sans-serif; font-size: 14px;
+    color: var(--off-white); flex: 1; width: 100%;
+  }
+  .pwa-search input::placeholder { color: var(--text-muted); }
+  .pwa-search-icon { color: var(--text-muted); font-size: 14px; flex-shrink: 0; }
+
+  /* ── FILTER PILLS ── */
+  .pwa-filter-row {
+    display: flex; gap: 6px; margin-bottom: 12px;
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .pwa-filter-row::-webkit-scrollbar { display: none; }
+  .pwa-filter-pill {
+    flex-shrink: 0; font-size: 10px; font-weight: 700;
+    padding: 5px 12px; border-radius: 100px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+    border: 1px solid var(--border); color: var(--text-muted);
+    background: var(--dark);
+  }
+  .pwa-filter-pill.active {
+    background: var(--gold); color: #0E0E0E; border-color: var(--gold);
+  }
+
+  /* ── JOB CARDS ── */
+  .job-card-mobile {
+    background: var(--dark); border: 1px solid var(--border);
+    border-radius: 16px; padding: 14px;
+    margin-bottom: 8px; cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .job-card-mobile:active { border-color: rgba(201,168,76,0.4); }
+  .job-top-mobile { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .job-name-mobile { font-size: 14px; font-weight: 600; color: var(--off-white); }
+  .job-service-mobile { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .job-price-mobile { font-size: 18px; font-weight: 700; color: var(--gold); font-family: 'Playfair Display', serif; }
+  .job-bottom-mobile { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+  .job-prog-wrap { background: var(--dark2); border-radius: 100px; height: 3px; margin-top: 8px; }
+  .job-prog-fill { height: 100%; border-radius: 100px; background: var(--gold); }
+
+  /* ── SUMMARY STRIP ── */
+  .pwa-summary-strip {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 8px; margin-bottom: 14px;
+  }
+  .pwa-strip-card {
+    background: var(--dark); border: 1px solid var(--border);
+    border-radius: 14px; padding: 11px 8px; text-align: center;
+  }
+  .pwa-strip-label { font-size: 9px; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 3px; }
+  .pwa-strip-value { font-size: 17px; font-weight: 700; font-family: 'Playfair Display', serif; color: var(--gold); }
+
+  /* ── GOAL CARD ── */
+  .pwa-goal-card {
+    background: var(--dark); border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 16px; padding: 14px; margin-bottom: 14px;
+  }
+  .pwa-goal-title { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .pwa-goal-values { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+  .pwa-goal-amount { font-size: 18px; font-weight: 700; color: var(--gold); font-family: 'Playfair Display', serif; }
+  .pwa-goal-pct { font-size: 11px; color: var(--text-muted); }
+  .pwa-goal-bar { background: var(--dark2); border-radius: 100px; height: 4px; }
+  .pwa-goal-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--gold), #e8c97a); }
+
+  /* ── MORE SCREEN ── */
+  .pwa-more-screen { display: none; position: fixed; inset: 0; z-index: 250; overflow-y: auto; background: var(--black); }
+  .pwa-more-screen.open { display: block; }
+  .pwa-more-screen-content { padding: calc(56px + var(--safe-top) + 16px) 16px calc(72px + var(--safe-bot)); }
+  .pwa-menu-group { background: var(--dark); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 12px; }
+  .pwa-menu-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px; cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.1s;
+  }
+  .pwa-menu-item:last-child { border-bottom: none; }
+  .pwa-menu-item:active { background: var(--dark2); }
+  .pwa-menu-icon-wrap {
+    width: 34px; height: 34px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .pwa-menu-text { flex: 1; }
+  .pwa-menu-name { font-size: 14px; font-weight: 600; color: var(--off-white); }
+  .pwa-menu-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+  .pwa-menu-arrow { color: var(--text-muted); font-size: 14px; }
+
+  /* Theme toggle in more screen */
+  .pwa-toggle-switch {
+    width: 44px; height: 24px; border-radius: 100px;
+    background: var(--border2); position: relative;
+    transition: background 0.2s; flex-shrink: 0;
+  }
+  .pwa-toggle-switch.on { background: var(--gold); }
+  .pwa-toggle-knob {
+    position: absolute; top: 3px; left: 3px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: #0E0E0E; transition: transform 0.2s;
+  }
+  .pwa-toggle-switch.on .pwa-toggle-knob { transform: translateX(20px); }
+
+  /* ── BOTTOM TAB BAR ── */
+  .pwa-tabbar {
+    display: flex !important;
+    position: fixed; bottom: 0; left: 0; right: 0;
+    height: calc(58px + var(--safe-bot));
+    padding-bottom: var(--safe-bot);
+    background: var(--dark);
+    border-top: 1px solid var(--border);
+    z-index: 300;
+  }
   .pwa-tab {
     flex: 1; display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    gap: 3px; cursor: pointer; padding-top: 8px;
-    color: #555551; transition: color 0.15s;
+    gap: 3px; cursor: pointer; padding-top: 6px;
+    color: var(--text-muted); transition: color 0.15s;
     -webkit-tap-highlight-color: transparent;
-    user-select: none;
+    user-select: none; position: relative;
   }
-  .pwa-tab.active { color: #C9A84C; }
-  .pwa-tab-icon { font-size: 20px; line-height: 1; }
+  .pwa-tab.active { color: var(--gold); }
+  .pwa-tab-icon { font-size: 19px; line-height: 1; }
   .pwa-tab-label {
     font-size: 9px; letter-spacing: 0.06em;
     text-transform: uppercase; font-weight: 600;
     font-family: 'DM Sans', sans-serif;
   }
-
-  /* More menu overlay */
-  .pwa-more-menu {
-    display: none;
-    position: fixed; bottom: calc(56px + var(--safe-bot));
-    left: 0; right: 0;
-    background: #111111;
-    border-top: 1px solid #1f1f1d;
-    z-index: 299;
-    padding: 8px;
+  .pwa-tab-dot {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: var(--gold); position: absolute;
+    bottom: 6px; left: 50%; transform: translateX(-50%);
+    opacity: 0; transition: opacity 0.15s;
   }
-  .pwa-more-menu.open { display: block; }
-  .pwa-more-item {
-    display: flex; align-items: center; gap: 14px;
-    padding: 14px 16px; border-radius: 10px;
-    color: #888880; font-size: 14px; cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    -webkit-tap-highlight-color: transparent;
-    transition: background 0.1s, color 0.1s;
-  }
-  .pwa-more-item:hover, .pwa-more-item.active {
-    background: rgba(201,168,76,0.08); color: #C9A84C;
-  }
-  .pwa-more-icon { font-size: 18px; width: 24px; text-align: center; }
+  .pwa-tab.active .pwa-tab-dot { opacity: 1; }
 
-  /* Stat cards 2 col on mobile */
-  .stats-row { grid-template-columns: 1fr 1fr !important; gap: 10px; }
-  .stat-value { font-size: 22px; }
-
-  /* Pipeline single col */
+  /* Pipeline */
   .pipeline { grid-template-columns: 1fr !important; }
   .form-row-2 { grid-template-columns: 1fr !important; }
 
-  /* Modal */
+  /* Modal — slides up from bottom */
   .modal {
     width: 100vw !important; max-width: 100vw !important;
     border-radius: 20px 20px 0 0 !important;
     position: fixed !important; bottom: 0 !important;
-    max-height: 90vh; overflow-y: auto;
-    margin: 0 !important;
+    max-height: 90vh; overflow-y: auto; margin: 0 !important;
   }
   .modal-bg { align-items: flex-end !important; }
 
-  /* Topbar action button */
-  .topbar-btn {
-    padding: 8px 14px; font-size: 12px;
-  }
-
-  /* Table horizontal scroll */
+  /* Table */
   .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   table { min-width: 480px; }
 }
@@ -650,6 +872,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     <button class="hamburger" id="hamburger" onclick="toggleSidebar()"><span></span><span></span><span></span></button>
     <div class="topbar-title" id="topbar-title">Dashboard</div>
     <button class="topbar-btn outline" id="topbar-secondary" style="display:none" onclick="topbarSecondary()"></button>
+    <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
     <button class="topbar-btn" id="topbar-action" onclick="topbarAction()">+ Add</button>
   </div>
   <div class="content">
@@ -951,6 +1174,7 @@ var DB = {
   contacts:  [],
   jobs:      [],
   templates: [],
+  theme:     'dark',
 };
 function uid(){ return Date.now() + '-' + Math.random().toString(36).slice(2); }
 function today(){ return new Date().toISOString().split('T')[0]; }
@@ -967,11 +1191,13 @@ async function loadAll() {
     DB.contacts  = data.contacts  || [];
     DB.jobs      = data.jobs      || [];
     DB.templates = data.templates && data.templates.length ? data.templates : getDefaultTemplates();
+    DB.theme     = data.theme || 'dark';
     if (!data.templates || !data.templates.length) {
       await jbSave();
     }
   } catch(e) { console.error('Load error', e); }
   showLoading(false);
+  loadTheme();
   render();
 }
 
@@ -1538,6 +1764,34 @@ if('serviceWorker' in navigator){
   });
 }
 
+// ── THEME ─────────────────────────────────────────────────────────────────────
+function applyTheme(theme) {
+  if(theme === 'light') {
+    document.body.classList.add('light-mode');
+    var btn = document.getElementById('theme-toggle');
+    if(btn) btn.textContent = '☀️';
+  } else {
+    document.body.classList.remove('light-mode');
+    var btn = document.getElementById('theme-toggle');
+    if(btn) btn.textContent = '🌙';
+  }
+  updatePwaDarkToggle();
+}
+
+function toggleTheme() {
+  var isLight = document.body.classList.contains('light-mode');
+  var newTheme = isLight ? 'dark' : 'light';
+  applyTheme(newTheme);
+  // Save to JSONBin via DB
+  DB.theme = newTheme;
+  jbSave();
+}
+
+function loadTheme() {
+  var theme = DB.theme || 'dark';
+  applyTheme(theme);
+}
+
 // ── RELOAD ON APP RESUME ─────────────────────────────────────────────────────
 document.addEventListener('visibilitychange', function() {
   if(document.visibilityState === 'visible') {
@@ -1561,76 +1815,135 @@ window.addEventListener('pageshow', function(e) {
 });
 
 // ── PWA NAV ───────────────────────────────────────────────────────────────────
-var PWA_TABS = ['dashboard','contacts','jobs','pipeline'];
+var PWA_PRIMARY_TABS = ['dashboard','contacts','jobs','pipeline'];
 
 function pwaNav(section) {
-  // Use existing nav function
   nav(section);
-  // Update tab bar
   document.querySelectorAll('.pwa-tab').forEach(function(t){ t.classList.remove('active'); });
-  document.querySelectorAll('.pwa-more-item').forEach(function(t){ t.classList.remove('active'); });
   var tab = document.getElementById('tab-'+section);
-  var more = document.getElementById('more-'+section);
-  if(tab) tab.classList.add('active');
-  else {
+  if(tab) {
+    tab.classList.add('active');
+  } else {
     document.getElementById('tab-more').classList.add('active');
-    if(more) more.classList.add('active');
   }
+  // Close more screen if open
+  var ms = document.getElementById('pwa-more-screen');
+  if(ms) ms.classList.remove('open');
+  // Update dark toggle state
+  updatePwaDarkToggle();
 }
 
-function togglePwaMore() {
-  var m = document.getElementById('pwa-more-menu');
-  m.classList.toggle('open');
+function pwaNavMore(section) {
+  pwaNav(section);
 }
 
-// Close more menu on outside tap
-document.addEventListener('click', function(e) {
-  var menu = document.getElementById('pwa-more-menu');
-  var tab = document.getElementById('tab-more');
-  if(menu && !menu.contains(e.target) && tab && !tab.contains(e.target)) {
-    menu.classList.remove('open');
+function openPwaMore() {
+  var ms = document.getElementById('pwa-more-screen');
+  if(ms) ms.classList.toggle('open');
+  // Update finance sub
+  var finSub = document.getElementById('more-finance-sub');
+  if(finSub) {
+    var total = DB.jobs.filter(function(j){return j.paid==='Paid'&&j.price>0;}).reduce(function(a,j){return a+j.price;},0);
+    finSub.textContent = '£'+total.toFixed(2)+' total earned';
   }
-});
+  // Mark more tab active
+  document.querySelectorAll('.pwa-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById('tab-more').classList.add('active');
+  updatePwaDarkToggle();
+}
+
+function updatePwaDarkToggle() {
+  var toggle = document.getElementById('pwa-dark-toggle');
+  if(!toggle) return;
+  var isDark = !document.body.classList.contains('light-mode');
+  if(isDark) toggle.classList.add('on');
+  else toggle.classList.remove('on');
+}
 
 </script>
 
 <!-- ── PWA BOTTOM TAB BAR ─────────────────────────────────────────────────── -->
+<!-- ── PWA BOTTOM TAB BAR ── -->
 <div class="pwa-tabbar" id="pwa-tabbar">
   <div class="pwa-tab active" id="tab-dashboard" onclick="pwaNav('dashboard')">
     <span class="pwa-tab-icon">⬛</span>
     <span class="pwa-tab-label">Home</span>
+    <span class="pwa-tab-dot"></span>
   </div>
   <div class="pwa-tab" id="tab-contacts" onclick="pwaNav('contacts')">
     <span class="pwa-tab-icon">◈</span>
     <span class="pwa-tab-label">Contacts</span>
+    <span class="pwa-tab-dot"></span>
   </div>
   <div class="pwa-tab" id="tab-jobs" onclick="pwaNav('jobs')">
     <span class="pwa-tab-icon">✦</span>
     <span class="pwa-tab-label">Jobs</span>
+    <span class="pwa-tab-dot"></span>
   </div>
   <div class="pwa-tab" id="tab-pipeline" onclick="pwaNav('pipeline')">
     <span class="pwa-tab-icon">◐</span>
     <span class="pwa-tab-label">Pipeline</span>
+    <span class="pwa-tab-dot"></span>
   </div>
-  <div class="pwa-tab" id="tab-more" onclick="togglePwaMore()">
-    <span class="pwa-tab-icon">••</span>
+  <div class="pwa-tab" id="tab-more" onclick="openPwaMore()">
+    <span class="pwa-tab-icon">•••</span>
     <span class="pwa-tab-label">More</span>
+    <span class="pwa-tab-dot"></span>
   </div>
 </div>
 
-<!-- More menu -->
-<div class="pwa-more-menu" id="pwa-more-menu">
-  <div class="pwa-more-item" id="more-goals" onclick="pwaNav('goals');togglePwaMore()">
-    <span class="pwa-more-icon">◎</span> Trials
-  </div>
-  <div class="pwa-more-item" id="more-templates" onclick="pwaNav('templates');togglePwaMore()">
-    <span class="pwa-more-icon">◻</span> Templates
-  </div>
-  <div class="pwa-more-item" id="more-prompts" onclick="pwaNav('prompts');togglePwaMore()">
-    <span class="pwa-more-icon">✎</span> AI Prompts
-  </div>
-  <div class="pwa-more-item" id="more-finance" onclick="pwaNav('finance');togglePwaMore()">
-    <span class="pwa-more-icon">£</span> Finance
+<!-- ── PWA MORE SCREEN ── -->
+<div class="pwa-more-screen" id="pwa-more-screen">
+  <div class="pwa-more-screen-content">
+
+    <div class="pwa-menu-group">
+      <div class="pwa-menu-item" id="more-goals" onclick="pwaNavMore('goals')">
+        <div class="pwa-menu-icon-wrap" style="background:rgba(201,168,76,0.12)">◎</div>
+        <div class="pwa-menu-text">
+          <div class="pwa-menu-name">Trials</div>
+          <div class="pwa-menu-sub">Track your milestones</div>
+        </div>
+        <span class="pwa-menu-arrow">›</span>
+      </div>
+      <div class="pwa-menu-item" id="more-templates" onclick="pwaNavMore('templates')">
+        <div class="pwa-menu-icon-wrap" style="background:rgba(82,132,224,0.12)">◻</div>
+        <div class="pwa-menu-text">
+          <div class="pwa-menu-name">Templates</div>
+          <div class="pwa-menu-sub">6 outreach messages</div>
+        </div>
+        <span class="pwa-menu-arrow">›</span>
+      </div>
+      <div class="pwa-menu-item" id="more-prompts" onclick="pwaNavMore('prompts')">
+        <div class="pwa-menu-icon-wrap" style="background:rgba(76,175,80,0.12)">✎</div>
+        <div class="pwa-menu-text">
+          <div class="pwa-menu-name">AI Prompts</div>
+          <div class="pwa-menu-sub">7 staging prompts</div>
+        </div>
+        <span class="pwa-menu-arrow">›</span>
+      </div>
+      <div class="pwa-menu-item" id="more-finance" onclick="pwaNavMore('finance')">
+        <div class="pwa-menu-icon-wrap" style="background:rgba(201,168,76,0.12)">£</div>
+        <div class="pwa-menu-text">
+          <div class="pwa-menu-name">Finance</div>
+          <div class="pwa-menu-sub" id="more-finance-sub">£0 total earned</div>
+        </div>
+        <span class="pwa-menu-arrow">›</span>
+      </div>
+    </div>
+
+    <div class="pwa-menu-group">
+      <div class="pwa-menu-item" onclick="toggleTheme()">
+        <div class="pwa-menu-icon-wrap" style="background:var(--dark2)">🌙</div>
+        <div class="pwa-menu-text">
+          <div class="pwa-menu-name">Dark Mode</div>
+          <div class="pwa-menu-sub">Toggle appearance</div>
+        </div>
+        <div class="pwa-toggle-switch" id="pwa-dark-toggle">
+          <div class="pwa-toggle-knob"></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 

@@ -105,6 +105,12 @@ body.light-mode .sidebar-logo-wrap svg path[fill="#ffffff"],
 body.light-mode .sidebar-logo-wrap svg path[fill="#FFFFFF"]{fill:#1a1a18!important}
 body.light-mode .login-logo svg path[fill="#ffffff"],
 body.light-mode .login-logo svg path[fill="#FFFFFF"]{fill:#1a1a18!important}
+
+/* Calendar/date icons in contacts table */
+.contact-date-icon{display:inline-flex;align-items:center;gap:4px;color:var(--text-muted);font-size:11px}
+.cal-icon{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--text-muted);position:relative;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.cal-icon::before{content:'';position:absolute;top:-3px;left:2px;width:2px;height:4px;background:var(--text-muted);border-radius:1px}
+.cal-icon::after{content:'';position:absolute;top:-3px;right:2px;width:2px;height:4px;background:var(--text-muted);border-radius:1px}
 html,body{height:100%;background:var(--black);color:var(--off-white);font-family:var(--body);font-size:14px}
 body{overflow:hidden}
 .app{display:flex;height:100vh}
@@ -231,8 +237,12 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 
 /* PIPELINE */
 .pipeline{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
-.pipeline-col{background:var(--dark);border:1px solid var(--border);border-radius:10px;padding:10px;min-height:80px}
+.pipeline-col{background:var(--dark);border:1px solid var(--border);border-radius:10px;padding:10px;min-height:80px;transition:border-color 0.15s,background 0.15s}
+.pipeline-col.drag-over{border-color:rgba(201,168,76,0.6);background:rgba(201,168,76,0.05)}
 .pipeline-col-title{font-size:10px;color:var(--text-muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.pipeline-card{cursor:grab}
+.pipeline-card:active{cursor:grabbing;opacity:0.7}
+.pipeline-card-platform{font-size:9px;color:var(--text-muted);margin-top:2px;letter-spacing:0.04em}
 .pipeline-count{background:var(--border2);color:var(--text-mid);padding:1px 7px;border-radius:10px;font-size:10px}
 .pipeline-card{background:var(--dark2);border:1px solid var(--border);border-radius:7px;padding:9px;margin-bottom:7px;cursor:pointer;transition:border-color 0.15s}
 .pipeline-card:hover{border-color:rgba(201,168,76,0.3)}
@@ -925,11 +935,11 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     <!-- PIPELINE -->
     <div class="page" id="page-pipeline">
       <div class="pipeline" style="margin-bottom:16px">
-        <div class="pipeline-col"><div class="pipeline-col-title">Contacted <span class="pipeline-count" id="pc-contacted">0</span></div><div id="pl-contacted"></div></div>
-        <div class="pipeline-col"><div class="pipeline-col-title">Replied <span class="pipeline-count" id="pc-replied">0</span></div><div id="pl-replied"></div></div>
-        <div class="pipeline-col"><div class="pipeline-col-title">Interested <span class="pipeline-count" id="pc-interested">0</span></div><div id="pl-interested"></div></div>
-        <div class="pipeline-col"><div class="pipeline-col-title">Free Job <span class="pipeline-count" id="pc-free">0</span></div><div id="pl-free"></div></div>
-        <div class="pipeline-col"><div class="pipeline-col-title">Client <span class="pipeline-count" id="pc-client">0</span></div><div id="pl-client"></div></div>
+        <div class="pipeline-col" data-status="Contacted"><div class="pipeline-col-title">Contacted <span class="pipeline-count" id="pc-contacted">0</span></div><div id="pl-contacted"></div></div>
+        <div class="pipeline-col" data-status="Replied"><div class="pipeline-col-title">Replied <span class="pipeline-count" id="pc-replied">0</span></div><div id="pl-replied"></div></div>
+        <div class="pipeline-col" data-status="Interested"><div class="pipeline-col-title">Interested <span class="pipeline-count" id="pc-interested">0</span></div><div id="pl-interested"></div></div>
+        <div class="pipeline-col" data-status="Free Job"><div class="pipeline-col-title">Free Job <span class="pipeline-count" id="pc-free">0</span></div><div id="pl-free"></div></div>
+        <div class="pipeline-col" data-status="Client"><div class="pipeline-col-title">Client <span class="pipeline-count" id="pc-client">0</span></div><div id="pl-client"></div></div>
       </div>
     </div>
 
@@ -986,16 +996,16 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     <div class="form-row-2">
       <div class="form-group">
         <label class="form-label">Name <span class="opt">(optional)</span></label>
-        <input class="form-input" id="c-name" placeholder="Sarah Johnson">
+        <input class="form-input" id="c-name" placeholder="">
       </div>
       <div class="form-group">
         <label class="form-label">Instagram Handle <span class="opt">(optional)</span></label>
-        <input class="form-input" id="c-instagram" placeholder="@belvoirmanchester">
+        <input class="form-input" id="c-instagram" placeholder="">
       </div>
     </div>
     <div class="form-group">
       <label class="form-label">Agency <span class="opt">(optional)</span></label>
-      <input class="form-input" id="c-agency" placeholder="Belvoir Manchester">
+      <input class="form-input" id="c-agency" placeholder="">
     </div>
     <div class="form-row-2">
       <div class="form-group">
@@ -1016,11 +1026,11 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     <div class="form-row-2">
       <div class="form-group">
         <label class="form-label">Email <span class="opt">(optional)</span></label>
-        <input class="form-input" id="c-email" placeholder="sarah@agency.co.uk">
+        <input class="form-input" id="c-email" placeholder="">
       </div>
       <div class="form-group">
         <label class="form-label">Phone <span class="opt">(optional)</span></label>
-        <input class="form-input" id="c-phone" placeholder="07700 000000">
+        <input class="form-input" id="c-phone" placeholder="">
       </div>
     </div>
     <div class="form-row-2">
@@ -1035,7 +1045,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     </div>
     <div class="form-group">
       <label class="form-label">Notes <span class="opt">(optional)</span></label>
-      <textarea class="form-textarea" id="c-notes" placeholder="Any notes about this contact..."></textarea>
+      <textarea class="form-textarea" id="c-notes" placeholder=""></textarea>
     </div>
     <div class="modal-actions">
       <button class="topbar-btn outline" onclick="closeModal('modal-contact')">Cancel</button>
@@ -1051,11 +1061,11 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     <input type="hidden" id="job-edit-id">
     <div class="form-group">
       <label class="form-label">Client Name</label>
-      <input class="form-input" id="j-client" placeholder="Sarah Johnson">
+      <input class="form-input" id="j-client" placeholder="">
     </div>
     <div class="form-group">
       <label class="form-label">Agency <span class="opt">(optional)</span></label>
-      <input class="form-input" id="j-agency" placeholder="Belvoir Manchester">
+      <input class="form-input" id="j-agency" placeholder="">
     </div>
     <div class="form-row-2">
       <div class="form-group">
@@ -1071,7 +1081,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
       </div>
       <div class="form-group">
         <label class="form-label">Price (£)</label>
-        <input class="form-input" id="j-price" type="number" placeholder="69">
+        <input class="form-input" id="j-price" type="number" placeholder="">
       </div>
     </div>
     <div class="form-row-2">
@@ -1093,7 +1103,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     </div>
     <div class="form-group">
       <label class="form-label">Notes <span class="opt">(optional)</span></label>
-      <textarea class="form-textarea" id="j-notes" placeholder="Property address, brief, delivery details..."></textarea>
+      <textarea class="form-textarea" id="j-notes" placeholder=""></textarea>
     </div>
     <div class="modal-actions">
       <button class="topbar-btn outline" onclick="closeModal('modal-job')">Cancel</button>
@@ -1109,7 +1119,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     <input type="hidden" id="tpl-edit-id">
     <div class="form-group">
       <label class="form-label">Template Name</label>
-      <input class="form-input" id="tpl-name" placeholder="Cold outreach — Instagram">
+      <input class="form-input" id="tpl-name" placeholder="">
     </div>
     <div class="form-row-2">
       <div class="form-group">
@@ -1128,7 +1138,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     </div>
     <div class="form-group">
       <label class="form-label">Message</label>
-      <textarea class="form-textarea" id="tpl-body" style="min-height:140px" placeholder="Hey [Name], I noticed..."></textarea>
+      <textarea class="form-textarea" id="tpl-body" style="min-height:140px" placeholder=""></textarea>
     </div>
     <div class="modal-actions">
       <button class="topbar-btn outline" onclick="closeModal('modal-template')">Cancel</button>
@@ -1185,6 +1195,21 @@ function showLoading(show) {
 }
 
 async function loadAll() {
+  // Step 1 — load from local cache instantly
+  try {
+    var cached = localStorage.getItem('ls_crm_cache');
+    if(cached) {
+      var cdata = JSON.parse(cached);
+      DB.contacts  = cdata.contacts  || [];
+      DB.jobs      = cdata.jobs      || [];
+      DB.templates = cdata.templates && cdata.templates.length ? cdata.templates : getDefaultTemplates();
+      DB.theme     = cdata.theme || 'dark';
+      loadTheme();
+      render();
+    }
+  } catch(e) {}
+
+  // Step 2 — fetch fresh from JSONBin in background
   showLoading(true);
   try {
     var data = await jbGet();
@@ -1193,8 +1218,13 @@ async function loadAll() {
     DB.templates = data.templates && data.templates.length ? data.templates : getDefaultTemplates();
     DB.theme     = data.theme || 'dark';
     if (!data.templates || !data.templates.length) {
-      await jbSave();
+      jbSave();
     }
+    // Update local cache
+    localStorage.setItem('ls_crm_cache', JSON.stringify({
+      contacts: DB.contacts, jobs: DB.jobs,
+      templates: DB.templates, theme: DB.theme
+    }));
   } catch(e) { console.error('Load error', e); }
   showLoading(false);
   loadTheme();
@@ -1203,7 +1233,9 @@ async function loadAll() {
 
 async function jbSave() {
   try {
-    await jbSet({ contacts: DB.contacts, jobs: DB.jobs, templates: DB.templates });
+    var payload = { contacts: DB.contacts, jobs: DB.jobs, templates: DB.templates, theme: DB.theme };
+    localStorage.setItem('ls_crm_cache', JSON.stringify(payload));
+    await jbSet(payload);
   } catch(e) { console.error('Save error', e); }
 }
 
@@ -1391,7 +1423,7 @@ function renderContacts(){
   mob.innerHTML=DB.contacts.length?DB.contacts.map(function(c){
     return '<div class="contact-card-mobile">'+
       '<div class="cc-top"><div><div class="cc-name">'+displayName(c)+'</div>'+(c.instagram&&c.name?'<div style="font-size:11px;color:var(--gold)">'+c.instagram+'</div>':'')+'<div class="cc-sub">'+(c.agency||'')+'</div></div><button class="del-btn" onclick="deleteContact(\''+c.id+'\')">✕</button></div>'+
-      '<div class="cc-row">'+statusBadge(c.status,c.id)+'<span class="badge badge-grey">'+c.platform+'</span>'+(c.contacted?'<span style="font-size:10px;color:var(--text-muted)">📅 '+c.contacted+'</span>':'')+'</div>'+
+      '<div class="cc-row">'+statusBadge(c.status,c.id)+'<span class="badge badge-grey">'+c.platform+'</span>'+(c.contacted?'<span style="font-size:10px;color:var(--text-muted)"><span class="cal-icon"></span> '+c.contacted+'</span>':'')+'</div>'+
       (c.notes?'<div style="font-size:11px;color:var(--text-muted);margin-top:8px">'+c.notes+'</div>':'')+
       '<div class="cc-actions"><button class="cc-btn" onclick="editContact(\''+c.id+'\')">Edit</button>'+(c.email?'<a class="cc-btn" href="mailto:'+c.email+'">Email</a>':'')+(c.phone?'<a class="cc-btn" href="tel:'+c.phone+'">Call</a>':'')+(c.instagram?'<a class="cc-btn" href="https://instagram.com/'+c.instagram.replace('@','')+'" target="_blank">Instagram</a>':'')+'</div></div>';
   }).join(''):'';
@@ -1400,14 +1432,48 @@ function renderContacts(){
 // ── PIPELINE ──────────────────────────────────────────────────────────────────
 function renderPipeline(){
   var cols={Contacted:'contacted',Replied:'replied',Interested:'interested','Free Job':'free',Client:'client'};
-  Object.keys(cols).forEach(function(status){
+  var statusKeys=Object.keys(cols);
+  statusKeys.forEach(function(status){
     var key=cols[status];
     var items=DB.contacts.filter(function(c){return c.status===status;});
     document.getElementById('pc-'+key).textContent=items.length;
-    document.getElementById('pl-'+key).innerHTML=items.length?items.map(function(c){
-      return '<div class="pipeline-card" onclick="editContact(\''+c.id+'\')"><div class="pipeline-card-name">'+displayName(c)+'</div><div class="pipeline-card-sub">'+(c.agency||c.platform)+'</div></div>';
+    var col=document.getElementById('pl-'+key);
+    col.innerHTML=items.length?items.map(function(c){
+      var platform=c.platform||'';
+      var contacted=c.contacted?'Contacted '+c.contacted:'';
+      return '<div class="pipeline-card" draggable="true" data-id="'+c.id+'" data-status="'+status+'" onclick="editContact(\''+c.id+'\')" ondragstart="pipeDragStart(event)">'+
+        '<div class="pipeline-card-name">'+displayName(c)+'</div>'+
+        '<div class="pipeline-card-sub">'+(c.agency||'')+(c.agency&&platform?' · ':'')+platform+'</div>'+
+        (contacted?'<div class="pipeline-card-platform">'+contacted+'</div>':'')+
+        '</div>';
     }).join(''):'<div style="color:var(--text-muted);font-size:11px;text-align:center;padding:6px">Empty</div>';
+
+    // Add drag-over events to column
+    var parentCol=col.closest('.pipeline-col');
+    parentCol.setAttribute('data-status',status);
+    parentCol.ondragover=function(e){e.preventDefault();this.classList.add('drag-over');};
+    parentCol.ondragleave=function(){this.classList.remove('drag-over');};
+    parentCol.ondrop=function(e){
+      e.preventDefault();
+      this.classList.remove('drag-over');
+      var id=e.dataTransfer.getData('contactId');
+      var newStatus=this.getAttribute('data-status');
+      var contact=DB.contacts.find(function(c){return c.id===id;});
+      if(contact&&contact.status!==newStatus){
+        contact.status=newStatus;
+        save('contacts',contact);
+        renderPipeline();
+        renderContacts();
+        renderDashboard();
+      }
+    };
   });
+}
+
+function pipeDragStart(e){
+  e.dataTransfer.setData('contactId',e.currentTarget.getAttribute('data-id'));
+  setTimeout(function(){e.target.style.opacity='0.5';},0);
+  e.currentTarget.addEventListener('dragend',function(){this.style.opacity='1';},{once:true});
 }
 
 // ── TEMPLATES ─────────────────────────────────────────────────────────────────
@@ -1506,7 +1572,7 @@ function renderGoals(){
     {name:'First Client',desc:'Land your first paying client',target:1,current:clients,unit:'clients',icon:'⚔️',cat:'milestone'},
     {name:'Stage 2 Unlock',desc:'Reach 5 clients — unlocks Stage 2 pricing: £99 / £199',target:5,current:clients,unit:'clients',icon:'🛡️',cat:'milestone'},
     {name:'Stage 3 Unlock',desc:'Reach 10 clients — unlocks Stage 3 pricing: £129 / £249',target:10,current:clients,unit:'clients',icon:'👑',cat:'milestone'},
-    {name:'Monthly Goal',desc:'Hit £1,000 in revenue this month',target:1000,current:monthRevenue,unit:'£',prefix:'£',icon:'📅',cat:'revenue'},
+    {name:'Monthly Goal',desc:'Hit £1,000 in revenue this month',target:1000,current:monthRevenue,unit:'£',prefix:'£',icon:'<span class="cal-icon"></span>',cat:'revenue'},
     {name:'First £500',desc:'Earn your first £500 in total revenue',target:500,current:totalRevenue,unit:'£',prefix:'£',icon:'💰',cat:'revenue'},
     {name:'First £1,000',desc:'Crack £1,000 in total revenue',target:1000,current:totalRevenue,unit:'£',prefix:'£',icon:'🏆',cat:'revenue'},
     {name:'10 Jobs Delivered',desc:'Complete 10 paid jobs',target:10,current:paidJobs,unit:'jobs',icon:'✅',cat:'delivery'},

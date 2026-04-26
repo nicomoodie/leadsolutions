@@ -933,6 +933,7 @@ var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
 function sbFetch(path, method, body) {
   return fetch(SB_URL + '/rest/v1/' + path, {
     method: method || 'GET',
+    cache: 'no-store',
     headers: {
       'apikey': SB_KEY,
       'Authorization': 'Bearer ' + SB_KEY,

@@ -78,6 +78,7 @@ body.light-mode .pwa-more-menu{background:#FFFFFF;border-color:#D8D4CC}
 body.light-mode .badge-locked{background:#E8E4DC;color:#555551;border-color:#C8C4BC}
 body.light-mode .copy-btn{background:rgba(168,130,58,0.1);border-color:rgba(168,130,58,0.3);color:#A8823A}
 body.light-mode .pwa-more-screen{background:#F5F2EC}
+body.light-mode .select-bar{background:rgba(168,130,58,0.08);border-color:rgba(168,130,58,0.25)}
 body.light-mode .notes-popout-card{background:#FFFFFF;border-color:#C8C4BC}
 body.light-mode .platform-dropdown{background:#FFFFFF;border-color:#D8D4CC}
 body.light-mode .platform-opt{color:#1a1a18}
@@ -168,7 +169,7 @@ body{overflow:hidden}
 .nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;color:var(--text-mid);font-size:13px;transition:all 0.15s;border:1px solid transparent;user-select:none}
 .nav-item:hover{background:var(--dark2);color:var(--off-white)}
 .nav-item.active{background:var(--gold-dim);color:var(--gold);border-color:rgba(201,168,76,0.2)}
-.nav-icon{font-size:14px;width:18px;text-align:center;flex-shrink:0}
+.nav-icon{width:18px;text-align:center;flex-shrink:0;opacity:0.55;display:flex;align-items:center;justify-content:center}.nav-item.active .nav-icon{opacity:1}.nav-item:hover .nav-icon{opacity:0.8}
 .nav-section{font-size:9px;color:var(--text-muted);letter-spacing:0.12em;text-transform:uppercase;padding:12px 10px 4px;margin-top:4px}
 .sidebar-footer{padding:10px 8px;border-top:1px solid var(--border)}
 .sidebar-date{font-size:11px;color:var(--text-muted);padding:6px 10px}
@@ -251,6 +252,27 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .pipeline-card:active{cursor:grabbing;opacity:0.7}
 .pipeline-card-platform{font-size:9px;color:var(--text-muted);margin-top:2px;letter-spacing:0.04em}
 .platform-pill{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;padding:2px 7px;border-radius:100px;letter-spacing:0.06em;text-transform:uppercase;margin-top:4px;cursor:pointer;transition:opacity 0.15s}
+
+/* Multi-select */
+.contact-checkbox{
+  width:15px;height:15px;cursor:pointer;flex-shrink:0;
+  appearance:none;-webkit-appearance:none;
+  border:1.5px solid var(--border2);border-radius:4px;
+  background:transparent;transition:all 0.15s;opacity:0.35;
+}
+.contact-checkbox:checked{
+  background:var(--gold);border-color:var(--gold);opacity:1;
+  background-image:url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L4 7L9 1' stroke='%230E0E0E' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:center;
+}
+tr:hover .contact-checkbox{opacity:0.7}
+tr:hover .contact-checkbox:checked{opacity:1}
+.select-bar{display:none;align-items:center;gap:12px;padding:10px 16px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);border-radius:10px;margin-bottom:12px}
+.select-bar.visible{display:flex}
+.select-bar-count{font-size:13px;font-weight:600;color:var(--gold);flex:1}
+.select-bar-del{background:var(--red);color:#fff;border:none;padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--body)}
+.select-bar-cancel{background:transparent;color:var(--text-muted);border:1px solid var(--border);padding:7px 14px;border-radius:8px;font-size:12px;cursor:pointer;font-family:var(--body)}
+tr.contact-selected td{background:rgba(201,168,76,0.06)}
 .platform-pill:hover{opacity:0.75}
 
 /* Custom platform dropdown */
@@ -899,17 +921,17 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   </div>
   <nav class="sidebar-nav">
     <div class="nav-section">Overview</div>
-    <div class="nav-item active" onclick="nav('dashboard')"><span class="nav-icon">⬛</span>Dashboard</div>
-    <div class="nav-item" onclick="nav('goals')"><span class="nav-icon">◎</span>Trials</div>
+    <div class="nav-item active" onclick="nav('dashboard')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span>Dashboard</div>
+    <div class="nav-item" onclick="nav('goals')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></span>Trials</div>
     <div class="nav-section">Outreach</div>
-    <div class="nav-item" onclick="nav('contacts')"><span class="nav-icon">◈</span>Contacts</div>
-    <div class="nav-item" onclick="nav('pipeline')"><span class="nav-icon">◐</span>Pipeline</div>
-    <div class="nav-item" onclick="nav('templates')"><span class="nav-icon">◻</span>Templates</div>
+    <div class="nav-item" onclick="nav('contacts')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>Contacts</div>
+    <div class="nav-item" onclick="nav('pipeline')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></span>Pipeline</div>
+    <div class="nav-item" onclick="nav('templates')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span>Templates</div>
     <div class="nav-section">Tools</div>
-    <div class="nav-item" onclick="nav('prompts')"><span class="nav-icon">✎</span>AI Prompts</div>
+    <div class="nav-item" onclick="nav('prompts')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></span>AI Prompts</div>
     <div class="nav-section">Work</div>
-    <div class="nav-item" onclick="nav('jobs')"><span class="nav-icon">✦</span>Jobs</div>
-    <div class="nav-item" onclick="nav('finance')"><span class="nav-icon">£</span>Finance</div>
+    <div class="nav-item" onclick="nav('jobs')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span>Jobs</div>
+    <div class="nav-item" onclick="nav('finance')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>Finance</div>
   </nav>
   <div class="sidebar-footer">
     <div class="sidebar-date" id="sidebar-date"></div>
@@ -961,10 +983,15 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     <!-- CONTACTS -->
     <div class="page" id="page-contacts">
       <div id="contacts-mobile"></div>
+      <div id="contact-select-bar" class="select-bar">
+        <span class="select-bar-count" id="select-count">0 selected</span>
+        <button class="select-bar-cancel" onclick="clearContactSelection()">Cancel</button>
+        <button class="select-bar-del" onclick="deleteSelectedContacts()">Delete Selected</button>
+      </div>
       <div class="card contact-table-desktop" style="margin-bottom:0">
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Name / Handle</th><th>Agency</th><th>Platform</th><th>Status</th><th>Contacted</th><th>Follow Up</th><th>Notes</th><th></th></tr></thead>
+            <thead><tr><th style="width:32px"><input type="checkbox" class="contact-checkbox" id="select-all-cb" onchange="toggleSelectAll(this)" title="Select all"></th><th>Name / Handle</th><th>Agency</th><th>Platform</th><th>Status</th><th>Contacted</th><th>Follow Up</th><th>Notes</th><th></th></tr></thead>
             <tbody id="contacts-tbody"></tbody>
           </table>
         </div>
@@ -1197,6 +1224,35 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 </div>
 
 <script>
+
+// ── THEME ─────────────────────────────────────────────────────────────────────
+function applyTheme(theme) {
+  if(theme === 'light') {
+    document.body.classList.add('light-mode');
+    var btn = document.getElementById('theme-toggle');
+    if(btn) btn.textContent = '☀️';
+  } else {
+    document.body.classList.remove('light-mode');
+    var btn = document.getElementById('theme-toggle');
+    if(btn) btn.textContent = '🌙';
+  }
+  updatePwaDarkToggle();
+}
+
+function toggleTheme() {
+  var isLight = document.body.classList.contains('light-mode');
+  var newTheme = isLight ? 'dark' : 'light';
+  applyTheme(newTheme);
+  DB.theme = newTheme;
+  localStorage.setItem('ls_theme_quick', newTheme);
+  jbSave();
+}
+
+function loadTheme() {
+  var theme = DB.theme || 'dark';
+  applyTheme(theme);
+}
+
 // ── JSONBIN CONFIG ───────────────────────────────────────────────────────────
 var JB_KEY = '$2a$10$SmT06RVWBg8Mdphc1Ezs1eSuM9Z6f4YgDDqDxQJOB8dCmow49I6lK';
 var JB_BIN = '69ee07dbaaba8821973c4a2c';
@@ -1322,7 +1378,12 @@ function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('o
 document.addEventListener('click', function(e){
   var sb=document.getElementById('sidebar'), hb=document.getElementById('hamburger');
   if(sb.classList.contains('open')&&!sb.contains(e.target)&&!hb.contains(e.target)) sb.classList.remove('open');
-});
+  var pd=document.getElementById('platform-dropdown');
+  if(pd && pd.classList.contains('open') && !pd.contains(e.target)) pd.classList.remove('open');
+  var ms=document.getElementById('pwa-more-screen');
+  var mt=document.getElementById('tab-more');
+  if(ms && ms.classList.contains('open') && !ms.contains(e.target) && mt && !mt.contains(e.target)) ms.classList.remove('open');
+}, true);
 
 var currentPage = 'dashboard';
 var pageCfg = {
@@ -1502,14 +1563,16 @@ function showPlatformDropdown(e, id) {
     '</div>';
   }).join('');
   var rect = e.currentTarget.getBoundingClientRect();
+  var ddWidth = 170;
   var ddHeight = 220;
   var spaceBelow = window.innerHeight - rect.bottom;
   var topPos = spaceBelow < ddHeight ? (rect.top - ddHeight - 4) : (rect.bottom + 4);
-  // Make sure it doesn't go off right edge of screen
-  var leftPos = Math.min(rect.left, window.innerWidth - 180);
+  // Align right edge of dropdown with right edge of pill to avoid overlapping Status col
+  var leftPos = rect.right - ddWidth;
+  if(leftPos < 0) leftPos = rect.left;
   dd.style.top = topPos + 'px';
   dd.style.left = leftPos + 'px';
-  dd.style.width = '170px';
+  dd.style.width = ddWidth + 'px';
   dd.classList.add('open');
 }
 
@@ -1573,15 +1636,18 @@ function saveNotesPopout() {
 function renderContacts(){
   // Desktop
   var tbody=document.getElementById('contacts-tbody');
-  tbody.innerHTML=DB.contacts.length?DB.contacts.map(function(c){
+  var sorted = DB.contacts.slice().sort(function(a,b){ return (b.created||0)-(a.created||0); });
+  tbody.innerHTML=sorted.length?sorted.map(function(c){
     var fu=c.followup?'<span style="color:'+(c.followup<=today()?'var(--red)':'var(--text-mid)')+'">'+c.followup+'</span>':'—';
     var ct=c.contacted?'<span style="color:var(--text-muted)">'+c.contacted+'</span>':'—';
     var platformCell='<td>'+inlinePlatformPill(c)+'</td>';
     var contactedCell='<td>'+inlineDateCell(c,'contacted')+'</td>';
     var followupCell='<td>'+inlineDateCell(c,'followup')+'</td>';
     var notesCell='<td style="cursor:pointer" onclick="openNotesPopout(\''+c.id+'\')" title="Click to view/edit notes"><span style="color:'+(c.notes?'var(--text-mid)':'var(--border2)')+';font-size:11px;max-width:100px;display:inline-block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(c.notes||'+ Add note')+'</span></td>';
-    return '<tr><td><span style="cursor:pointer;font-weight:500" onclick="editContact(\''+c.id+'\')">'+displayName(c)+'</span>'+(c.instagram&&c.name?'<br><span style="font-size:10px;color:var(--gold)">'+c.instagram+'</span>':'')+'</td><td style="color:var(--text-muted)">'+(c.agency||'—')+'</td>'+platformCell+'<td>'+statusBadge(c.status,c.id)+'</td>'+contactedCell+followupCell+notesCell+'<td><button class="del-btn" onclick="deleteContact(\''+c.id+'\')">✕</button></td></tr>';
-  }).join(''):'<tr><td colspan="8"><div class="empty"><div class="empty-icon">◈</div><div class="empty-text">No contacts yet.</div></div></td></tr>';
+    var cb='<td><input type="checkbox" class="contact-checkbox" data-id="'+c.id+'" onchange="onContactCheck(this)"></td>';
+    return '<tr id="crow-'+c.id+'">'+cb+'<td><span style="cursor:pointer;font-weight:500" onclick="editContact(\''+c.id+'\')">'+displayName(c)+'</span>'+(c.instagram&&c.name?'<br><span style="font-size:10px;color:var(--gold)">'+c.instagram+'</span>':'')+'</td><td style="color:var(--text-muted)">'+(c.agency||'—')+'</td>'+platformCell+'<td>'+statusBadge(c.status,c.id)+'</td>'+contactedCell+followupCell+notesCell+'<td><button class="del-btn" onclick="deleteContact(\''+c.id+'\')">✕</button></td></tr>';
+  }).join(''):'<tr><td colspan="9"><div class="empty"><div class="empty-icon">◈</div><div class="empty-text">No contacts yet.</div></div></td></tr>';
+  updateSelectBar();
 
   // Mobile
   var mob=document.getElementById('contacts-mobile');
@@ -1915,12 +1981,6 @@ document.getElementById('sidebar-date').textContent=days[n.getDay()]+' '+n.getDa
   }
   // ── END PROMPTS ───────────────────────────────────────────────────────────
 
-// ── INIT ─────────────────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', function() {
-  var tb = document.getElementById('theme-toggle');
-  if(tb) tb.addEventListener('click', function(e){ e.stopPropagation(); toggleTheme(); });
-});
-
 // ── VAULT TRANSITION ─────────────────────────────────────────────────────────────
 function runVaultTransition(onComplete) {
   var overlay = document.createElement('div');
@@ -2022,32 +2082,7 @@ if('serviceWorker' in navigator){
 }
 
 // ── THEME ─────────────────────────────────────────────────────────────────────
-function applyTheme(theme) {
-  if(theme === 'light') {
-    document.body.classList.add('light-mode');
-    var btn = document.getElementById('theme-toggle');
-    if(btn) btn.textContent = '☀️';
-  } else {
-    document.body.classList.remove('light-mode');
-    var btn = document.getElementById('theme-toggle');
-    if(btn) btn.textContent = '🌙';
-  }
-  updatePwaDarkToggle();
-}
 
-function toggleTheme() {
-  var isLight = document.body.classList.contains('light-mode');
-  var newTheme = isLight ? 'dark' : 'light';
-  applyTheme(newTheme);
-  DB.theme = newTheme;
-  localStorage.setItem('ls_theme_quick', newTheme);
-  jbSave();
-}
-
-function loadTheme() {
-  var theme = DB.theme || 'dark';
-  applyTheme(theme);
-}
 
 // ── INLINE CONTACT INTERACTIONS ──────────────────────────────────────────────
 function inlinePlatformPill(c) {
@@ -2106,6 +2141,65 @@ function saveNotesPopout() {
   save('contacts', c);
   document.getElementById('notes-popout').classList.remove('open');
   renderContacts();
+}
+
+// ── CONTACT MULTI-SELECT ─────────────────────────────────────────────────────
+var selectedContacts = new Set();
+
+function onContactCheck(cb) {
+  var id = cb.getAttribute('data-id');
+  if(cb.checked) selectedContacts.add(id);
+  else selectedContacts.delete(id);
+  var row = document.getElementById('crow-'+id);
+  if(row) row.classList.toggle('contact-selected', cb.checked);
+  updateSelectBar();
+}
+
+function toggleSelectAll(cb) {
+  var checkboxes = document.querySelectorAll('#contacts-tbody .contact-checkbox');
+  checkboxes.forEach(function(box) {
+    box.checked = cb.checked;
+    var id = box.getAttribute('data-id');
+    if(cb.checked) selectedContacts.add(id);
+    else selectedContacts.delete(id);
+    var row = document.getElementById('crow-'+id);
+    if(row) row.classList.toggle('contact-selected', cb.checked);
+  });
+  updateSelectBar();
+}
+
+function updateSelectBar() {
+  var bar = document.getElementById('contact-select-bar');
+  var count = document.getElementById('select-count');
+  if(!bar) return;
+  if(selectedContacts.size > 0) {
+    bar.classList.add('visible');
+    count.textContent = selectedContacts.size + ' selected';
+  } else {
+    bar.classList.remove('visible');
+  }
+}
+
+function clearContactSelection() {
+  selectedContacts.clear();
+  document.querySelectorAll('#contacts-tbody .contact-checkbox').forEach(function(cb){ cb.checked=false; });
+  document.querySelectorAll('#contacts-tbody tr').forEach(function(r){ r.classList.remove('contact-selected'); });
+  var sa = document.getElementById('select-all-cb');
+  if(sa) sa.checked = false;
+  updateSelectBar();
+}
+
+function deleteSelectedContacts() {
+  if(selectedContacts.size === 0) return;
+  if(!confirm('Delete '+selectedContacts.size+' contact'+(selectedContacts.size>1?'s':'')+' permanently?')) return;
+  selectedContacts.forEach(function(id) {
+    DB.contacts = DB.contacts.filter(function(c){ return c.id !== id; });
+  });
+  selectedContacts.clear();
+  jbSave();
+  renderContacts();
+  renderPipeline();
+  renderDashboard();
 }
 
 // ── RELOAD ON APP RESUME ─────────────────────────────────────────────────────

@@ -1798,8 +1798,20 @@ function scrollPipelineToSlide(idx, tabEl) {
   if(!swiper) return;
   var slideWidth = swiper.offsetWidth + 12;
   swiper.scrollTo({left: idx * slideWidth, behavior: 'smooth'});
-  document.querySelectorAll('.pwa-pipeline-tab').forEach(function(t){t.classList.remove('active');});
-  if(tabEl) tabEl.classList.add('active');
+  var tabs = document.querySelectorAll('.pwa-pipeline-tab');
+  tabs.forEach(function(t){t.classList.remove('active');});
+  var activeTab = tabEl || tabs[idx];
+  if(activeTab) {
+    activeTab.classList.add('active');
+    // Scroll the tab bar so the active tab is centred/visible
+    var tabsRow = document.getElementById('pwa-pipe-tabs');
+    if(tabsRow) {
+      var tabLeft = activeTab.offsetLeft;
+      var tabWidth = activeTab.offsetWidth;
+      var rowWidth = tabsRow.offsetWidth;
+      tabsRow.scrollTo({left: tabLeft - (rowWidth / 2) + (tabWidth / 2), behavior: 'smooth'});
+    }
+  }
 }
 
 function renderPipeline(){
@@ -1845,9 +1857,17 @@ function renderPipeline(){
       swiper._syncAttached = true;
       swiper.addEventListener('scroll', function(){
         var idx = Math.round(swiper.scrollLeft / (swiper.offsetWidth + 12));
-        document.querySelectorAll('.pwa-pipeline-tab').forEach(function(t,i){
-          t.classList.toggle('active', i===idx);
-        });
+        var tabs = document.querySelectorAll('.pwa-pipeline-tab');
+        tabs.forEach(function(t,i){ t.classList.toggle('active', i===idx); });
+        // Scroll tab bar to keep active tab visible
+        var activeTab = tabs[idx];
+        var tabsRow = document.getElementById('pwa-pipe-tabs');
+        if(activeTab && tabsRow) {
+          var tabLeft = activeTab.offsetLeft;
+          var tabWidth = activeTab.offsetWidth;
+          var rowWidth = tabsRow.offsetWidth;
+          tabsRow.scrollTo({left: tabLeft - (rowWidth / 2) + (tabWidth / 2), behavior: 'smooth'});
+        }
       });
     }
   }

@@ -846,8 +846,41 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
   }
   .pwa-tab.active .pwa-tab-dot { opacity: 1; }
 
-  /* Pipeline */
-  .pipeline { grid-template-columns: 1fr !important; }
+  /* Pipeline — horizontal swipe in PWA */
+  .pipeline { grid-template-columns: 1fr !important; display: block !important; }
+  .pwa-pipeline-swiper {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 12px;
+    padding-bottom: 8px;
+  }
+  .pwa-pipeline-swiper::-webkit-scrollbar { display: none; }
+  .pwa-pipeline-slide {
+    flex: 0 0 calc(100vw - 32px);
+    scroll-snap-align: start;
+    min-width: calc(100vw - 32px);
+  }
+  .pwa-pipeline-tabs {
+    display: flex; gap: 6px; margin-bottom: 10px;
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; padding-bottom: 2px;
+  }
+  .pwa-pipeline-tabs::-webkit-scrollbar { display: none; }
+  .pwa-pipeline-tab {
+    flex-shrink: 0; font-size: 10px; font-weight: 700;
+    padding: 5px 12px; border-radius: 100px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.15s;
+    border: 1px solid var(--border); color: var(--text-muted);
+    background: var(--dark);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .pwa-pipeline-tab.active {
+    background: var(--gold); color: #0E0E0E; border-color: var(--gold);
+  }
   .form-row-2 { grid-template-columns: 1fr !important; }
 
   /* Modal — slides up from bottom */
@@ -932,6 +965,7 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
     <div class="nav-section">Work</div>
     <div class="nav-item" onclick="nav('jobs')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span>Jobs</div>
     <div class="nav-item" onclick="nav('finance')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>Finance</div>
+    <div class="nav-item" onclick="nav('subscriptions')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span>Subscriptions</div>
   </nav>
   <div class="sidebar-footer">
     <div class="sidebar-date" id="sidebar-date"></div>
@@ -950,11 +984,12 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
 
     <!-- DASHBOARD -->
     <div class="page active" id="page-dashboard">
-      <div class="stats-row">
+      <div class="stats-row" style="grid-template-columns:repeat(5,1fr)">
         <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value" id="dash-revenue">£0</div><div class="stat-sub">All time</div></div>
         <div class="stat-card"><div class="stat-label">Contacts</div><div class="stat-value" id="dash-contacts">0</div><div class="stat-sub">In database</div></div>
         <div class="stat-card"><div class="stat-label">Active Jobs</div><div class="stat-value" id="dash-jobs">0</div><div class="stat-sub">In progress</div></div>
         <div class="stat-card"><div class="stat-label">This Month</div><div class="stat-value" id="dash-month">£0</div><div class="stat-sub" id="dash-month-sub">0 jobs</div></div>
+        <div class="stat-card" style="border-top-color:rgba(82,132,224,0.7)"><div class="stat-label">Contacted Today</div><div class="stat-value" id="dash-today" style="color:var(--blue)">0</div><div class="stat-sub">outreach today</div></div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
         <div class="card" style="margin-bottom:0">
@@ -1000,12 +1035,30 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
 
     <!-- PIPELINE -->
     <div class="page" id="page-pipeline">
-      <div class="pipeline" style="margin-bottom:16px">
+      <!-- Desktop grid (hidden in PWA via JS) -->
+      <div class="pipeline" id="pipeline-desktop" style="margin-bottom:16px">
         <div class="pipeline-col" data-status="Contacted"><div class="pipeline-col-title">Contacted <span class="pipeline-count" id="pc-contacted">0</span></div><div id="pl-contacted"></div></div>
         <div class="pipeline-col" data-status="Replied"><div class="pipeline-col-title">Replied <span class="pipeline-count" id="pc-replied">0</span></div><div id="pl-replied"></div></div>
         <div class="pipeline-col" data-status="Interested"><div class="pipeline-col-title">Interested <span class="pipeline-count" id="pc-interested">0</span></div><div id="pl-interested"></div></div>
         <div class="pipeline-col" data-status="Free Job"><div class="pipeline-col-title">Free Job <span class="pipeline-count" id="pc-free">0</span></div><div id="pl-free"></div></div>
         <div class="pipeline-col" data-status="Client"><div class="pipeline-col-title">Client <span class="pipeline-count" id="pc-client">0</span></div><div id="pl-client"></div></div>
+      </div>
+      <!-- PWA horizontal swiper (shown only in PWA) -->
+      <div id="pipeline-pwa" style="display:none">
+        <div class="pwa-pipeline-tabs" id="pwa-pipe-tabs">
+          <div class="pwa-pipeline-tab active" onclick="scrollPipelineToSlide(0,this)">Contacted <span id="pwa-pc-contacted">0</span></div>
+          <div class="pwa-pipeline-tab" onclick="scrollPipelineToSlide(1,this)">Replied <span id="pwa-pc-replied">0</span></div>
+          <div class="pwa-pipeline-tab" onclick="scrollPipelineToSlide(2,this)">Interested <span id="pwa-pc-interested">0</span></div>
+          <div class="pwa-pipeline-tab" onclick="scrollPipelineToSlide(3,this)">Free Job <span id="pwa-pc-free">0</span></div>
+          <div class="pwa-pipeline-tab" onclick="scrollPipelineToSlide(4,this)">Client <span id="pwa-pc-client">0</span></div>
+        </div>
+        <div class="pwa-pipeline-swiper" id="pwa-pipe-swiper">
+          <div class="pwa-pipeline-slide"><div class="pipeline-col" data-status="Contacted"><div class="pipeline-col-title">Contacted <span class="pipeline-count" id="pwa-pl-count-contacted">0</span></div><div id="pwa-pl-contacted"></div></div></div>
+          <div class="pwa-pipeline-slide"><div class="pipeline-col" data-status="Replied"><div class="pipeline-col-title">Replied <span class="pipeline-count" id="pwa-pl-count-replied">0</span></div><div id="pwa-pl-replied"></div></div></div>
+          <div class="pwa-pipeline-slide"><div class="pipeline-col" data-status="Interested"><div class="pipeline-col-title">Interested <span class="pipeline-count" id="pwa-pl-count-interested">0</span></div><div id="pwa-pl-interested"></div></div></div>
+          <div class="pwa-pipeline-slide"><div class="pipeline-col" data-status="Free Job"><div class="pipeline-col-title">Free Job <span class="pipeline-count" id="pwa-pl-count-free">0</span></div><div id="pwa-pl-free"></div></div></div>
+          <div class="pwa-pipeline-slide"><div class="pipeline-col" data-status="Client"><div class="pipeline-col-title">Client <span class="pipeline-count" id="pwa-pl-count-client">0</span></div><div id="pwa-pl-client"></div></div></div>
+        </div>
       </div>
     </div>
 
@@ -1050,8 +1103,77 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
       </div>
     </div>
 
+    <!-- SUBSCRIPTIONS -->
+    <div class="page" id="page-subscriptions">
+      <div class="stats-row" style="grid-template-columns:repeat(3,1fr)">
+        <div class="stat-card"><div class="stat-label">Monthly Cost</div><div class="stat-value" id="sub-monthly" style="color:var(--red)">£0</div></div>
+        <div class="stat-card"><div class="stat-label">Annual Cost</div><div class="stat-value" id="sub-annual" style="color:var(--amber)">£0</div></div>
+        <div class="stat-card"><div class="stat-label">Active Subs</div><div class="stat-value" id="sub-count">0</div></div>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Service</th><th>Category</th><th>Price/mo</th><th>Billing Date</th><th>Status</th><th>Notes</th><th></th></tr></thead>
+            <tbody id="sub-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
+</div>
+
+<!-- SUBSCRIPTION MODAL -->
+<div class="modal-bg" id="modal-subscription">
+  <div class="modal">
+    <div class="modal-title" id="modal-sub-title">Add Subscription</div>
+    <input type="hidden" id="sub-edit-id">
+    <div class="form-row-2">
+      <div class="form-group">
+        <label class="form-label">Service Name</label>
+        <input class="form-input" id="sub-name" placeholder="e.g. Canva Pro">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Category</label>
+        <select class="form-select" id="sub-category">
+          <option>Design</option><option>Marketing</option><option>CRM / Tools</option>
+          <option>Hosting</option><option>Storage</option><option>AI Tools</option>
+          <option>Social Media</option><option>Finance</option><option>Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row-2">
+      <div class="form-group">
+        <label class="form-label">Price per Month (£)</label>
+        <input class="form-input" id="sub-price" type="number" step="0.01" placeholder="0.00">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Billing Date <span class="opt">(day of month)</span></label>
+        <input class="form-input" id="sub-billing" type="number" min="1" max="31" placeholder="e.g. 15">
+      </div>
+    </div>
+    <div class="form-row-2">
+      <div class="form-group">
+        <label class="form-label">Website <span class="opt">(optional)</span></label>
+        <input class="form-input" id="sub-url" placeholder="e.g. canva.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Status</label>
+        <select class="form-select" id="sub-status">
+          <option>Active</option><option>Paused</option><option>Cancelled</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Notes <span class="opt">(optional)</span></label>
+      <textarea class="form-textarea" id="sub-notes" placeholder="e.g. Free tier expiring, upgrade needed..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="topbar-btn outline" onclick="closeModal('modal-subscription')">Cancel</button>
+      <button class="topbar-btn" onclick="saveSubscription()">Save Subscription</button>
+    </div>
+  </div>
 </div>
 
 <!-- CONTACT MODAL -->
@@ -1278,6 +1400,7 @@ var DB = {
   contacts:  [],
   jobs:      [],
   templates: [],
+  subscriptions: [],
   theme:     'dark',
 };
 function uid(){ return Date.now() + '-' + Math.random().toString(36).slice(2); }
@@ -1303,6 +1426,7 @@ async function loadAll() {
       DB.contacts  = cdata.contacts  || [];
       DB.jobs      = cdata.jobs      || [];
       DB.templates = cdata.templates && cdata.templates.length ? cdata.templates : getDefaultTemplates();
+      DB.subscriptions = cdata.subscriptions || [];
       DB.theme     = cdata.theme || 'dark';
       loadTheme();
       render();
@@ -1316,6 +1440,7 @@ async function loadAll() {
     DB.contacts  = data.contacts  || [];
     DB.jobs      = data.jobs      || [];
     DB.templates = data.templates && data.templates.length ? data.templates : getDefaultTemplates();
+    DB.subscriptions = data.subscriptions || [];
     DB.theme     = data.theme || 'dark';
     if (!data.templates || !data.templates.length) {
       jbSave();
@@ -1323,7 +1448,7 @@ async function loadAll() {
     // Update local cache
     localStorage.setItem('ls_crm_cache', JSON.stringify({
       contacts: DB.contacts, jobs: DB.jobs,
-      templates: DB.templates, theme: DB.theme
+      templates: DB.templates, subscriptions: DB.subscriptions, theme: DB.theme
     }));
   } catch(e) { console.error('Load error', e); }
   showLoading(false);
@@ -1333,7 +1458,7 @@ async function loadAll() {
 
 async function jbSave() {
   try {
-    var payload = { contacts: DB.contacts, jobs: DB.jobs, templates: DB.templates, theme: DB.theme };
+    var payload = { contacts: DB.contacts, jobs: DB.jobs, templates: DB.templates, subscriptions: DB.subscriptions, theme: DB.theme };
     localStorage.setItem('ls_crm_cache', JSON.stringify(payload));
     await jbSet(payload);
   } catch(e) { console.error('Save error', e); }
@@ -1395,6 +1520,7 @@ var pageCfg = {
   prompts:   {title:'AI Prompts',  btn:null,              sec:null},
   jobs:      {title:'Jobs',        btn:'+ Add Job',       sec:null},
   finance:   {title:'Finance',     btn:'+ Add Job',       sec:null},
+  subscriptions: {title:'Subscriptions', btn:'+ Add Subscription', sec:null},
 };
 
 function nav(page){
@@ -1414,7 +1540,7 @@ function nav(page){
 }
 
 function topbarAction(){
-  var m={dashboard:'modal-contact',contacts:'modal-contact',pipeline:'modal-contact',jobs:'modal-job',finance:'modal-job',templates:'modal-template'};
+  var m={dashboard:'modal-contact',contacts:'modal-contact',pipeline:'modal-contact',jobs:'modal-job',finance:'modal-job',templates:'modal-template',subscriptions:'modal-subscription'};
   openModal(m[currentPage]||'modal-contact');
 }
 function topbarSecondary(){ if(currentPage==='contacts') exportCSV(); }
@@ -1434,6 +1560,7 @@ function closeModal(id){
   document.getElementById(id).querySelectorAll('[type=hidden]').forEach(function(el){el.value='';});
   if(id==='modal-contact') document.getElementById('modal-contact-title').textContent='Add Contact';
   if(id==='modal-job') document.getElementById('modal-job-title').textContent='Add Job';
+  if(id==='modal-subscription') document.getElementById('modal-sub-title').textContent='Add Subscription';
 }
 document.querySelectorAll('.modal-bg').forEach(function(bg){
   bg.addEventListener('click',function(e){if(e.target===bg)closeModal(bg.id);});
@@ -1651,56 +1778,112 @@ function renderContacts(){
 
   // Mobile
   var mob=document.getElementById('contacts-mobile');
-  mob.innerHTML=DB.contacts.length?DB.contacts.map(function(c){
+  var sortedMob = DB.contacts.slice().sort(function(a,b){ return (b.created||0)-(a.created||0); });
+  mob.innerHTML=sortedMob.length?sortedMob.map(function(c){
     return '<div class="contact-card-mobile">'+
       '<div class="cc-top"><div><div class="cc-name">'+displayName(c)+'</div>'+(c.instagram&&c.name?'<div style="font-size:11px;color:var(--gold)">'+c.instagram+'</div>':'')+'<div class="cc-sub">'+(c.agency||'')+'</div></div><button class="del-btn" onclick="deleteContact(\''+c.id+'\')">✕</button></div>'+
       '<div class="cc-row">'+statusBadge(c.status,c.id)+platformPill(c.platform)+(c.contacted?'<span style="font-size:10px;color:var(--text-muted)"><span class="cal-icon"></span> '+c.contacted+'</span>':'')+'</div>'+
       (c.notes?'<div style="font-size:11px;color:var(--text-muted);margin-top:8px">'+c.notes+'</div>':'')+
       '<div class="cc-actions"><button class="cc-btn" onclick="editContact(\''+c.id+'\')">Edit</button>'+(c.email?'<a class="cc-btn" href="mailto:'+c.email+'">Email</a>':'')+(c.phone?'<a class="cc-btn" href="tel:'+c.phone+'">Call</a>':'')+(c.instagram?'<a class="cc-btn" href="https://instagram.com/'+c.instagram.replace('@','')+'" target="_blank">Instagram</a>':'')+'</div></div>';
-  }).join(''):'';
+  }).join('') : '';
 }
 
 // ── PIPELINE ──────────────────────────────────────────────────────────────────
+var isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+function scrollPipelineToSlide(idx, tabEl) {
+  var swiper = document.getElementById('pwa-pipe-swiper');
+  if(!swiper) return;
+  var slideWidth = swiper.offsetWidth + 12;
+  swiper.scrollTo({left: idx * slideWidth, behavior: 'smooth'});
+  document.querySelectorAll('.pwa-pipeline-tab').forEach(function(t){t.classList.remove('active');});
+  if(tabEl) tabEl.classList.add('active');
+}
+
 function renderPipeline(){
+  var isPwa = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+  var desktop = document.getElementById('pipeline-desktop');
+  var pwaView = document.getElementById('pipeline-pwa');
+  if(desktop) desktop.style.display = isPwa ? 'none' : '';
+  if(pwaView) pwaView.style.display = isPwa ? 'block' : 'none';
+
   var cols={Contacted:'contacted',Replied:'replied',Interested:'interested','Free Job':'free',Client:'client'};
   var statusKeys=Object.keys(cols);
   statusKeys.forEach(function(status){
     var key=cols[status];
-    var items=DB.contacts.filter(function(c){return c.status===status;});
-    document.getElementById('pc-'+key).textContent=items.length;
-    var col=document.getElementById('pl-'+key);
-    col.innerHTML=items.length?items.map(function(c){
-      var platform=c.platform||'';
-      var contacted=c.contacted?'Contacted '+c.contacted:'';
-      var pillHtml=platformPill(platform);
-      return '<div class="pipeline-card" draggable="true" data-id="'+c.id+'" data-status="'+status+'" onclick="editContact(\''+c.id+'\')" ondragstart="pipeDragStart(event)">'+
-        '<div class="pipeline-card-name">'+(c.agency||displayName(c))+'</div>'+
-        '<div style="margin-top:2px">'+pillHtml+'</div>'+
-        (c.instagram?'<div class="pipeline-card-sub" style="margin-top:3px">'+c.instagram+'</div>':'')+
-        (contacted?'<div class="pipeline-card-platform">'+contacted+'</div>':'')+
-        '</div>';
-    }).join(''):'<div style="color:var(--text-muted);font-size:11px;text-align:center;padding:6px">Empty</div>';
+    var items=DB.contacts.filter(function(c){return c.status===status;}).sort(function(a,b){return (b.created||0)-(a.created||0);});
 
-    // Add drag-over events to column
-    var parentCol=col.closest('.pipeline-col');
-    parentCol.setAttribute('data-status',status);
-    parentCol.ondragover=function(e){e.preventDefault();this.classList.add('drag-over');};
-    parentCol.ondragleave=function(){this.classList.remove('drag-over');};
-    parentCol.ondrop=function(e){
-      e.preventDefault();
-      this.classList.remove('drag-over');
-      var id=e.dataTransfer.getData('contactId');
-      var newStatus=this.getAttribute('data-status');
-      var contact=DB.contacts.find(function(c){return c.id===id;});
-      if(contact&&contact.status!==newStatus){
-        contact.status=newStatus;
-        save('contacts',contact);
-        renderPipeline();
-        renderContacts();
-        renderDashboard();
-      }
-    };
+    // Desktop
+    var countEl=document.getElementById('pc-'+key);
+    if(countEl) countEl.textContent=items.length;
+    var col=document.getElementById('pl-'+key);
+    if(col) {
+      col.innerHTML=buildPipelineCards(items,status);
+      var parentCol=col.closest('.pipeline-col');
+      if(parentCol) setupPipelineDropZone(parentCol,status);
+    }
+
+    // PWA swiper
+    var pwaCount=document.getElementById('pwa-pc-'+key);
+    if(pwaCount) pwaCount.textContent=items.length;
+    var pwaCountBadge=document.getElementById('pwa-pl-count-'+key);
+    if(pwaCountBadge) pwaCountBadge.textContent=items.length;
+    var pwaCol=document.getElementById('pwa-pl-'+key);
+    if(pwaCol) {
+      pwaCol.innerHTML=buildPipelineCards(items,status);
+      var pwaParent=pwaCol.closest('.pipeline-col');
+      if(pwaParent) setupPipelineDropZone(pwaParent,status);
+    }
   });
+
+  // Set up swipe -> tab sync for PWA
+  if(isPwa) {
+    var swiper = document.getElementById('pwa-pipe-swiper');
+    if(swiper && !swiper._syncAttached) {
+      swiper._syncAttached = true;
+      swiper.addEventListener('scroll', function(){
+        var idx = Math.round(swiper.scrollLeft / (swiper.offsetWidth + 12));
+        document.querySelectorAll('.pwa-pipeline-tab').forEach(function(t,i){
+          t.classList.toggle('active', i===idx);
+        });
+      });
+    }
+  }
+}
+
+function buildPipelineCards(items, status) {
+  if(!items.length) return '<div style="color:var(--text-muted);font-size:11px;text-align:center;padding:6px">Empty</div>';
+  return items.map(function(c){
+    var platform=c.platform||'';
+    var contacted=c.contacted?'Contacted '+c.contacted:'';
+    var pillHtml=platformPill(platform);
+    return '<div class="pipeline-card" draggable="true" data-id="'+c.id+'" data-status="'+status+'" onclick="editContact(\''+c.id+'\')" ondragstart="pipeDragStart(event)">'+
+      '<div class="pipeline-card-name">'+(c.agency||displayName(c))+'</div>'+
+      '<div style="margin-top:2px">'+pillHtml+'</div>'+
+      (c.instagram?'<div class="pipeline-card-sub" style="margin-top:3px">'+c.instagram+'</div>':'')+
+      (contacted?'<div class="pipeline-card-platform">'+contacted+'</div>':'')+
+      '</div>';
+  }).join('');
+}
+
+function setupPipelineDropZone(parentCol, status) {
+  parentCol.setAttribute('data-status',status);
+  parentCol.ondragover=function(e){e.preventDefault();this.classList.add('drag-over');};
+  parentCol.ondragleave=function(){this.classList.remove('drag-over');};
+  parentCol.ondrop=function(e){
+    e.preventDefault();
+    this.classList.remove('drag-over');
+    var id=e.dataTransfer.getData('contactId');
+    var newStatus=this.getAttribute('data-status');
+    var contact=DB.contacts.find(function(c){return c.id===id;});
+    if(contact&&contact.status!==newStatus){
+      contact.status=newStatus;
+      save('contacts',contact);
+      renderPipeline();
+      renderContacts();
+      renderDashboard();
+    }
+  };
 }
 
 function pipeDragStart(e){
@@ -1866,11 +2049,13 @@ function renderDashboard(){
     if(j.paid==='Paid'&&j.price>0){revenue+=j.price;var d=new Date(j.created);if(d.getMonth()===tm&&d.getFullYear()===ty){monthRevenue+=j.price;monthJobs++;}}
   });
   var activeJobs=DB.jobs.filter(function(j){return j.status==='In Progress'||j.status==='Enquiry';}).length;
+  var contactedToday=DB.contacts.filter(function(c){return c.contacted===today();}).length;
   document.getElementById('dash-revenue').textContent='£'+revenue.toFixed(2);
   document.getElementById('dash-contacts').textContent=DB.contacts.length;
   document.getElementById('dash-jobs').textContent=activeJobs;
   document.getElementById('dash-month').textContent='£'+monthRevenue.toFixed(2);
   document.getElementById('dash-month-sub').textContent=monthJobs+' job'+(monthJobs!==1?'s':'')+' this month';
+  var todayEl=document.getElementById('dash-today'); if(todayEl) todayEl.textContent=contactedToday;
   var pct=Math.min((monthRevenue/1000)*100,100);
   document.getElementById('goal-label').textContent='£'+monthRevenue.toFixed(2)+' of £1,000';
   document.getElementById('goal-pct').textContent=Math.round(pct)+'%';
@@ -1893,9 +2078,66 @@ function exportCSV(){
   var a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='contacts.csv';a.click();
 }
 
+// ── SUBSCRIPTIONS ─────────────────────────────────────────────────────────────
+function saveSubscription(){
+  var eid=document.getElementById('sub-edit-id').value;
+  var id=eid||uid();
+  var name=document.getElementById('sub-name').value.trim();
+  if(!name){alert('Please enter a service name.');return;}
+  var obj={
+    id:id,name:name,
+    category:document.getElementById('sub-category').value,
+    price:parseFloat(document.getElementById('sub-price').value)||0,
+    billing:document.getElementById('sub-billing').value.trim(),
+    url:document.getElementById('sub-url').value.trim(),
+    status:document.getElementById('sub-status').value,
+    notes:document.getElementById('sub-notes').value.trim(),
+    created:eid?(DB.subscriptions.find(function(s){return s.id===eid;})||{}).created||Date.now():Date.now()
+  };
+  var idx=DB.subscriptions.findIndex(function(s){return s.id===id;});
+  if(idx>=0)DB.subscriptions[idx]=obj;else DB.subscriptions.push(obj);
+  closeModal('modal-subscription');renderSubscriptions();jbSave();
+}
+
+function editSubscription(id){
+  var s=DB.subscriptions.find(function(x){return x.id===id;});if(!s)return;
+  document.getElementById('modal-sub-title').textContent='Edit Subscription';
+  document.getElementById('sub-edit-id').value=s.id;
+  document.getElementById('sub-name').value=s.name||'';
+  document.getElementById('sub-category').value=s.category||'Other';
+  document.getElementById('sub-price').value=s.price||'';
+  document.getElementById('sub-billing').value=s.billing||'';
+  document.getElementById('sub-url').value=s.url||'';
+  document.getElementById('sub-status').value=s.status||'Active';
+  document.getElementById('sub-notes').value=s.notes||'';
+  openModal('modal-subscription');
+}
+
+function deleteSubscription(id){
+  if(!confirm('Remove this subscription?'))return;
+  DB.subscriptions=DB.subscriptions.filter(function(s){return s.id!==id;});
+  renderSubscriptions();jbSave();
+}
+
+function renderSubscriptions(){
+  var subs=DB.subscriptions;
+  var monthly=subs.filter(function(s){return s.status==='Active';}).reduce(function(a,s){return a+s.price;},0);
+  var el=document.getElementById('sub-monthly');if(el)el.textContent='£'+monthly.toFixed(2);
+  var ael=document.getElementById('sub-annual');if(ael)ael.textContent='£'+(monthly*12).toFixed(2);
+  var cel=document.getElementById('sub-count');if(cel)cel.textContent=subs.filter(function(s){return s.status==='Active';}).length;
+  var tbody=document.getElementById('sub-tbody');if(!tbody)return;
+  var catColors={'Design':'badge-blue','Marketing':'badge-gold','CRM / Tools':'badge-green','Hosting':'badge-amber','Storage':'badge-grey','AI Tools':'badge-gold','Social Media':'badge-blue','Finance':'badge-green','Other':'badge-grey'};
+  var statusColors={'Active':'badge-green','Paused':'badge-amber','Cancelled':'badge-red'};
+  tbody.innerHTML=subs.length?subs.map(function(s){
+    var billing=s.billing?'Every '+s.billing+(s.billing==='1'?'st':s.billing==='2'?'nd':s.billing==='3'?'rd':'th'):'—';
+    var nameHtml=s.url?'<a href="https://'+s.url+'" target="_blank" style="color:var(--off-white);text-decoration:none;font-weight:500">'+s.name+'<span style="font-size:10px;color:var(--text-muted);margin-left:4px">↗</span></a>':'<span style="font-weight:500">'+s.name+'</span>';
+    return '<tr><td>'+nameHtml+'</td><td><span class="badge '+(catColors[s.category]||'badge-grey')+'">'+s.category+'</span></td><td style="color:var(--gold);font-weight:600">£'+s.price.toFixed(2)+'</td><td style="color:var(--text-muted)">'+billing+'</td><td><span class="badge '+(statusColors[s.status]||'badge-grey')+'">'+s.status+'</span></td><td style="color:var(--text-muted);font-size:11px;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(s.notes||'—')+'</td><td style="display:flex;gap:6px"><button style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:12px;padding:3px 7px;border-radius:4px" onclick="editSubscription(\''+s.id+'\')">Edit</button><button class="del-btn" onclick="deleteSubscription(\''+s.id+'\')">✕</button></td></tr>';
+  }).join(''):'<tr><td colspan="7"><div class="empty"><div class="empty-icon">💳</div><div class="empty-text">No subscriptions yet. Add your tools and services to track your monthly costs.</div></div></td></tr>';
+}
+
 // ── RENDER ────────────────────────────────────────────────────────────────────
 function render(){
-  renderDashboard();renderContacts();renderPipeline();renderTemplates();renderJobs();renderFinance();renderGoals();renderPrompts();
+  renderDashboard();renderContacts();renderPipeline();renderTemplates();renderJobs();renderFinance();renderGoals();renderPrompts();renderSubscriptions();
 }
 
 var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -2256,6 +2498,12 @@ function openPwaMore() {
     var total = DB.jobs.filter(function(j){return j.paid==='Paid'&&j.price>0;}).reduce(function(a,j){return a+j.price;},0);
     finSub.textContent = '£'+total.toFixed(2)+' total earned';
   }
+  var subsSub = document.getElementById('more-subs-sub');
+  if(subsSub) {
+    var activeSubs = (DB.subscriptions||[]).filter(function(s){return s.status==='Active';});
+    var monthlyTotal = activeSubs.reduce(function(a,s){return a+s.price;},0);
+    subsSub.textContent = activeSubs.length+' active · £'+monthlyTotal.toFixed(2)+'/mo';
+  }
   // Mark more tab active
   document.querySelectorAll('.pwa-tab').forEach(function(t){ t.classList.remove('active'); });
   document.getElementById('tab-more').classList.add('active');
@@ -2336,6 +2584,14 @@ function updatePwaDarkToggle() {
         <div class="pwa-menu-text">
           <div class="pwa-menu-name">Finance</div>
           <div class="pwa-menu-sub" id="more-finance-sub">£0 total earned</div>
+        </div>
+        <span class="pwa-menu-arrow">›</span>
+      </div>
+      <div class="pwa-menu-item" id="more-subscriptions" onclick="pwaNavMore('subscriptions')">
+        <div class="pwa-menu-icon-wrap" style="background:rgba(224,82,82,0.12)">💳</div>
+        <div class="pwa-menu-text">
+          <div class="pwa-menu-name">Subscriptions</div>
+          <div class="pwa-menu-sub" id="more-subs-sub">Track monthly costs</div>
         </div>
         <span class="pwa-menu-arrow">›</span>
       </div>

@@ -1304,7 +1304,7 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
 <!-- TEMPLATE MODAL -->
 <div class="modal-bg" id="modal-template">
   <div class="modal">
-    <div class="modal-title">Add Template</div>
+    <div class="modal-title" id="modal-tpl-title">Add Template</div>
     <input type="hidden" id="tpl-edit-id">
     <div class="form-group">
       <label class="form-label">Template Name</label>
@@ -1324,6 +1324,10 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
           <option>After Delivery</option><option>Paid Upsell</option><option>Other</option>
         </select>
       </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Subject Line <span class="opt">(email only — optional)</span></label>
+      <input class="form-input" id="tpl-subject" placeholder="e.g. Your [Street Name] listing — quick idea">
     </div>
     <div class="form-group">
       <label class="form-label">Message</label>
@@ -1577,6 +1581,7 @@ function closeModal(id){
   if(id==='modal-contact') document.getElementById('modal-contact-title').textContent='Add Contact';
   if(id==='modal-job') document.getElementById('modal-job-title').textContent='Add Job';
   if(id==='modal-subscription') document.getElementById('modal-sub-title').textContent='Add Subscription';
+  if(id==='modal-template') document.getElementById('modal-tpl-title').textContent='Add Template';
 }
 document.querySelectorAll('.modal-bg').forEach(function(bg){
   bg.addEventListener('click',function(e){if(e.target===bg)closeModal(bg.id);});
@@ -1932,11 +1937,23 @@ function pipeDragStart(e){
 function saveTemplate(){
   var eid=document.getElementById('tpl-edit-id').value;
   var id=eid||uid();
-  var obj={id:id,name:document.getElementById('tpl-name').value.trim(),platform:document.getElementById('tpl-platform').value,type:document.getElementById('tpl-type').value,body:document.getElementById('tpl-body').value.trim()};
+  var obj={id:id,name:document.getElementById('tpl-name').value.trim(),platform:document.getElementById('tpl-platform').value,type:document.getElementById('tpl-type').value,subject:document.getElementById('tpl-subject').value.trim(),body:document.getElementById('tpl-body').value.trim()};
   if(!obj.name||!obj.body)return;
   var idx=DB.templates.findIndex(function(t){return t.id===id;});
   if(idx>=0)DB.templates[idx]=obj;else DB.templates.push(obj);
   closeModal('modal-template');render();save('templates',obj);
+}
+
+function editTemplate(id){
+  var t=DB.templates.find(function(x){return x.id===id;});if(!t)return;
+  document.getElementById('modal-tpl-title').textContent='Edit Template';
+  document.getElementById('tpl-edit-id').value=t.id;
+  document.getElementById('tpl-name').value=t.name||'';
+  document.getElementById('tpl-platform').value=t.platform||'Instagram';
+  document.getElementById('tpl-type').value=t.type||'Cold Outreach';
+  document.getElementById('tpl-subject').value=t.subject||'';
+  document.getElementById('tpl-body').value=t.body||'';
+  openModal('modal-template');
 }
 
 function deleteTemplate(id){
@@ -1963,7 +1980,7 @@ function renderTemplates(){
   list.innerHTML=DB.templates.length?DB.templates.map(function(t){
     var subjHtml=t.subject?'<div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;padding:5px 10px;background:var(--dark2);border-radius:6px"><span style="color:var(--text-muted);letter-spacing:0.04em;text-transform:uppercase;font-size:9px;font-weight:700;margin-right:6px">Subject</span>'+t.subject+'</div>':'';
     return '<div class="template-card">'+
-      '<div class="template-header"><div><div class="template-name">'+t.name+'</div><div class="template-platform"><span class="badge '+(typeMap[t.type]||'badge-grey')+'" style="margin-right:6px">'+t.type+'</span><span class="badge badge-grey">'+t.platform+'</span></div></div><button class="del-btn" onclick="deleteTemplate(\''+t.id+'\')">✕</button></div>'+
+      '<div class="template-header"><div><div class="template-name">'+t.name+'</div><div class="template-platform"><span class="badge '+(typeMap[t.type]||'badge-grey')+'" style="margin-right:6px">'+t.type+'</span><span class="badge badge-grey">'+t.platform+'</span></div></div><div style="display:flex;gap:6px;align-items:center"><button style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:12px;padding:3px 8px;border-radius:4px;border:1px solid var(--border)" onclick="editTemplate(\''+t.id+'\')">Edit</button><button class="del-btn" onclick="deleteTemplate(\''+t.id+'\')">✕</button></div></div>'+
       subjHtml+
       '<div class="template-body">'+t.body.replace(/</g,'&lt;')+'</div>'+
       '<button class="copy-btn" id="copy-'+t.id+'" onclick="copyTemplate(\''+t.id+'\')">Copy</button></div>';

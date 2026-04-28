@@ -1662,6 +1662,24 @@ function deleteContact(id){
   deleteRecord('contacts',id).then(function(){render();});
 }
 
+function duplicateContact(id){
+  var c=DB.contacts.find(function(x){return x.id===id;});if(!c)return;
+  // Pre-fill the modal with the contact's details but blank platform, contacted date and notes so they can adjust
+  document.getElementById('modal-contact-title').textContent='Duplicate Contact';
+  document.getElementById('contact-edit-id').value='';
+  document.getElementById('c-name').value=c.name||'';
+  document.getElementById('c-instagram').value=c.instagram||'';
+  document.getElementById('c-agency').value=c.agency||'';
+  document.getElementById('c-platform').value=c.platform||'Instagram';
+  document.getElementById('c-status').value='Contacted';
+  document.getElementById('c-email').value=c.email||'';
+  document.getElementById('c-phone').value=c.phone||'';
+  document.getElementById('c-contacted').value=today();
+  document.getElementById('c-followup').value='';
+  document.getElementById('c-notes').value='';
+  openModal('modal-contact');
+}
+
 
 // ── PLATFORM PILLS ────────────────────────────────────────────────────────────
 var PLATFORM_ICONS = {
@@ -1793,7 +1811,7 @@ function renderContacts(){
     var followupCell='<td>'+inlineDateCell(c,'followup')+'</td>';
     var notesCell='<td style="cursor:pointer" onclick="openNotesPopout(\''+c.id+'\')" title="Click to view/edit notes"><span style="color:'+(c.notes?'var(--text-mid)':'var(--border2)')+';font-size:11px;max-width:100px;display:inline-block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(c.notes||'+ Add note')+'</span></td>';
     var cb='<td><input type="checkbox" class="contact-checkbox" data-id="'+c.id+'" onchange="onContactCheck(this)"></td>';
-    return '<tr id="crow-'+c.id+'">'+cb+'<td><span style="cursor:pointer;font-weight:500" onclick="editContact(\''+c.id+'\')">'+displayName(c)+'</span>'+(c.instagram&&c.name?'<br><span style="font-size:10px;color:var(--gold)">'+c.instagram+'</span>':'')+'</td><td style="color:var(--text-muted)">'+(c.agency||'—')+'</td>'+platformCell+'<td>'+statusBadge(c.status,c.id)+'</td>'+contactedCell+followupCell+notesCell+'<td><button class="del-btn" onclick="deleteContact(\''+c.id+'\')">✕</button></td></tr>';
+    return '<tr id="crow-'+c.id+'">'+cb+'<td><span style="cursor:pointer;font-weight:500" onclick="editContact(\''+c.id+'\')">'+displayName(c)+'</span>'+(c.instagram&&c.name?'<br><span style="font-size:10px;color:var(--gold)">'+c.instagram+'</span>':'')+'</td><td style="color:var(--text-muted)">'+(c.agency||'—')+'</td>'+platformCell+'<td>'+statusBadge(c.status,c.id)+'</td>'+contactedCell+followupCell+notesCell+'<td><div style="display:flex;gap:4px;align-items:center"><button title="Duplicate" style="background:none;border:none;color:var(--text-muted);cursor:pointer;padding:4px;border-radius:4px;display:flex;align-items:center;line-height:1" onclick="duplicateContact(\''+c.id+'\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button><button class="del-btn" onclick="deleteContact(\''+c.id+'\')">✕</button></div></td></tr>';
   }).join(''):'<tr><td colspan="9"><div class="empty"><div class="empty-icon">◈</div><div class="empty-text">No contacts yet.</div></div></td></tr>';
   updateSelectBar();
 
@@ -1805,7 +1823,7 @@ function renderContacts(){
       '<div class="cc-top"><div><div class="cc-name">'+displayName(c)+'</div>'+(c.instagram&&c.name?'<div style="font-size:11px;color:var(--gold)">'+c.instagram+'</div>':'')+'<div class="cc-sub">'+(c.agency||'')+'</div></div><button class="del-btn" onclick="deleteContact(\''+c.id+'\')">✕</button></div>'+
       '<div class="cc-row">'+statusBadge(c.status,c.id)+platformPill(c.platform)+(c.contacted?'<span style="font-size:10px;color:var(--text-muted)"><span class="cal-icon"></span> '+c.contacted+'</span>':'')+'</div>'+
       (c.notes?'<div style="font-size:11px;color:var(--text-muted);margin-top:8px">'+c.notes+'</div>':'')+
-      '<div class="cc-actions"><button class="cc-btn" onclick="editContact(\''+c.id+'\')">Edit</button>'+(c.email?'<a class="cc-btn" href="mailto:'+c.email+'">Email</a>':'')+(c.phone?'<a class="cc-btn" href="tel:'+c.phone+'">Call</a>':'')+(c.instagram?'<a class="cc-btn" href="https://instagram.com/'+c.instagram.replace('@','')+'" target="_blank">Instagram</a>':'')+'</div></div>';
+      '<div class="cc-actions"><button class="cc-btn" onclick="editContact(\''+c.id+'\')">Edit</button><button class="cc-btn" onclick="duplicateContact(\''+c.id+'\')">Duplicate</button>'+(c.email?'<a class="cc-btn" href="mailto:'+c.email+'">Email</a>':'')+(c.phone?'<a class="cc-btn" href="tel:'+c.phone+'">Call</a>':'')+(c.instagram?'<a class="cc-btn" href="https://instagram.com/'+c.instagram.replace('@','')+'" target="_blank">Instagram</a>':'')+'</div></div>';
   }).join('') : '';
 }
 

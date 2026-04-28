@@ -1428,6 +1428,7 @@ async function loadAll() {
       DB.contacts  = cdata.contacts  || [];
       DB.jobs      = cdata.jobs      || [];
       DB.templates = cdata.templates && cdata.templates.length ? cdata.templates : getDefaultTemplates();
+      if(DB.templates.length < 10) { DB.templates = getDefaultTemplates(); }
       DB.subscriptions = cdata.subscriptions || [];
       DB.theme     = cdata.theme || 'dark';
       loadTheme();
@@ -1442,6 +1443,8 @@ async function loadAll() {
     DB.contacts  = data.contacts  || [];
     DB.jobs      = data.jobs      || [];
     DB.templates = data.templates && data.templates.length ? data.templates : getDefaultTemplates();
+    // Auto-upgrade old templates (old set had 6, new set has 17)
+    if(DB.templates.length < 10) { DB.templates = getDefaultTemplates(); jbSave(); }
     DB.subscriptions = data.subscriptions || [];
     DB.theme     = data.theme || 'dark';
     if (!data.templates || !data.templates.length) {
@@ -1491,12 +1494,23 @@ async function deleteRecord(table, id) {
 
 function getDefaultTemplates(){
   return [
-    {id:uid(),name:'Cold Outreach — Instagram',platform:'Instagram',type:'Cold Outreach',body:'Hey [Name], I noticed one of your listings could be doing a lot more — the photos aren\'t showing the property at its best.\n\nI run Lead Solutions — we do property photo enhancement, clutter removal and virtual staging remotely for agents across the UK.\n\nHappy to fix one image for free so you can see what I mean. Interested?'},
-    {id:uid(),name:'Cold Outreach — Short',platform:'Instagram',type:'Cold Outreach',body:'Hey [Name] — I help estate agents get more clicks on their listings through photo enhancement and virtual staging. Happy to enhance one of yours for free so you can see what we do. Interested?'},
-    {id:uid(),name:'Follow Up (3 days)',platform:'Any',type:'Follow Up',body:'Hey [Name], just following up on my last message. Still happy to enhance one of your listing photos completely free — no commitment. Let me know if you\'d like to give it a try.'},
-    {id:uid(),name:'After Free Image Delivered',platform:'Any',type:'After Delivery',body:'Hey [Name], hope you\'re happy with the enhanced image! If you\'d like us to do the full listing we can turn it around within 24 hours from £69. Just let me know and I\'ll get started straight away.'},
-    {id:uid(),name:'Cold Outreach — Email',platform:'Email',type:'Cold Outreach',body:'Hi [Name],\n\nI came across your listings on Rightmove and noticed the photos could be working harder for you.\n\nI run Lead Solutions — we help estate agents get more enquiries by enhancing listing photos remotely. Image correction, clutter removal, virtual staging — all delivered within 24 hours.\n\nI\'d love to show you what we can do. Happy to enhance one image from one of your current listings completely free, no strings attached.\n\nWorth a look?\n\nNico\nnico@leadsolutions.uk\nleadsolutions.uk'},
-    {id:uid(),name:'Upsell to Paid Package',platform:'Any',type:'Paid Upsell',body:'Hey [Name], glad the free image worked well! For the full listing we offer two packages:\n\n• Listing Boost — £69 (all images enhanced, 24hr delivery)\n• Listing Optimisation — £149 (everything + virtual staging + full description rewrite)\n\nHappy to get started on whichever suits — just send the photos over.'},
+    {id:uid(),name:'Cold DM - Spotted a listing',platform:'Instagram',type:'Cold Outreach',body:'Hey [Name], just came across your listing on Rightmove and noticed the photos weren\'t really doing the property justice, especially [mention specific room e.g. the living room].\n\nI run Lead Solutions, we enhance property photos remotely so listings get more clicks and enquiries. Happy to do one of your images for free so you can see the difference yourself.\n\nWorth a look?'},
+    {id:uid(),name:'Cold DM - Generic Rightmove',platform:'Instagram',type:'Cold Outreach',body:'Hey [Name], came across some of your listings on Rightmove and thought the photos could be doing a bit more for you.\n\nI run Lead Solutions, we enhance property listing photos for estate agents remotely. Things like brightening dark rooms, removing clutter, fixing colour and ordering the shots so the best one leads.\n\nHappy to do one of your images for free so you can see what the difference looks like.\n\nInterested?'},
+    {id:uid(),name:'Cold DM - Short and punchy',platform:'Instagram',type:'Cold Outreach',body:'Hi [Name], I enhance property listing photos for estate agents and the first image is always free, no strings attached.\n\nIf you\'ve got a listing you\'re not 100% happy with, send it over and I\'ll show you what I can do.\n\nNico, Lead Solutions'},
+    {id:uid(),name:'Cold DM - Compliment and offer',platform:'Instagram',type:'Cold Outreach',body:'Hey [Name], love what you\'re doing with [something genuine, e.g. the way you write your listings].\n\nQuick one, I do property image enhancement for agents. Things like brightening dark rooms, removing clutter, virtual staging for empty properties. First image is free if you ever want to try it.\n\nListings with better photos tend to get 30-40% more clicks, just in case it\'s useful!'},
+    {id:uid(),name:'Cold DM - Comment on their post',platform:'Instagram',type:'Cold Outreach',body:'Great property! The photos don\'t quite do it justice though. Drop me a DM if you\'d ever want them enhanced, happy to do the first one free.'},
+    {id:uid(),name:'Cold Email - Specific listing',platform:'Email',type:'Cold Outreach',body:'Hi [Name],\n\nI was browsing Rightmove earlier and came across your listing at [address]. The property looks great but I think better photos could get it a lot more attention, particularly [specific room].\n\nI run Lead Solutions, a remote property marketing service. We enhance listing photos, brightness, colour, clutter removal, virtual staging, and turn them around in 24 hours.\n\nHappy to enhance one of your images for free so you can judge for yourself before committing to anything.\n\nIf you\'re interested, just reply and I\'ll get started.\n\nNico Moodie\nLead Solutions\nleadsolutions.uk | nico@leadsolutions.uk'},
+    {id:uid(),name:'Cold Email - General intro',platform:'Email',type:'Cold Outreach',body:'Hi [Name],\n\nQuick introduction, I\'m Nico, I run Lead Solutions, a property marketing service based in Manchester.\n\nWe help estate agents get more enquiries by improving their listing photos remotely. Things like fixing dark or dull images, removing clutter, reordering photos so the best one leads, and virtual staging for empty rooms.\n\nI\'d love to show you what we can do with one of your current listings, completely free, no obligation, just so you can see the difference before deciding anything.\n\nWould that be useful?\n\nNico\nLead Solutions\nleadsolutions.uk'},
+    {id:uid(),name:'Cold Email - Bad photos angle',platform:'Email',type:'Cold Outreach',body:'Hi [Name],\n\nBuyers spend about 3 seconds deciding whether to click a listing. Dark, cluttered, or poorly ordered photos are the most common reason they don\'t.\n\nI run Lead Solutions, we enhance property listing photos remotely for estate agents across the UK. Brighter images, clutter removed, better ordering, virtual staging for empty rooms. 24-hour turnaround.\n\nI\'d be happy to improve one of your photos for free so you can see exactly what the difference looks like.\n\nWorth 5 minutes?\n\nNico\nLead Solutions\nleadsolutions.uk'},
+    {id:uid(),name:'Follow Up (3 days) - Instagram',platform:'Instagram',type:'Follow Up',body:'Hey [Name], just following up on my message from a few days ago.\n\nStill happy to enhance one of your listing photos for free, no pressure at all, just wanted to make sure it didn\'t get buried.\n\nLet me know if you\'d like to give it a go.'},
+    {id:uid(),name:'Follow Up (3 days) - Email',platform:'Email',type:'Follow Up',body:'Hi [Name],\n\nJust wanted to follow up on my email from earlier this week in case it got lost.\n\nStill happy to enhance one of your listing photos for free, would only take 24 hours and you\'d be able to see the difference straight away.\n\nNo worries if now\'s not the right time.\n\nNico'},
+    {id:uid(),name:'Final Follow Up - Closing the loop',platform:'Email',type:'Follow Up',body:'Hi [Name],\n\nLast message from me, I know you\'re busy and I don\'t want to keep pinging you.\n\nIf the timing isn\'t right or you\'re happy with how things are, totally understand. The free image offer is always open if you want to come back to it down the line.\n\nGood luck with the listings either way.\n\nNico'},
+    {id:uid(),name:'LinkedIn - Connection request note',platform:'LinkedIn',type:'Cold Outreach',body:'Hi [Name], came across your profile while looking at [Agency Name]. I run a property marketing service helping agents get more enquiries through better listing photos. Would love to connect.'},
+    {id:uid(),name:'LinkedIn - After connecting',platform:'LinkedIn',type:'Cold Outreach',body:'Hey [Name], thanks for connecting.\n\nI\'ll keep this brief, I run Lead Solutions, a remote property photo enhancement service. Better photos, more clicks, 24-hour turnaround.\n\nI do the first image for free for every new agent I work with, just so you can see the difference before committing to anything. No catch.\n\nIf you\'ve got a listing with photos you\'re not happy with, happy to take a look.'},
+    {id:uid(),name:'After Free Image - Instagram',platform:'Instagram',type:'After Delivery',body:'Hey [Name], here\'s the enhanced version! [attach image]\n\nPretty big difference I think. If you want to use it feel free.\n\nIf you liked it, our Listing Boost is £69 and covers up to 15 images with 24-hour turnaround. Or the full Listing Optimisation at £149 includes virtual staging, a rewritten description, and two branded social posts.\n\nHappy to answer any questions if you want to know more.'},
+    {id:uid(),name:'After Free Image - Email',platform:'Email',type:'After Delivery',body:'Hi [Name],\n\nHere\'s the enhanced version of [image description], let me know what you think.\n\nIf you\'d like to use it, go ahead. And if you want to take the listing further, here\'s what we offer:\n\nListing Boost - £69\nUp to 15 enhanced images, clutter and mark removal, colour correction, strategic photo ordering, and an improved headline. 24-hour turnaround.\n\nListing Optimisation - £149\nEverything in the Boost, plus virtual staging for up to 3 rooms, a full description rewrite, and 2 branded social posts. 48-hour turnaround.\n\nBoth are done remotely, no disruption to the vendor.\n\nWould either of these work for you?\n\nNico'},
+    {id:uid(),name:'Upsell - Boost to Optimisation',platform:'Email',type:'Paid Upsell',body:'Hi [Name],\n\nGlad the Listing Boost went well, the photos look great.\n\nJust wanted to mention, if you want to go the full way with this one, our Listing Optimisation at £149 would add virtual staging to up to 3 rooms, a full rewrite of the listing description, and two branded social posts ready to use on Instagram or Facebook.\n\nWorth it if you want the listing to stand out properly, not just have better photos.\n\nHappy to get started today if you want to go for it.\n\nNico'},
+    {id:uid(),name:'Upsell - Second listing offer',platform:'Instagram',type:'Paid Upsell',body:'Hey [Name], glad it worked out well with [first listing].\n\nGot any other listings on at the moment where the photos could do with a lift? Happy to do the same again, Boost starts at £69 and I can turn it around in 24 hours.'},
   ];
 }
 
@@ -1932,11 +1946,12 @@ function deleteTemplate(id){
 
 function copyTemplate(id){
   var t=DB.templates.find(function(x){return x.id===id;});if(!t)return;
-  navigator.clipboard.writeText(t.body).then(function(){
+  var text=t.subject?'Subject: '+t.subject+'\n\n'+t.body:t.body;
+  navigator.clipboard.writeText(text).then(function(){
     var btn=document.getElementById('copy-'+id);
     if(btn){btn.textContent='Copied!';btn.classList.add('copied');setTimeout(function(){btn.textContent='Copy';btn.classList.remove('copied');},2000);}
   }).catch(function(){
-    var ta=document.createElement('textarea');ta.value=t.body;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+    var ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
     var btn=document.getElementById('copy-'+id);
     if(btn){btn.textContent='Copied!';btn.classList.add('copied');setTimeout(function(){btn.textContent='Copy';btn.classList.remove('copied');},2000);}
   });
@@ -1946,8 +1961,10 @@ function renderTemplates(){
   var list=document.getElementById('templates-list');
   var typeMap={'Cold Outreach':'badge-blue','Follow Up':'badge-amber','Free Job Offer':'badge-green','After Delivery':'badge-gold','Paid Upsell':'badge-green','Other':'badge-grey'};
   list.innerHTML=DB.templates.length?DB.templates.map(function(t){
+    var subjHtml=t.subject?'<div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;padding:5px 10px;background:var(--dark2);border-radius:6px"><span style="color:var(--text-muted);letter-spacing:0.04em;text-transform:uppercase;font-size:9px;font-weight:700;margin-right:6px">Subject</span>'+t.subject+'</div>':'';
     return '<div class="template-card">'+
       '<div class="template-header"><div><div class="template-name">'+t.name+'</div><div class="template-platform"><span class="badge '+(typeMap[t.type]||'badge-grey')+'" style="margin-right:6px">'+t.type+'</span><span class="badge badge-grey">'+t.platform+'</span></div></div><button class="del-btn" onclick="deleteTemplate(\''+t.id+'\')">✕</button></div>'+
+      subjHtml+
       '<div class="template-body">'+t.body.replace(/</g,'&lt;')+'</div>'+
       '<button class="copy-btn" id="copy-'+t.id+'" onclick="copyTemplate(\''+t.id+'\')">Copy</button></div>';
   }).join(''):'<div class="empty"><div class="empty-icon">◻</div><div class="empty-text">No templates yet. Your default templates are pre-loaded.</div></div>';

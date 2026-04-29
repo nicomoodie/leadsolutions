@@ -1061,6 +1061,158 @@
     line-height: 1.4;
   }
 
+  /* ── CTA FORM ── */
+  .cta-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    margin: 0 auto 2rem;
+    max-width: 540px;
+    text-align: left;
+  }
+
+  .cta-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem;
+  }
+
+  .cta-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .cta-field label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--text-mid);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .cta-field input,
+  .cta-field select,
+  .cta-field textarea {
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 11px 14px;
+    font-family: var(--body);
+    font-size: 0.88rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .cta-field select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888880' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+    cursor: pointer;
+  }
+
+  .cta-field select option {
+    background: #161616;
+    color: var(--text);
+  }
+
+  .cta-field textarea {
+    resize: none;
+    height: 90px;
+    line-height: 1.5;
+  }
+
+  .cta-field input::placeholder,
+  .cta-field textarea::placeholder {
+    color: var(--text-muted);
+  }
+
+  .cta-field input:focus,
+  .cta-field select:focus,
+  .cta-field textarea:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
+  }
+
+  .cta-form-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: var(--gold);
+    color: var(--black);
+    font-family: var(--body);
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 13px 28px;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+    width: 100%;
+    letter-spacing: 0.02em;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-form-submit:hover {
+    opacity: 0.88;
+    transform: translateY(-1px);
+  }
+
+  .cta-form-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .cta-form-success {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+    background: var(--dark3);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+  }
+
+  .cta-form-success .success-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+
+  .cta-form-success h3 {
+    font-family: var(--display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+
+  .cta-form-success p {
+    font-size: 0.85rem;
+    color: var(--text-mid);
+    line-height: 1.5;
+  }
+
+  .cta-form-note {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 540px) {
+    .cta-form-row { grid-template-columns: 1fr; }
+  }
+
   /* ── FOOTER ── */
   footer {
     padding: 2rem;
@@ -2329,17 +2481,61 @@
   <div class="container">
     <div class="cta-wrap reveal">
       <p class="sec-eye" style="text-align:center;">Get In Touch</p>
-      <h2 class="sec-h2" style="text-align:center;">Ready to make your<br>listings stand out?</h2>
-      <p class="sec-sub" style="text-align:center;margin:0 auto 1.5rem;">
-        Get in touch today. We'll enhance your first image completely free so you can see exactly what we do — before committing to anything.
+      <h2 class="sec-h2" style="text-align:center;">Claim your free<br>image enhancement</h2>
+      <p class="sec-sub" style="text-align:center;margin:0 auto 2rem;">
+        Fill in your details below. We'll enhance your first property image completely free — no commitment, no payment, just results.
       </p>
-      <a href="#" id="cta-email-link" class="cta-email"><span class="__cf_email__" data-cfemail="66080f0509260a03070215090a13120f09081548130d">[email&#160;protected]</span></a>
-      <p class="cta-detail">
-        Remote services available across the UK
-      </p>
-      <a href="#" class="btn-primary btn-fill" id="main-cta-email" style="margin:0 auto;display:inline-flex;">
-        Start a conversation →
-      </a>
+
+      <!-- Success state -->
+      <div class="cta-form-success" id="cta-success">
+        <span class="success-icon">✦</span>
+        <h3>We'll be in touch shortly</h3>
+        <p>Thanks for reaching out. We'll get back to you within a few hours with your free enhanced image.</p>
+      </div>
+
+      <!-- Form -->
+      <form class="cta-form" id="cta-form" onsubmit="handleCtaForm(event)">
+        <div class="cta-form-row">
+          <div class="cta-field">
+            <label for="f-name">Your Name</label>
+            <input type="text" id="f-name" name="name" placeholder="e.g. James Smith" required />
+          </div>
+          <div class="cta-field">
+            <label for="f-agency">Agency Name</label>
+            <input type="text" id="f-agency" name="agency" placeholder="e.g. Smith & Co Estate Agents" required />
+          </div>
+        </div>
+        <div class="cta-form-row">
+          <div class="cta-field">
+            <label for="f-email">Email Address</label>
+            <input type="email" id="f-email" name="email" placeholder="you@youragency.co.uk" required />
+          </div>
+          <div class="cta-field">
+            <label for="f-phone">Phone (optional)</label>
+            <input type="tel" id="f-phone" name="phone" placeholder="07700 000000" />
+          </div>
+        </div>
+        <div class="cta-field">
+          <label for="f-service">What are you most interested in?</label>
+          <select id="f-service" name="service" required>
+            <option value="" disabled selected>Select a service…</option>
+            <option value="Image Enhancement">Image Enhancement — £69 Listing Boost</option>
+            <option value="Listing Optimisation">Full Listing Optimisation — £149</option>
+            <option value="Virtual Staging">Virtual Staging</option>
+            <option value="Social Media Content">Social Media Content</option>
+            <option value="Not sure">Not sure yet — just want the free image</option>
+          </select>
+        </div>
+        <div class="cta-field">
+          <label for="f-message">Anything else? (optional)</label>
+          <textarea id="f-message" name="message" placeholder="e.g. link to a listing, number of properties, any questions…"></textarea>
+        </div>
+        <button type="submit" class="cta-form-submit" id="cta-submit-btn">
+          <span id="cta-btn-text">Request your free image →</span>
+        </button>
+        <p class="cta-form-note">We'll respond within a few hours · Remote service across the UK · No obligation</p>
+      </form>
+
       <div class="cta-cards">
         <div class="cta-card">
           <span class="cta-card-val">24h</span>
@@ -2374,6 +2570,29 @@
 </footer>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // CTA Form submission via Formspree
+  function handleCtaForm(e) {
+    e.preventDefault();
+    const form = document.getElementById('cta-form');
+    const data = new FormData(form);
+
+    const name = data.get('name') || '';
+    const agency = data.get('agency') || '';
+    const email = data.get('email') || '';
+    const phone = data.get('phone') || '';
+    const service = data.get('service') || '';
+    const message = data.get('message') || '';
+
+    // Hide form and show success immediately
+    form.style.display = 'none';
+    document.getElementById('cta-success').style.display = 'block';
+
+    // Open mailto with all details pre-filled
+    const bodyText = `Name: ${name}\nAgency: ${agency}\nEmail: ${email}\nPhone: ${phone}\nService: ${service}\n\nMessage: ${message}`;
+    const body = encodeURIComponent(bodyText);
+    window.location.href = `mailto:nico@leadsolutions.uk?subject=Free Image Request — ${agency}&body=${body}`;
+  }
+
   // Mobile nav
   function toggleMenu() {
     document.getElementById('nav-links').classList.toggle('open');

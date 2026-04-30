@@ -995,7 +995,7 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
         <div class="card" style="margin-bottom:0">
-          <div class="section-head"><div><div class="section-title">Follow Ups Due</div><div class="section-sub">Tap status to update</div></div></div>
+          <div class="section-head"><div><div class="section-title">Follow Ups Today</div><div class="section-sub">Tap status to update</div></div></div>
           <div id="dash-followups"></div>
         </div>
         <div class="card" style="margin-bottom:0">
@@ -2134,10 +2134,10 @@ function renderDashboard(){
   document.getElementById('goal-label').textContent='£'+monthRevenue.toFixed(2)+' of £1,000';
   document.getElementById('goal-pct').textContent=Math.round(pct)+'%';
   document.getElementById('goal-bar').style.width=pct+'%';
-  var due=DB.contacts.filter(function(c){return c.followup&&c.followup<=today()&&c.status!=='Client'&&c.status!=='Not Interested';});
-  document.getElementById('dash-followups').innerHTML=due.length?due.slice(0,5).map(function(c){
+  var due=DB.contacts.filter(function(c){return c.followup&&c.followup===today()&&c.status!=='Client'&&c.status!=='Not Interested';});
+  document.getElementById('dash-followups').innerHTML=due.length?'<div style="max-height:260px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent">'+due.map(function(c){
     return '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)"><div style="cursor:pointer" onclick="editContact(\''+c.id+'\')"><div style="font-size:13px;font-weight:500">'+displayName(c)+'</div><div style="font-size:11px;color:var(--text-muted)">'+(c.agency||'')+' · '+c.platform+'</div></div>'+statusBadge(c.status,c.id)+'</div>';
-  }).join(''):'<div class="empty" style="padding:20px"><div class="empty-icon" style="font-size:24px">◎</div><div class="empty-text">None due</div></div>';
+  }).join('')+'</div>':'<div class="empty" style="padding:20px"><div class="empty-icon" style="font-size:24px">◎</div><div class="empty-text">None due today</div></div>';
   var recent=DB.jobs.slice().sort(function(a,b){return b.created-a.created;}).slice(0,5);
   document.getElementById('dash-activity').innerHTML=recent.length?recent.map(function(j){
     return '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)"><div><div style="font-size:13px;font-weight:500">'+j.client+'</div><div style="font-size:11px;color:var(--text-muted)">'+j.service+'</div></div><span style="color:var(--gold);font-size:13px">£'+j.price.toFixed(2)+'</span></div>';

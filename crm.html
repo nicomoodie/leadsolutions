@@ -444,6 +444,192 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
   .prompt-tab.active{background:var(--gold-dim);color:var(--gold);border-color:rgba(201,168,76,0.25)}
   .prompt-tab-content{display:none}
   .prompt-tab-content.active{display:block}
+
+  /* ── ROADMAP ───────────────────────────────────────────────────────────── */
+  .rm-wrap{max-width:820px;margin:0 auto}
+  .rm-header{margin-bottom:28px}
+  .rm-title{font-family:var(--display);font-size:34px;line-height:1.1;color:var(--off-white);margin-bottom:10px;font-weight:700;letter-spacing:-0.01em}
+  .rm-overall{margin-top:22px;display:flex;align-items:center;gap:16px}
+  .rm-overall-track{flex:1;height:4px;background:var(--dark3);border-radius:2px;overflow:hidden;position:relative}
+  .rm-overall-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--green));border-radius:2px;transition:width 0.6s cubic-bezier(0.4,0,0.2,1);box-shadow:0 0 12px rgba(201,168,76,0.35)}
+  .rm-overall-pct{font-family:var(--body);font-size:12px;color:var(--gold);white-space:nowrap;letter-spacing:0.04em}
+
+  .rm-phases{display:flex;flex-direction:column;gap:12px}
+  .rm-phase{background:var(--dark);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color 0.25s,box-shadow 0.25s}
+  .rm-phase.active{border-color:var(--rm-accent,var(--gold));box-shadow:0 0 0 1px var(--rm-accent-dim,var(--gold-dim)),0 8px 28px rgba(0,0,0,0.35)}
+  .rm-phase-head{padding:18px 20px;cursor:pointer;display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px;user-select:none;transition:background 0.25s}
+  .rm-phase.active .rm-phase-head{background:var(--rm-accent-dim,var(--gold-dim))}
+  .rm-phase-meta{display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+  .rm-phase-label{font-family:var(--body);font-size:10px;color:var(--rm-accent,var(--gold));letter-spacing:0.18em;font-weight:600;text-transform:uppercase}
+  .rm-phase-dot{color:var(--border2);font-size:10px}
+  .rm-phase-time{font-family:var(--body);font-size:11px;color:var(--text-muted);letter-spacing:0.04em}
+  .rm-phase-name{font-family:var(--display);font-size:21px;line-height:1.2;color:var(--off-white);font-weight:700;margin-bottom:4px;letter-spacing:-0.005em}
+  .rm-phase-desc{color:var(--text-mid);font-size:12.5px;line-height:1.55}
+  .rm-phase-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+  .rm-phase-pct{font-family:var(--body);font-size:18px;color:var(--rm-accent,var(--gold));line-height:1;font-weight:500}
+  .rm-phase-pct sup{font-size:10px;font-weight:400;margin-left:1px}
+  .rm-phase-frac{color:var(--text-muted);font-size:10.5px;margin-top:3px;letter-spacing:0.03em}
+  .rm-phase-bar{height:2px;background:var(--border)}
+  .rm-phase-bar-fill{height:100%;width:0%;background:var(--rm-accent,var(--gold));transition:width 0.5s cubic-bezier(0.4,0,0.2,1)}
+  .rm-phase-items{display:none;padding:6px 0 12px}
+  .rm-phase.active .rm-phase-items{display:block}
+  .rm-item{display:flex;align-items:flex-start;gap:14px;padding:11px 20px;cursor:pointer;transition:background 0.15s;border-bottom:1px solid var(--border)}
+  .rm-item:last-child{border-bottom:none}
+  .rm-item:hover{background:var(--dark2)}
+  .rm-item.done{background:var(--rm-accent-dim,var(--gold-dim))}
+  .rm-check{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--border2);background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all 0.2s}
+  .rm-item.done .rm-check{border-color:var(--rm-accent,var(--gold));background:var(--rm-accent,var(--gold))}
+  .rm-check svg{opacity:0;transition:opacity 0.15s}
+  .rm-item.done .rm-check svg{opacity:1}
+  .rm-item-text{font-size:13px;line-height:1.55;color:var(--off-white);transition:color 0.2s}
+  .rm-item.done .rm-item-text{color:var(--text-mid);text-decoration:line-through;text-decoration-color:var(--text-muted);text-decoration-thickness:1px}
+
+  .rm-section-head{font-family:var(--body);font-size:10px;color:var(--text-muted);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:14px;font-weight:500}
+  .rm-timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-radius:8px;overflow:hidden}
+  .rm-timeline-cell{padding:14px 12px;background:var(--dark);cursor:pointer;transition:background 0.2s}
+  .rm-timeline-cell:hover{background:var(--dark2)}
+  .rm-timeline-label{font-family:var(--body);font-size:9px;letter-spacing:0.14em;font-weight:600;margin-bottom:6px;text-transform:uppercase}
+  .rm-timeline-time{font-size:11.5px;color:var(--off-white);line-height:1.4;margin-bottom:8px}
+  .rm-timeline-bar{height:2px;background:var(--border2);border-radius:1px;overflow:hidden}
+  .rm-timeline-bar-fill{height:100%;width:0%;transition:width 0.5s}
+  .rm-timeline-pct{font-family:var(--body);font-size:10px;color:var(--text-muted);margin-top:6px;letter-spacing:0.04em}
+
+  .rm-skills{display:flex;flex-wrap:wrap;gap:8px}
+  .rm-skill{display:flex;align-items:center;gap:9px;padding:8px 13px;border:1px solid var(--border);border-radius:999px;background:transparent;cursor:pointer;transition:all 0.2s;user-select:none}
+  .rm-skill:hover{border-color:var(--border2)}
+  .rm-skill.unlocked{border-color:var(--gold);background:var(--gold-dim)}
+  .rm-skill-num{font-family:var(--body);font-size:10px;color:var(--text-muted);letter-spacing:0.04em;font-weight:500}
+  .rm-skill.unlocked .rm-skill-num{color:var(--gold)}
+  .rm-skill-label{font-size:12.5px;color:var(--text-mid)}
+  .rm-skill.unlocked .rm-skill-label{color:var(--off-white)}
+
+  .rm-notes-area{width:100%;min-height:110px;background:var(--dark);border:1px solid var(--border);border-radius:10px;color:var(--off-white);font-family:var(--body);font-size:13px;padding:12px 14px;resize:vertical;outline:none;line-height:1.6;transition:border-color 0.2s}
+  .rm-notes-area:focus{border-color:rgba(201,168,76,0.4)}
+  .rm-notes-area::placeholder{color:var(--text-muted)}
+
+  .rm-foot{margin-top:18px;font-family:var(--body);font-size:11px;color:var(--text-muted);text-align:center;letter-spacing:0.03em}
+
+  /* light mode tweaks */
+  body.light-mode .rm-phase{background:#FFFFFF;border-color:#D8D4CC}
+  body.light-mode .rm-item:hover{background:#F0EDE6}
+  body.light-mode .rm-item{border-color:#E8E4DC}
+  body.light-mode .rm-timeline{background:#D8D4CC}
+  body.light-mode .rm-timeline-cell{background:#FFFFFF}
+  body.light-mode .rm-timeline-cell:hover{background:#F5F2EC}
+  body.light-mode .rm-skill{border-color:#D8D4CC}
+  body.light-mode .rm-skill.unlocked{border-color:#A8823A;background:rgba(168,130,58,0.12)}
+  body.light-mode .rm-notes-area{background:#FFFFFF;border-color:#D8D4CC;color:#1a1a18}
+  body.light-mode .rm-overall-track{background:#E8E4DC}
+  body.light-mode .rm-phase-bar{background:#E8E4DC}
+
+  /* mobile */
+  @media (max-width:768px){
+    .rm-title{font-size:28px}
+    .rm-phase-head{padding:16px 16px;gap:12px}
+    .rm-phase-name{font-size:18px}
+    .rm-item{padding:11px 16px}
+    .rm-timeline{grid-template-columns:repeat(2,1fr)}
+  }
+
+  /* phase action buttons (edit / move) */
+  .rm-phase-actions{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+  .rm-action-row{display:flex;gap:4px;align-items:center}
+  .rm-action-btn{
+    width:26px;height:26px;border-radius:6px;
+    background:transparent;border:1px solid var(--border);
+    color:var(--text-mid);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;line-height:1;padding:0;
+    transition:all 0.15s;
+  }
+  .rm-action-btn:hover:not(:disabled){background:var(--dark2);color:var(--off-white);border-color:var(--border2)}
+  .rm-action-btn:disabled{opacity:0.3;cursor:not-allowed}
+  .rm-action-btn.edit:hover{background:var(--gold-dim);color:var(--gold);border-color:rgba(201,168,76,0.4)}
+  .rm-action-btn svg{width:13px;height:13px}
+  body.light-mode .rm-action-btn{border-color:#D8D4CC}
+  body.light-mode .rm-action-btn:hover:not(:disabled){background:#F0EDE6;border-color:#C8C4BC}
+  body.light-mode .rm-action-btn.edit:hover{background:rgba(168,130,58,0.12);color:#A8823A;border-color:rgba(168,130,58,0.4)}
+
+  /* phase footer (add / reset) */
+  .rm-phase-foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding:0 4px}
+  .rm-add-phase{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:8px 14px;border-radius:8px;
+    background:transparent;border:1px dashed var(--border2);
+    color:var(--text-mid);font-family:var(--body);font-size:12px;cursor:pointer;
+    transition:all 0.15s;
+  }
+  .rm-add-phase:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-dim)}
+  .rm-reset-link{
+    background:transparent;border:none;cursor:pointer;
+    font-family:var(--body);font-size:11px;color:var(--text-muted);
+    letter-spacing:0.04em;padding:6px 8px;
+    transition:color 0.15s;
+  }
+  .rm-reset-link:hover{color:var(--red)}
+
+  /* edit modal — items list */
+  .rm-edit-items{
+    display:flex;flex-direction:column;gap:6px;
+    max-height:320px;overflow-y:auto;
+    padding:6px;background:var(--dark2);
+    border:1px solid var(--border);border-radius:8px;
+  }
+  body.light-mode .rm-edit-items{background:#F5F2EC;border-color:#D8D4CC}
+  .rm-edit-item{display:flex;gap:6px;align-items:center}
+  .rm-edit-item-handle{
+    cursor:grab;color:var(--text-muted);
+    width:22px;text-align:center;font-size:14px;line-height:1;
+    user-select:none;flex-shrink:0;
+  }
+  .rm-edit-item-handle:active{cursor:grabbing}
+  .rm-edit-item-input{
+    flex:1;background:var(--dark);border:1px solid var(--border);
+    border-radius:6px;color:var(--off-white);
+    font-family:var(--body);font-size:13px;
+    padding:8px 10px;outline:none;
+  }
+  .rm-edit-item-input:focus{border-color:rgba(201,168,76,0.4)}
+  body.light-mode .rm-edit-item-input{background:#FFFFFF;border-color:#D8D4CC;color:#1a1a18}
+  body.light-mode .rm-edit-item-input:focus{border-color:rgba(168,130,58,0.5)}
+  .rm-edit-item-del{
+    width:28px;height:28px;border-radius:6px;
+    background:transparent;border:1px solid var(--border);
+    color:var(--text-muted);cursor:pointer;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;transition:all 0.15s;
+  }
+  .rm-edit-item-del:hover{background:rgba(224,82,82,0.1);border-color:var(--red);color:var(--red)}
+  .rm-edit-add-item{
+    margin-top:8px;width:100%;padding:9px;
+    background:transparent;border:1px dashed var(--border2);
+    color:var(--text-mid);font-family:var(--body);font-size:12px;
+    border-radius:6px;cursor:pointer;transition:all 0.15s;
+  }
+  .rm-edit-add-item:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-dim)}
+
+  /* accent color picker in edit modal */
+  .rm-accent-picker{display:flex;gap:8px;flex-wrap:wrap}
+  .rm-accent-swatch{
+    width:32px;height:32px;border-radius:8px;cursor:pointer;
+    border:2px solid transparent;position:relative;
+    transition:transform 0.15s,border-color 0.15s;
+  }
+  .rm-accent-swatch:hover{transform:scale(1.06)}
+  .rm-accent-swatch.selected{border-color:var(--off-white)}
+  .rm-accent-swatch.selected::after{
+    content:'\2713';position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;
+    color:#0e0e0e;font-size:14px;font-weight:700;
+  }
+
+  /* delete phase button in modal */
+  .rm-delete-phase{
+    background:transparent;border:1px solid var(--border);
+    color:var(--text-muted);font-family:var(--body);font-size:12px;
+    padding:9px 14px;border-radius:8px;cursor:pointer;transition:all 0.15s;
+  }
+  .rm-delete-phase:hover{background:rgba(224,82,82,0.1);border-color:var(--red);color:var(--red)}
 </style>
 <style>
 /* ── LOGIN SCREEN ─────────────────────────────────────────────────────────── */
@@ -964,6 +1150,7 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
     <div class="nav-item" onclick="nav('templates')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span>Templates</div>
     <div class="nav-section">Tools</div>
     <div class="nav-item" onclick="nav('prompts')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></span>AI Prompts</div>
+    <div class="nav-item" onclick="nav('roadmap')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M7 12h14"/><path d="M11 18h10"/><circle cx="3" cy="6" r="1.2" fill="currentColor"/><circle cx="7" cy="12" r="1.2" fill="currentColor"/><circle cx="11" cy="18" r="1.2" fill="currentColor"/></svg></span>Roadmap</div>
     <div class="nav-section">Work</div>
     <div class="nav-item" onclick="nav('jobs')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span>Jobs</div>
     <div class="nav-item" onclick="nav('finance')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>Finance</div>
@@ -1073,6 +1260,44 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
     <!-- PROMPTS -->
     <div class="page" id="page-prompts">
       <div id="prompts-list"></div>
+    </div>
+
+    <!-- ROADMAP -->
+    <div class="page" id="page-roadmap">
+      <div class="rm-wrap">
+
+        <div class="rm-header">
+          <h1 class="rm-title">Your Roadmap</h1>
+          <div class="rm-overall">
+            <div class="rm-overall-track"><div class="rm-overall-fill" id="rm-overall-fill"></div></div>
+            <div class="rm-overall-pct"><span id="rm-overall-pct">0</span>% overall</div>
+          </div>
+        </div>
+
+        <div class="rm-phases" id="rm-phases"></div>
+        <div class="rm-phase-foot" id="rm-phase-foot"></div>
+
+        <div class="card" style="margin-top:24px">
+          <div class="rm-section-head">Timeline Overview</div>
+          <div class="rm-timeline" id="rm-timeline"></div>
+        </div>
+
+        <div class="card">
+          <div class="rm-section-head" style="display:flex;align-items:center;justify-content:space-between">
+            <span>Skills to Learn &mdash; Priority Order</span>
+            <button class="rm-action-btn edit" onclick="rmOpenSkillsEdit()" title="Edit skills" style="margin-left:8px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></button>
+          </div>
+          <div class="rm-skills" id="rm-skills"></div>
+        </div>
+
+        <div class="card">
+          <div class="rm-section-head">Your Notes</div>
+          <textarea id="rm-notes" class="rm-notes-area" placeholder="Add notes, current focus, next steps&hellip;"></textarea>
+        </div>
+
+        <div class="rm-foot">Progress saved automatically &middot; <span id="rm-foot-date"></span></div>
+
+      </div>
     </div>
 
     <!-- JOBS -->
@@ -1340,6 +1565,67 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
   </div>
 </div>
 
+<!-- ROADMAP PHASE EDIT MODAL -->
+<div class="modal-bg" id="modal-rm-phase">
+  <div class="modal">
+    <div class="modal-title" id="modal-rm-title">Edit Phase</div>
+    <input type="hidden" id="rm-edit-id">
+    <div class="form-row-2">
+      <div class="form-group">
+        <label class="form-label">Phase Label <span class="opt">(short)</span></label>
+        <input class="form-input" id="rm-edit-label" placeholder="e.g. Phase 2" maxlength="24">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Timeline</label>
+        <input class="form-input" id="rm-edit-timeline" placeholder="e.g. Months 2&ndash;6" maxlength="40">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Title</label>
+      <input class="form-input" id="rm-edit-title-in" placeholder="e.g. Expand the Digital Offering" maxlength="80">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Description</label>
+      <textarea class="form-textarea" id="rm-edit-desc" placeholder="Short description shown under the title" maxlength="240"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Accent Colour</label>
+      <div class="rm-accent-picker" id="rm-edit-accent-picker"></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Items <span class="opt">(drag &#9776; to reorder)</span></label>
+      <div class="rm-edit-items" id="rm-edit-items-list"></div>
+      <button class="rm-edit-add-item" onclick="rmEditAddItem()">+ Add item</button>
+    </div>
+    <div class="modal-actions" style="justify-content:space-between">
+      <button class="rm-delete-phase" id="rm-edit-delete" onclick="rmDeletePhase()">Delete Phase</button>
+      <div style="display:flex;gap:8px">
+        <button class="topbar-btn outline" onclick="closeModal('modal-rm-phase')">Cancel</button>
+        <button class="topbar-btn" onclick="rmSaveEdit()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ROADMAP SKILLS EDIT MODAL -->
+<div class="modal-bg" id="modal-rm-skills">
+  <div class="modal">
+    <div class="modal-title">Edit Skills</div>
+    <div class="form-group">
+      <label class="form-label">Skills <span class="opt">(drag &#9776; to reorder)</span></label>
+      <div class="rm-edit-items" id="rm-skills-edit-list"></div>
+      <button class="rm-edit-add-item" onclick="rmSkillsAddItem()">+ Add skill</button>
+    </div>
+    <div class="modal-actions" style="justify-content:space-between">
+      <button class="rm-delete-phase" onclick="rmSkillsResetDefaults()">Reset to defaults</button>
+      <div style="display:flex;gap:8px">
+        <button class="topbar-btn outline" onclick="closeModal('modal-rm-skills')">Cancel</button>
+        <button class="topbar-btn" onclick="rmSkillsSaveEdit()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- QUICK STATUS DROPDOWN -->
 <div id="quick-status-dropdown" class="status-dropdown">
   <div class="status-opt" onclick="quickStatus('Contacted')"><span class="status-dot" style="background:#5284E0"></span>Contacted</div>
@@ -1538,6 +1824,7 @@ var pageCfg = {
   pipeline:  {title:'Pipeline',    btn:null,              sec:null},
   templates: {title:'Templates',   btn:'+ Add Template',  sec:null},
   prompts:   {title:'AI Prompts',  btn:null,              sec:null},
+  roadmap:   {title:'Roadmap',     btn:null,              sec:null},
   jobs:      {title:'Jobs',        btn:'+ Add Job',       sec:null},
   finance:   {title:'Finance',     btn:'+ Add Job',       sec:null},
   subscriptions: {title:'Subscriptions', btn:'+ Add Subscription', sec:null},
@@ -2211,7 +2498,7 @@ function renderSubscriptions(){
 
 // ── RENDER ────────────────────────────────────────────────────────────────────
 function render(){
-  renderDashboard();renderContacts();renderPipeline();renderTemplates();renderJobs();renderFinance();renderGoals();renderPrompts();renderSubscriptions();
+  renderDashboard();renderContacts();renderPipeline();renderTemplates();renderJobs();renderFinance();renderGoals();renderPrompts();renderSubscriptions();renderRoadmap();
 }
 
 var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -2296,6 +2583,614 @@ document.getElementById('sidebar-date').textContent=days[n.getDay()]+' '+n.getDa
     list.innerHTML = tabsHtml + contentsHtml;
   }
   // ── END PROMPTS ───────────────────────────────────────────────────────────
+
+  // ── ROADMAP ───────────────────────────────────────────────────────────────
+  var RM_PHASES_DEFAULT = [
+    {
+      id:'foundation', label:'Foundation', title:'Remote Digital Services',
+      timeline:'Right Now', accent:'gold',
+      description:'Your base. Low overhead, fully scalable, no equipment needed.',
+      items:[
+        {id:'f1', text:'Listing photography (sourced/edited remotely)'},
+        {id:'f2', text:'Rightmove/Zoopla optimisation packages'},
+        {id:'f3', text:'Listing copywriting (inside Optimisation package)'},
+        {id:'f4', text:'Social media content (one-off)'},
+        {id:'f5', text:'Brand + design work from Lead Solutions foundation'}
+      ]
+    },
+    {
+      id:'phase2', label:'Phase 2', title:'Expand the Digital Offering',
+      timeline:'Months 2\u20136', accent:'green',
+      description:'Natural extensions. Learnable quickly. No equipment required.',
+      items:[
+        {id:'p2_1', text:'Video editing for agents \u2014 Premiere Pro or CapCut Pro (weeks to learn)'},
+        {id:'p2_2', text:'Floor plan creation \u2014 Magicplan / RoomSketcher from photos'},
+        {id:'p2_3', text:'Listing copywriting as standalone service (no new learning)'},
+        {id:'p2_4', text:'Social media management retainers \u2014 Later / Buffer, monthly recurring'},
+        {id:'p2_5', text:'Rightmove/Zoopla profile audits & rewrites (one-off consultancy)'},
+        {id:'p2_6', text:'Paid ad management \u2014 Meta Ads Manager, \u00A3200\u2013500/campaign (1 month to learn)'}
+      ]
+    },
+    {
+      id:'phase3', label:'Phase 3', title:'On-Site Services',
+      timeline:'Months 6\u201312', accent:'blue',
+      description:'Remote-only \u2192 full service. Prices jump significantly. Equipment required.',
+      items:[
+        {id:'p3_1', text:'Professional photography \u2014 DSLR/mirrorless, wide lens, tripod, lighting (3\u20136 months to pro standard)'},
+        {id:'p3_2', text:'Aerial/drone photography \u2014 DJI drone + CAA flyer ID (few weeks)'},
+        {id:'p3_3', text:'Cinematic video walkthroughs \u2014 gimbal (DJI RS3), \u00A3300\u2013800/property'},
+        {id:'p3_4', text:'Twilight/dusk photography \u2014 same gear, premium pricing'},
+        {id:'p3_5', text:'360\u00B0 virtual tours \u2014 Matterport, recurring hosting revenue'}
+      ]
+    },
+    {
+      id:'phase4', label:'Phase 4', title:'High Value & Consultancy',
+      timeline:'Year 2\u20133+', accent:'purple',
+      description:'Reputation and case studies required. The big contracts.',
+      items:[
+        {id:'p4_1', text:'New build developer contracts \u2014 full marketing packages, \u00A35k\u201320k+'},
+        {id:'p4_2', text:'Property brochure & print design \u2014 InDesign, luxury listings'},
+        {id:'p4_3', text:'CGI & architectural visualisation \u2014 Blender/3ds Max or subcontract'},
+        {id:'p4_4', text:'Brand identity for estate agencies \u2014 \u00A31,500\u20135,000+ per agency'},
+        {id:'p4_5', text:'Website builds for agents \u2014 Webflow or custom dev'},
+        {id:'p4_6', text:'SEO & content retainers \u2014 Ahrefs/SEMrush, \u00A3300\u2013800/month/client'},
+        {id:'p4_7', text:'PR & media placement \u2014 relationship-driven, grows with network'}
+      ]
+    }
+  ];
+
+  var RM_SKILLS_DEFAULT = [
+    {label:'Meta Ads', priority:1},
+    {label:'Professional Photography', priority:2},
+    {label:'Video Editing', priority:3},
+    {label:'Drone Operation', priority:4},
+    {label:'Webflow / Web Dev', priority:5},
+    {label:'InDesign', priority:6},
+    {label:'SEO', priority:7},
+    {label:'3D / CGI', priority:8}
+  ];
+
+  // Bumped key to v2 because storage shape changed (now includes order/customPhases)
+  var RM_KEY = 'ls_crm_roadmap_v2';
+
+  var RM_ACCENTS = [
+    {key:'gold',   color:'#C9A84C'},
+    {key:'green',  color:'#4CAF50'},
+    {key:'blue',   color:'#5284E0'},
+    {key:'purple', color:'#A37CD9'},
+    {key:'amber',  color:'#E0A852'},
+    {key:'red',    color:'#E05252'}
+  ];
+
+  function rmAccentVars(accent){
+    var map = {
+      gold:   { c:'var(--gold)',          d:'var(--gold-dim)' },
+      green:  { c:'var(--green)',         d:'rgba(76,175,80,0.15)' },
+      blue:   { c:'var(--blue)',          d:'rgba(82,132,224,0.15)' },
+      purple: { c:'#A37CD9',              d:'rgba(163,124,217,0.15)' },
+      amber:  { c:'var(--amber)',         d:'rgba(224,168,82,0.15)' },
+      red:    { c:'var(--red)',           d:'rgba(224,82,82,0.15)' }
+    };
+    return map[accent] || map.gold;
+  }
+
+  function rmDefaultState(){
+    return {
+      checked:{},
+      active:'foundation',
+      note:'',
+      order: RM_PHASES_DEFAULT.map(function(p){return p.id;}),
+      customPhases:{},
+      customSkills:null
+    };
+  }
+  function rmLoad(){
+    try {
+      var raw = localStorage.getItem(RM_KEY);
+      if(!raw) {
+        // Try migrating old v1 state if present
+        var old = localStorage.getItem('ls_crm_roadmap_v1');
+        if(old){
+          var oldS = JSON.parse(old);
+          var s = rmDefaultState();
+          s.checked = oldS.checked || {};
+          s.active = oldS.active || 'foundation';
+          s.note = oldS.note || '';
+          return s;
+        }
+        return rmDefaultState();
+      }
+      var parsed = JSON.parse(raw);
+      // Fill in any missing keys defensively
+      var def = rmDefaultState();
+      for(var k in def){ if(parsed[k] === undefined) parsed[k] = def[k]; }
+      return parsed;
+    } catch(e){ return rmDefaultState(); }
+  }
+  function rmSave(state){
+    try { localStorage.setItem(RM_KEY, JSON.stringify(state)); } catch(e){}
+  }
+
+  var rmState = rmLoad();
+
+  // Compute the effective phase list (defaults overlaid with customPhases, ordered by state.order)
+  function rmEffectivePhases(){
+    var byId = {};
+    RM_PHASES_DEFAULT.forEach(function(p){ byId[p.id] = JSON.parse(JSON.stringify(p)); });
+    if(rmState.customPhases){
+      for(var id in rmState.customPhases){
+        var c = rmState.customPhases[id];
+        if(c === null) { delete byId[id]; continue; } // explicit deletion
+        byId[id] = JSON.parse(JSON.stringify(c));
+      }
+    }
+    var order = (rmState.order && rmState.order.length) ? rmState.order : RM_PHASES_DEFAULT.map(function(p){return p.id;});
+    var out = [];
+    order.forEach(function(id){ if(byId[id]) { out.push(byId[id]); delete byId[id]; } });
+    // Append any phases not in order (defensive)
+    Object.keys(byId).forEach(function(id){ out.push(byId[id]); });
+    return out;
+  }
+
+  function rmToggle(id){
+    rmState.checked[id] = !rmState.checked[id];
+    rmSave(rmState);
+    renderRoadmap();
+  }
+  function rmSetActive(id){
+    rmState.active = (rmState.active === id) ? null : id;
+    rmSave(rmState);
+    renderRoadmap();
+  }
+  function rmUpdateNote(val){
+    rmState.note = val;
+    rmSave(rmState);
+  }
+  function rmMovePhase(id, dir){
+    if(!rmState.order || !rmState.order.length){
+      rmState.order = RM_PHASES_DEFAULT.map(function(p){return p.id;});
+    }
+    var idx = rmState.order.indexOf(id);
+    if(idx < 0) return;
+    var newIdx = idx + dir;
+    if(newIdx < 0 || newIdx >= rmState.order.length) return;
+    var tmp = rmState.order[newIdx];
+    rmState.order[newIdx] = id;
+    rmState.order[idx] = tmp;
+    rmSave(rmState);
+    renderRoadmap();
+  }
+  function rmResetDefaults(){
+    if(!confirm('Reset roadmap to defaults? This will discard all your edits to phases and items, but will keep your tick-marks and notes.')) return;
+    rmState.order = RM_PHASES_DEFAULT.map(function(p){return p.id;});
+    rmState.customPhases = {};
+    rmSave(rmState);
+    renderRoadmap();
+  }
+
+  // expose for inline onclick
+  window.rmToggle = rmToggle;
+  window.rmSetActive = rmSetActive;
+  window.rmUpdateNote = rmUpdateNote;
+  window.rmMovePhase = rmMovePhase;
+  window.rmResetDefaults = rmResetDefaults;
+
+  // ── EDIT MODAL ────────────────────────────────────────────────────────────
+  // Working copy — edits only commit on Save
+  var rmEditDraft = null;
+
+  function rmOpenEdit(id, isNew){
+    var phases = rmEffectivePhases();
+    var existing = null;
+    if(!isNew){
+      for(var i=0;i<phases.length;i++){ if(phases[i].id===id){ existing = phases[i]; break; } }
+    }
+    rmEditDraft = existing ? JSON.parse(JSON.stringify(existing)) : {
+      id: 'phase_' + Date.now().toString(36),
+      label: 'New Phase',
+      title: '',
+      timeline: '',
+      accent: 'gold',
+      description: '',
+      items: [],
+      _isNew: true
+    };
+    // Populate fields
+    document.getElementById('modal-rm-title').textContent = rmEditDraft._isNew ? 'Add Phase' : 'Edit Phase';
+    document.getElementById('rm-edit-id').value = rmEditDraft.id;
+    document.getElementById('rm-edit-label').value = rmEditDraft.label || '';
+    document.getElementById('rm-edit-timeline').value = rmEditDraft.timeline || '';
+    document.getElementById('rm-edit-title-in').value = rmEditDraft.title || '';
+    document.getElementById('rm-edit-desc').value = rmEditDraft.description || '';
+    // Hide delete on new phases or if it's the last one
+    var delBtn = document.getElementById('rm-edit-delete');
+    if(delBtn) delBtn.style.display = (rmEditDraft._isNew || phases.length <= 1) ? 'none' : '';
+
+    rmRenderAccentPicker();
+    rmRenderEditItems();
+    openModal('modal-rm-phase');
+  }
+  function rmRenderAccentPicker(){
+    var wrap = document.getElementById('rm-edit-accent-picker');
+    if(!wrap) return;
+    var html = '';
+    RM_ACCENTS.forEach(function(a){
+      var sel = (rmEditDraft.accent === a.key) ? ' selected' : '';
+      html += '<div class="rm-accent-swatch'+sel+'" data-accent="'+a.key+'" style="background:'+a.color+'" onclick="rmEditPickAccent(\''+a.key+'\')" title="'+a.key+'"></div>';
+    });
+    wrap.innerHTML = html;
+  }
+  function rmEditPickAccent(key){
+    rmEditDraft.accent = key;
+    rmRenderAccentPicker();
+  }
+  function rmRenderEditItems(){
+    var wrap = document.getElementById('rm-edit-items-list');
+    if(!wrap) return;
+    if(!rmEditDraft.items.length){
+      wrap.innerHTML = '<div style="padding:14px;text-align:center;color:var(--text-muted);font-size:12px">No items yet. Click \u201C+ Add item\u201D below to start.</div>';
+      return;
+    }
+    var html = '';
+    rmEditDraft.items.forEach(function(it, i){
+      html += '<div class="rm-edit-item" draggable="true" data-idx="'+i+'">';
+      html +=   '<span class="rm-edit-item-handle" title="Drag to reorder">\u2630</span>';
+      html +=   '<input class="rm-edit-item-input" data-idx="'+i+'" value="'+rmEsc(it.text)+'" placeholder="Item text">';
+      html +=   '<button class="rm-edit-item-del" data-idx="'+i+'" title="Remove">\u00D7</button>';
+      html += '</div>';
+    });
+    wrap.innerHTML = html;
+
+    // bind events
+    wrap.querySelectorAll('.rm-edit-item-input').forEach(function(inp){
+      inp.addEventListener('input', function(){
+        var idx = parseInt(inp.getAttribute('data-idx'),10);
+        if(rmEditDraft.items[idx]) rmEditDraft.items[idx].text = inp.value;
+      });
+    });
+    wrap.querySelectorAll('.rm-edit-item-del').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var idx = parseInt(btn.getAttribute('data-idx'),10);
+        rmEditDraft.items.splice(idx,1);
+        rmRenderEditItems();
+      });
+    });
+
+    // Drag-and-drop reordering
+    var dragIdx = null;
+    wrap.querySelectorAll('.rm-edit-item').forEach(function(row){
+      row.addEventListener('dragstart', function(e){
+        dragIdx = parseInt(row.getAttribute('data-idx'),10);
+        row.style.opacity = '0.4';
+        try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(dragIdx)); } catch(_){}
+      });
+      row.addEventListener('dragend', function(){ row.style.opacity = ''; dragIdx = null; });
+      row.addEventListener('dragover', function(e){ e.preventDefault(); try { e.dataTransfer.dropEffect = 'move'; } catch(_){} });
+      row.addEventListener('drop', function(e){
+        e.preventDefault();
+        var srcIdx = dragIdx;
+        if(srcIdx === null){
+          try { srcIdx = parseInt(e.dataTransfer.getData('text/plain'),10); } catch(_){}
+        }
+        if(srcIdx === null || isNaN(srcIdx)) return;
+        var dstIdx = parseInt(row.getAttribute('data-idx'),10);
+        if(srcIdx === dstIdx) return;
+        var moved = rmEditDraft.items.splice(srcIdx,1)[0];
+        rmEditDraft.items.splice(dstIdx,0,moved);
+        rmRenderEditItems();
+      });
+    });
+  }
+  function rmEditAddItem(){
+    rmEditDraft.items.push({ id: 'it_' + Date.now().toString(36) + Math.floor(Math.random()*1000).toString(36), text:'' });
+    rmRenderEditItems();
+    // Focus the new input
+    setTimeout(function(){
+      var inputs = document.querySelectorAll('#rm-edit-items-list .rm-edit-item-input');
+      if(inputs.length) inputs[inputs.length-1].focus();
+    }, 30);
+  }
+  function rmSaveEdit(){
+    if(!rmEditDraft) return;
+    rmEditDraft.label    = (document.getElementById('rm-edit-label').value || '').trim() || 'Phase';
+    rmEditDraft.timeline = (document.getElementById('rm-edit-timeline').value || '').trim();
+    rmEditDraft.title    = (document.getElementById('rm-edit-title-in').value || '').trim() || rmEditDraft.label;
+    rmEditDraft.description = (document.getElementById('rm-edit-desc').value || '').trim();
+    // strip empty items
+    rmEditDraft.items = rmEditDraft.items.filter(function(it){ return (it.text||'').trim().length > 0; });
+    var isNew = !!rmEditDraft._isNew;
+    delete rmEditDraft._isNew;
+    if(isNew && !rmState.order.includes(rmEditDraft.id)){
+      rmState.order.push(rmEditDraft.id);
+    }
+    rmState.customPhases[rmEditDraft.id] = rmEditDraft;
+    rmSave(rmState);
+    closeModal('modal-rm-phase');
+    rmEditDraft = null;
+    renderRoadmap();
+  }
+  function rmDeletePhase(){
+    if(!rmEditDraft || rmEditDraft._isNew) return;
+    if(!confirm('Delete this phase? Items inside will lose their tick-marks.')) return;
+    var id = rmEditDraft.id;
+    // Mark for deletion (null) so it overrides the default
+    rmState.customPhases[id] = null;
+    rmState.order = rmState.order.filter(function(x){ return x !== id; });
+    if(rmState.active === id) rmState.active = null;
+    rmSave(rmState);
+    closeModal('modal-rm-phase');
+    rmEditDraft = null;
+    renderRoadmap();
+  }
+  function rmAddPhase(){ rmOpenEdit(null, true); }
+
+  window.rmOpenEdit = rmOpenEdit;
+  window.rmEditPickAccent = rmEditPickAccent;
+  window.rmEditAddItem = rmEditAddItem;
+  window.rmSaveEdit = rmSaveEdit;
+  window.rmDeletePhase = rmDeletePhase;
+  window.rmAddPhase = rmAddPhase;
+
+  function rmEffectiveSkills(){
+    if(rmState.customSkills && Array.isArray(rmState.customSkills)){
+      return JSON.parse(JSON.stringify(rmState.customSkills));
+    }
+    return JSON.parse(JSON.stringify(RM_SKILLS_DEFAULT));
+  }
+
+  // ── SKILLS EDIT MODAL ─────────────────────────────────────────────────────
+  var rmSkillsDraft = null;
+
+  function rmOpenSkillsEdit(){
+    rmSkillsDraft = rmEffectiveSkills().map(function(s){
+      return { label: s.label, priority: s.priority, _origLabel: s.label };
+    });
+    rmRenderSkillsEdit();
+    openModal('modal-rm-skills');
+  }
+  function rmRenderSkillsEdit(){
+    var wrap = document.getElementById('rm-skills-edit-list');
+    if(!wrap) return;
+    if(!rmSkillsDraft.length){
+      wrap.innerHTML = '<div style="padding:14px;text-align:center;color:var(--text-muted);font-size:12px">No skills yet. Click \u201C+ Add skill\u201D below.</div>';
+      return;
+    }
+    var html = '';
+    rmSkillsDraft.forEach(function(s, i){
+      html += '<div class="rm-edit-item" draggable="true" data-idx="'+i+'">';
+      html +=   '<span class="rm-edit-item-handle" title="Drag to reorder">\u2630</span>';
+      html +=   '<input class="rm-edit-item-input" data-idx="'+i+'" value="'+rmEsc(s.label)+'" placeholder="Skill name">';
+      html +=   '<button class="rm-edit-item-del" data-idx="'+i+'" title="Remove">\u00D7</button>';
+      html += '</div>';
+    });
+    wrap.innerHTML = html;
+
+    wrap.querySelectorAll('.rm-edit-item-input').forEach(function(inp){
+      inp.addEventListener('input', function(){
+        var idx = parseInt(inp.getAttribute('data-idx'),10);
+        if(rmSkillsDraft[idx]) rmSkillsDraft[idx].label = inp.value;
+      });
+    });
+    wrap.querySelectorAll('.rm-edit-item-del').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var idx = parseInt(btn.getAttribute('data-idx'),10);
+        rmSkillsDraft.splice(idx,1);
+        rmRenderSkillsEdit();
+      });
+    });
+
+    var dragIdx = null;
+    wrap.querySelectorAll('.rm-edit-item').forEach(function(row){
+      row.addEventListener('dragstart', function(e){
+        dragIdx = parseInt(row.getAttribute('data-idx'),10);
+        row.style.opacity = '0.4';
+        try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(dragIdx)); } catch(_){}
+      });
+      row.addEventListener('dragend', function(){ row.style.opacity = ''; dragIdx = null; });
+      row.addEventListener('dragover', function(e){ e.preventDefault(); try { e.dataTransfer.dropEffect = 'move'; } catch(_){} });
+      row.addEventListener('drop', function(e){
+        e.preventDefault();
+        var srcIdx = dragIdx;
+        if(srcIdx === null){
+          try { srcIdx = parseInt(e.dataTransfer.getData('text/plain'),10); } catch(_){}
+        }
+        if(srcIdx === null || isNaN(srcIdx)) return;
+        var dstIdx = parseInt(row.getAttribute('data-idx'),10);
+        if(srcIdx === dstIdx) return;
+        var moved = rmSkillsDraft.splice(srcIdx,1)[0];
+        rmSkillsDraft.splice(dstIdx,0,moved);
+        rmRenderSkillsEdit();
+      });
+    });
+  }
+  function rmSkillsAddItem(){
+    rmSkillsDraft.push({ label:'', priority: rmSkillsDraft.length + 1, _origLabel: null });
+    rmRenderSkillsEdit();
+    setTimeout(function(){
+      var inputs = document.querySelectorAll('#rm-skills-edit-list .rm-edit-item-input');
+      if(inputs.length) inputs[inputs.length-1].focus();
+    }, 30);
+  }
+  function rmSkillsSaveEdit(){
+    if(!rmSkillsDraft) return;
+    // Migrate checked-state keys for any renamed skills (skill_OLDLABEL -> skill_NEWLABEL)
+    var cleaned = [];
+    rmSkillsDraft.forEach(function(s, i){
+      var label = (s.label || '').trim();
+      if(!label) return;
+      if(s._origLabel && s._origLabel !== label){
+        var oldKey = 'skill_' + s._origLabel;
+        var newKey = 'skill_' + label;
+        if(rmState.checked[oldKey] !== undefined){
+          rmState.checked[newKey] = rmState.checked[oldKey];
+          delete rmState.checked[oldKey];
+        }
+      }
+      cleaned.push({ label: label, priority: i + 1 });
+    });
+    rmState.customSkills = cleaned;
+    rmSave(rmState);
+    closeModal('modal-rm-skills');
+    rmSkillsDraft = null;
+    renderRoadmap();
+  }
+  function rmSkillsResetDefaults(){
+    if(!confirm('Reset skills to defaults? This will discard any custom skills you added or renamed.')) return;
+    rmState.customSkills = null;
+    rmSave(rmState);
+    closeModal('modal-rm-skills');
+    rmSkillsDraft = null;
+    renderRoadmap();
+  }
+
+  window.rmOpenSkillsEdit = rmOpenSkillsEdit;
+  window.rmSkillsAddItem = rmSkillsAddItem;
+  window.rmSkillsSaveEdit = rmSkillsSaveEdit;
+  window.rmSkillsResetDefaults = rmSkillsResetDefaults;
+
+  function rmEsc(s){
+    return String(s||'').replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function renderRoadmap(){
+    var phasesEl = document.getElementById('rm-phases');
+    if(!phasesEl) return; // page not in DOM yet
+
+    var phases = rmEffectivePhases();
+    var checked = rmState.checked;
+    var totalItems = 0, totalDone = 0;
+    phases.forEach(function(p){
+      totalItems += p.items.length;
+      p.items.forEach(function(it){ if(checked[it.id]) totalDone++; });
+    });
+    var overallPct = totalItems ? Math.round((totalDone/totalItems)*100) : 0;
+
+    var ovFill = document.getElementById('rm-overall-fill');
+    var ovPct  = document.getElementById('rm-overall-pct');
+    if(ovFill) ovFill.style.width = overallPct+'%';
+    if(ovPct)  ovPct.textContent = overallPct;
+
+    // Phases
+    var html = '';
+    phases.forEach(function(p, idx){
+      var ac = rmAccentVars(p.accent);
+      var done = 0;
+      p.items.forEach(function(it){ if(checked[it.id]) done++; });
+      var pct = p.items.length ? Math.round((done/p.items.length)*100) : 0;
+      var isActive = rmState.active === p.id;
+      var isComplete = done === p.items.length && p.items.length > 0;
+      var styleVars = '--rm-accent:'+ac.c+';--rm-accent-dim:'+ac.d+';';
+      var canUp = idx > 0;
+      var canDown = idx < phases.length - 1;
+      var pid = rmEsc(p.id);
+
+      html += '<div class="rm-phase'+(isActive?' active':'')+(isComplete?' complete':'')+'" style="'+styleVars+'">';
+      html +=   '<div class="rm-phase-head" onclick="rmSetActive(\''+pid+'\')">';
+      html +=     '<div>';
+      html +=       '<div class="rm-phase-meta">';
+      html +=         '<span class="rm-phase-label">'+rmEsc(p.label)+'</span>';
+      if(p.timeline){
+        html +=       '<span class="rm-phase-dot">\u2014</span>';
+        html +=       '<span class="rm-phase-time">'+rmEsc(p.timeline)+'</span>';
+      }
+      html +=       '</div>';
+      html +=       '<div class="rm-phase-name">'+rmEsc(p.title)+'</div>';
+      if(p.description){
+        html +=     '<div class="rm-phase-desc">'+rmEsc(p.description)+'</div>';
+      }
+      html +=     '</div>';
+      html +=     '<div class="rm-phase-actions" onclick="event.stopPropagation()">';
+      html +=       '<div style="text-align:right">';
+      html +=         '<div class="rm-phase-pct">'+pct+'<sup>%</sup></div>';
+      html +=         '<div class="rm-phase-frac">'+done+'/'+p.items.length+' done</div>';
+      html +=       '</div>';
+      html +=       '<div class="rm-action-row">';
+      html +=         '<button class="rm-action-btn" onclick="rmMovePhase(\''+pid+'\',-1)" title="Move up"'+(canUp?'':' disabled')+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></button>';
+      html +=         '<button class="rm-action-btn" onclick="rmMovePhase(\''+pid+'\',1)" title="Move down"'+(canDown?'':' disabled')+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>';
+      html +=         '<button class="rm-action-btn edit" onclick="rmOpenEdit(\''+pid+'\',false)" title="Edit phase"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></button>';
+      html +=       '</div>';
+      html +=     '</div>';
+      html +=   '</div>';
+      html +=   '<div class="rm-phase-bar"><div class="rm-phase-bar-fill" style="width:'+pct+'%"></div></div>';
+      html +=   '<div class="rm-phase-items">';
+      if(!p.items.length){
+        html +=   '<div style="padding:14px 20px;color:var(--text-muted);font-size:12.5px">No items in this phase yet. Use the edit button to add some.</div>';
+      } else {
+        p.items.forEach(function(it){
+          var isDone = !!checked[it.id];
+          html += '<div class="rm-item'+(isDone?' done':'')+'" onclick="rmToggle(\''+rmEsc(it.id)+'\')">';
+          html +=   '<div class="rm-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0e0e0e" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>';
+          html +=   '<div class="rm-item-text">'+rmEsc(it.text)+'</div>';
+          html += '</div>';
+        });
+      }
+      html +=   '</div>';
+      html += '</div>';
+    });
+    phasesEl.innerHTML = html;
+
+    // Footer (add / reset)
+    var foot = document.getElementById('rm-phase-foot');
+    if(foot){
+      foot.innerHTML =
+        '<button class="rm-add-phase" onclick="rmAddPhase()">+ Add Phase</button>' +
+        '<button class="rm-reset-link" onclick="rmResetDefaults()">Reset to defaults</button>';
+    }
+
+    // Timeline overview
+    var tlEl = document.getElementById('rm-timeline');
+    if(tlEl){
+      var tlHtml = '';
+      phases.forEach(function(p){
+        var ac = rmAccentVars(p.accent);
+        var done = 0;
+        p.items.forEach(function(it){ if(checked[it.id]) done++; });
+        var pct = p.items.length ? Math.round((done/p.items.length)*100) : 0;
+        tlHtml += '<div class="rm-timeline-cell" onclick="rmSetActive(\''+rmEsc(p.id)+'\')">';
+        tlHtml +=   '<div class="rm-timeline-label" style="color:'+ac.c+'">'+rmEsc(p.label)+'</div>';
+        tlHtml +=   '<div class="rm-timeline-time">'+rmEsc(p.timeline||'')+'</div>';
+        tlHtml +=   '<div class="rm-timeline-bar"><div class="rm-timeline-bar-fill" style="width:'+pct+'%;background:'+ac.c+'"></div></div>';
+        tlHtml +=   '<div class="rm-timeline-pct">'+pct+'%</div>';
+        tlHtml += '</div>';
+      });
+      // Adjust grid columns to phase count (min 2, max 4 visible per row)
+      tlEl.style.gridTemplateColumns = 'repeat('+Math.min(Math.max(phases.length,1),4)+',1fr)';
+      tlEl.innerHTML = tlHtml;
+    }
+
+    // Skills
+    var skEl = document.getElementById('rm-skills');
+    if(skEl){
+      var skHtml = '';
+      rmEffectiveSkills().forEach(function(s){
+        var key = 'skill_'+s.label;
+        var unlocked = !!checked[key];
+        skHtml += '<div class="rm-skill'+(unlocked?' unlocked':'')+'" onclick="rmToggle(\''+key+'\')">';
+        skHtml +=   '<span class="rm-skill-num">'+(s.priority<10?'0':'')+s.priority+'</span>';
+        skHtml +=   '<span class="rm-skill-label">'+rmEsc(s.label)+'</span>';
+        skHtml += '</div>';
+      });
+      skEl.innerHTML = skHtml;
+    }
+
+    // Notes
+    var ta = document.getElementById('rm-notes');
+    if(ta && document.activeElement !== ta){ ta.value = rmState.note || ''; }
+    if(ta && !ta._rmBound){
+      ta.addEventListener('input', function(){ rmUpdateNote(ta.value); });
+      ta._rmBound = true;
+    }
+
+    // Footer date
+    var fd = document.getElementById('rm-foot-date');
+    if(fd){
+      var d = new Date();
+      fd.textContent = 'Last viewed: ' + d.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+    }
+  }
+  // ── END ROADMAP ───────────────────────────────────────────────────────────
 
 // ── VAULT TRANSITION ─────────────────────────────────────────────────────────────
 function runVaultTransition(onComplete) {
@@ -2578,6 +3473,14 @@ function openPwaMore() {
     var monthlyTotal = activeSubs.reduce(function(a,s){return a+s.price;},0);
     subsSub.textContent = activeSubs.length+' active · £'+monthlyTotal.toFixed(2)+'/mo';
   }
+  var rmSub = document.getElementById('more-roadmap-sub');
+  if(rmSub && typeof rmEffectivePhases === 'function' && rmState){
+    var t=0,d=0;
+    var _phs = rmEffectivePhases();
+    _phs.forEach(function(p){ t+=p.items.length; p.items.forEach(function(it){ if(rmState.checked[it.id]) d++; }); });
+    var pct = t ? Math.round((d/t)*100) : 0;
+    rmSub.textContent = pct+'% complete · '+d+'/'+t+' steps';
+  }
   // Mark more tab active
   document.querySelectorAll('.pwa-tab').forEach(function(t){ t.classList.remove('active'); });
   document.getElementById('tab-more').classList.add('active');
@@ -2650,6 +3553,14 @@ function updatePwaDarkToggle() {
         <div class="pwa-menu-text">
           <div class="pwa-menu-name">AI Prompts</div>
           <div class="pwa-menu-sub">7 staging prompts</div>
+        </div>
+        <span class="pwa-menu-arrow">›</span>
+      </div>
+      <div class="pwa-menu-item" id="more-roadmap" onclick="pwaNavMore('roadmap')">
+        <div class="pwa-menu-icon-wrap" style="background:rgba(163,124,217,0.14)">🗺️</div>
+        <div class="pwa-menu-text">
+          <div class="pwa-menu-name">Roadmap</div>
+          <div class="pwa-menu-sub" id="more-roadmap-sub">Plan your agency growth</div>
         </div>
         <span class="pwa-menu-arrow">›</span>
       </div>

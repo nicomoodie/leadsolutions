@@ -303,6 +303,8 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
 .pill-linkedin{background:rgba(10,102,194,0.15);color:#5b9bd5}
 .pill-whatsapp{background:rgba(37,211,102,0.15);color:#25d366}
 .pill-phone{background:rgba(136,136,128,0.2);color:#888880}
+.pill-facebook{background:rgba(24,119,242,0.15);color:#4a90d9}
+.pill-airbnb{background:rgba(255,90,96,0.15);color:#ff5a60}
 .pill-other{background:rgba(201,168,76,0.12);color:#C9A84C}
 .pipeline-count{background:var(--border2);color:var(--text-mid);padding:1px 7px;border-radius:10px;font-size:10px}
 .pipeline-card{background:var(--dark2);border:1px solid var(--border);border-radius:7px;padding:9px;margin-bottom:7px;cursor:pointer;transition:border-color 0.15s}
@@ -1426,7 +1428,7 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
       <div class="form-group">
         <label class="form-label">Platform</label>
         <select class="form-select" id="c-platform">
-          <option>Instagram</option><option>Email</option><option>LinkedIn</option><option>WhatsApp</option><option>Phone</option>
+          <option>Instagram</option><option>Email</option><option>LinkedIn</option><option>Facebook</option><option>Airbnb</option><option>WhatsApp</option><option>Phone</option>
         </select>
       </div>
       <div class="form-group">
@@ -1539,7 +1541,7 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
       <div class="form-group">
         <label class="form-label">Platform</label>
         <select class="form-select" id="tpl-platform">
-          <option>Instagram</option><option>Email</option><option>LinkedIn</option><option>Any</option>
+          <option>Instagram</option><option>Email</option><option>LinkedIn</option><option>Facebook</option><option>Airbnb</option><option>Any</option>
         </select>
       </div>
       <div class="form-group">
@@ -1974,11 +1976,13 @@ var PLATFORM_ICONS = {
   Email: '<svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>',
   LinkedIn: '<svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>',
   WhatsApp: '<svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>',
-  Phone: '<svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>'
+  Phone: '<svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>',
+  Facebook: '<svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>',
+  Airbnb: '<svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.9997 0.399902C7.6 0.399902 4 4.1999 4 8.5999C4 11.8999 6.2 15.4999 10.7 19.4999C10.9 19.6999 11.2 19.8999 11.5 20.0999C11.6 20.1999 11.8 20.2999 12 20.2999C12.2 20.2999 12.4 20.1999 12.5 20.0999C12.8 19.8999 13.1 19.6999 13.3 19.4999C17.8 15.4999 20 11.8999 20 8.5999C20 4.1999 16.4 0.399902 11.9997 0.399902ZM12 17.8999C8.1 14.3999 6 11.2999 6 8.5999C6 5.2999 8.7 2.3999 12 2.3999C15.3 2.3999 18 5.2999 18 8.5999C18 11.2999 15.9 14.3999 12 17.8999ZM12 4.8999C10.1 4.8999 8.5 6.4999 8.5 8.3999C8.5 10.2999 10.1 11.8999 12 11.8999C13.9 11.8999 15.5 10.2999 15.5 8.3999C15.5 6.4999 13.9 4.8999 12 4.8999ZM12 9.8999C11.2 9.8999 10.5 9.1999 10.5 8.3999C10.5 7.5999 11.2 6.8999 12 6.8999C12.8 6.8999 13.5 7.5999 13.5 8.3999C13.5 9.1999 12.8 9.8999 12 9.8999Z"/></svg>'
 };
 var PLATFORM_CLASSES = {
   Instagram:'pill-instagram',Email:'pill-email',LinkedIn:'pill-linkedin',
-  WhatsApp:'pill-whatsapp',Phone:'pill-phone'
+  WhatsApp:'pill-whatsapp',Phone:'pill-phone',Facebook:'pill-facebook',Airbnb:'pill-airbnb'
 };
 function platformPill(platform) {
   if(!platform) return '';
@@ -1988,7 +1992,7 @@ function platformPill(platform) {
 }
 
 function inlinePlatformPill(c) {
-  var cls = {Instagram:'pill-instagram',Email:'pill-email',LinkedIn:'pill-linkedin',WhatsApp:'pill-whatsapp',Phone:'pill-phone'}[c.platform]||'pill-other';
+  var cls = {Instagram:'pill-instagram',Email:'pill-email',LinkedIn:'pill-linkedin',WhatsApp:'pill-whatsapp',Phone:'pill-phone',Facebook:'pill-facebook',Airbnb:'pill-airbnb'}[c.platform]||'pill-other';
   var icon = (PLATFORM_ICONS[c.platform]||'');
   return '<span class="platform-pill '+cls+'" style="display:inline-flex;align-items:center;gap:4px;cursor:pointer" onclick="showPlatformDropdown(event,\''+c.id+'\')" title="Change platform">'+icon+(c.platform||'Set platform')+' ▾</span>';
 }
@@ -2005,7 +2009,7 @@ function showPlatformDropdown(e, id) {
   e.stopPropagation();
   platformDropdownId = id;
   var dd = document.getElementById('platform-dropdown');
-  var platforms = ['Instagram','Email','LinkedIn','WhatsApp','Phone'];
+  var platforms = ['Instagram','Email','LinkedIn','Facebook','Airbnb','WhatsApp','Phone'];
   var c = DB.contacts.find(function(x){return x.id===id;});
   dd.innerHTML = platforms.map(function(p){
     var icon = PLATFORM_ICONS[p]||'';
@@ -2017,7 +2021,7 @@ function showPlatformDropdown(e, id) {
   }).join('');
   var rect = e.currentTarget.getBoundingClientRect();
   var ddWidth = 170;
-  var ddHeight = 220;
+  var ddHeight = 310;
   var spaceBelow = window.innerHeight - rect.bottom;
   var topPos = spaceBelow < ddHeight ? (rect.top - ddHeight - 4) : (rect.bottom + 4);
   // Align right edge of dropdown with right edge of pill to avoid overlapping Status col
@@ -2204,7 +2208,7 @@ function buildPipelineCards(items, status) {
     var contacted=c.contacted?'Contacted '+c.contacted:'';
     var pillHtml=platformPill(platform);
     return '<div class="pipeline-card" draggable="true" data-id="'+c.id+'" data-status="'+status+'" onclick="editContact(\''+c.id+'\')" ondragstart="pipeDragStart(event)">'+
-      '<div class="pipeline-card-name">'+(c.agency||displayName(c))+'</div>'+
+      '<div class="pipeline-card-name">'+displayName(c)+'</div>'+(c.agency?'<div class="pipeline-card-sub" style="margin-bottom:1px;color:var(--text-mid)">'+c.agency+'</div>':'')+
       '<div style="margin-top:2px">'+pillHtml+'</div>'+
       (c.instagram?'<div class="pipeline-card-sub" style="margin-top:3px">'+c.instagram+'</div>':'')+
       (contacted?'<div class="pipeline-card-platform">'+contacted+'</div>':'')+
@@ -3297,8 +3301,8 @@ if('serviceWorker' in navigator){
 
 // ── INLINE CONTACT INTERACTIONS ──────────────────────────────────────────────
 function inlinePlatformPill(c) {
-  var platforms = ['Instagram','Email','LinkedIn','WhatsApp','Phone'];
-  var cls = {Instagram:'pill-instagram',Email:'pill-email',LinkedIn:'pill-linkedin',WhatsApp:'pill-whatsapp',Phone:'pill-phone'}[c.platform]||'pill-other';
+  var platforms = ['Instagram','Email','LinkedIn','Facebook','Airbnb','WhatsApp','Phone'];
+  var cls = {Instagram:'pill-instagram',Email:'pill-email',LinkedIn:'pill-linkedin',WhatsApp:'pill-whatsapp',Phone:'pill-phone',Facebook:'pill-facebook',Airbnb:'pill-airbnb'}[c.platform]||'pill-other';
   var icon = (PLATFORM_ICONS[c.platform]||'');
   return '<span class="platform-pill '+cls+'" style="display:inline-flex;align-items:center;gap:4px;cursor:pointer" onclick="showPlatformDropdown(event,\'' +c.id+ '\')">'+icon+(c.platform||'Set')+'  ▾</span>';
 }

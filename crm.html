@@ -1214,6 +1214,13 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
         <button class="select-bar-cancel" onclick="clearContactSelection()">Cancel</button>
         <button class="select-bar-del" onclick="deleteSelectedContacts()">Delete Selected</button>
       </div>
+      <div style="margin-bottom:10px;display:flex;align-items:center;gap:8px">
+        <div style="position:relative;flex:1;max-width:340px">
+          <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input id="contacts-search" type="text" placeholder="Search name, agency, handle…" oninput="renderContacts()" style="width:100%;background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:8px 10px 8px 30px;font-family:var(--body);font-size:12px;color:var(--off-white);outline:none;box-sizing:border-box" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <button id="contacts-search-clear" onclick="document.getElementById('contacts-search').value='';renderContacts()" style="display:none;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:11px;padding:4px 8px;border-radius:6px;border:1px solid var(--border)">Clear</button>
+      </div>
       <div class="card contact-table-desktop" style="margin-bottom:0">
         <div class="table-wrap">
           <table>
@@ -2091,9 +2098,25 @@ function saveNotesPopout() {
 }
 
 function renderContacts(){
+  // Search filter
+  var searchEl = document.getElementById('contacts-search');
+  var q = searchEl ? searchEl.value.trim().toLowerCase() : '';
+  var clearBtn = document.getElementById('contacts-search-clear');
+  if(clearBtn) clearBtn.style.display = q ? 'block' : 'none';
+  var allContacts = DB.contacts.slice().sort(function(a,b){ return (b.created||0)-(a.created||0); });
+  var filtered = q ? allContacts.filter(function(c){
+    return (c.name||'').toLowerCase().includes(q) ||
+           (c.instagram||'').toLowerCase().includes(q) ||
+           (c.agency||'').toLowerCase().includes(q) ||
+           (c.email||'').toLowerCase().includes(q) ||
+           (c.notes||'').toLowerCase().includes(q) ||
+           (c.platform||'').toLowerCase().includes(q) ||
+           (c.status||'').toLowerCase().includes(q);
+  }) : allContacts;
+
   // Desktop
   var tbody=document.getElementById('contacts-tbody');
-  var sorted = DB.contacts.slice().sort(function(a,b){ return (b.created||0)-(a.created||0); });
+  var sorted = filtered;
   tbody.innerHTML=sorted.length?sorted.map(function(c){
     var fu=c.followup?'<span style="color:'+(c.followup<=today()?'var(--red)':'var(--text-mid)')+'">'+c.followup+'</span>':'—';
     var ct=c.contacted?'<span style="color:var(--text-muted)">'+c.contacted+'</span>':'—';
@@ -2108,7 +2131,7 @@ function renderContacts(){
 
   // Mobile
   var mob=document.getElementById('contacts-mobile');
-  var sortedMob = DB.contacts.slice().sort(function(a,b){ return (b.created||0)-(a.created||0); });
+  var sortedMob = filtered;
   mob.innerHTML=sortedMob.length?sortedMob.map(function(c){
     return '<div class="contact-card-mobile">'+
       '<div class="cc-top"><div><div class="cc-name">'+displayName(c)+'</div>'+(c.instagram&&c.name?'<div style="font-size:11px;color:var(--gold)">'+c.instagram+'</div>':'')+'<div class="cc-sub">'+(c.agency||'')+'</div></div><button class="del-btn" onclick="deleteContact(\''+c.id+'\')">✕</button></div>'+

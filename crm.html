@@ -1880,6 +1880,7 @@ function closeModal(id){
   if(id==='modal-job') document.getElementById('modal-job-title').textContent='Add Job';
   if(id==='modal-subscription') document.getElementById('modal-sub-title').textContent='Add Subscription';
   if(id==='modal-template') document.getElementById('modal-tpl-title').textContent='Add Template';
+  if(id==='modal-prompt') document.getElementById('modal-prompt-title').textContent='Add Prompt';
 }
 document.querySelectorAll('.modal-bg').forEach(function(bg){
   bg.addEventListener('click',function(e){if(e.target===bg)closeModal(bg.id);});
@@ -2649,7 +2650,7 @@ document.getElementById('sidebar-date').textContent=days[n.getDay()]+' '+n.getDa
     document.getElementById('pm-name').value='';
     document.getElementById('pm-body').value='';
     document.getElementById('modal-prompt-title').textContent='Add Prompt';
-    document.getElementById('modal-prompt').style.display='flex';
+    document.getElementById('modal-prompt').classList.add('open');
   }
 
   function openEditPromptModal(category, id){
@@ -2663,7 +2664,7 @@ document.getElementById('sidebar-date').textContent=days[n.getDay()]+' '+n.getDa
     document.getElementById('pm-name').value=p.name;
     document.getElementById('pm-body').value=p.body;
     document.getElementById('modal-prompt-title').textContent='Edit Prompt';
-    document.getElementById('modal-prompt').style.display='flex';
+    document.getElementById('modal-prompt').classList.add('open');
   }
 
   function savePromptModal(){
@@ -2685,7 +2686,7 @@ document.getElementById('sidebar-date').textContent=days[n.getDay()]+' '+n.getDa
       cat.items.push({id:'p'+Date.now(),name:name,tag:category,body:body});
     }
     savePromptsToStorage();
-    document.getElementById('modal-prompt').style.display='none';
+    closeModal('modal-prompt');
     renderPrompts();
   }
 
@@ -3730,7 +3731,7 @@ function updatePwaDarkToggle() {
 </div>
 
 <!-- PROMPT MODAL -->
-<div class="modal-bg" id="modal-prompt" style="display:none">
+<div class="modal-bg" id="modal-prompt">
   <div class="modal">
     <div class="modal-title" id="modal-prompt-title">Add Prompt</div>
     <input type="hidden" id="pm-id">
@@ -3747,7 +3748,7 @@ function updatePwaDarkToggle() {
       <textarea class="form-textarea" id="pm-body" placeholder="Enter your full AI prompt here..." style="min-height:200px;font-size:12px;line-height:1.6"></textarea>
     </div>
     <div class="modal-actions">
-      <button class="topbar-btn outline" onclick="document.getElementById('modal-prompt').style.display='none'">Cancel</button>
+      <button class="topbar-btn outline" onclick="closeModal('modal-prompt')">Cancel</button>
       <button class="topbar-btn" onclick="savePromptModal()">Save Prompt</button>
     </div>
   </div>

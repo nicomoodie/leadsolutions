@@ -1214,6 +1214,8 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
         <button class="select-bar-cancel" onclick="clearContactSelection()">Cancel</button>
         <button class="select-bar-del" onclick="deleteSelectedContacts()">Delete Selected</button>
       </div>
+      <!-- Platform stats bar -->
+      <div id="platform-stats-bar" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px"></div>
       <div style="margin-bottom:10px;display:flex;align-items:center;gap:8px">
         <div style="position:relative;flex:1;max-width:340px">
           <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -2098,6 +2100,24 @@ function saveNotesPopout() {
 }
 
 function renderContacts(){
+  // Platform stats
+  var statsBar = document.getElementById('platform-stats-bar');
+  if(statsBar){
+    var platCounts = {};
+    DB.contacts.forEach(function(c){ var p=c.platform||'Unknown'; platCounts[p]=(platCounts[p]||0)+1; });
+    var platColors = {
+      'Email':'#5284E0','Instagram':'#C9A84C','LinkedIn':'#4CAF50',
+      'Airbnb':'#E05252','Facebook':'#7B9FE0','Phone':'#E0A852','WhatsApp':'#4CAF50','Other':'#888880'
+    };
+    var html = Object.keys(platCounts).filter(function(p){ return platCounts[p]>0; }).map(function(p){
+      var col = platColors[p]||'#888880';
+      return '<div style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;border:1px solid '+col+'33;background:'+col+'15;font-size:11px;font-family:var(--body);color:'+col+'">'
+        +'<span style="font-weight:600">'+platCounts[p]+'</span>'
+        +'<span style="color:'+col+'cc">'+p+'</span>'
+        +'</div>';
+    }).join('');
+    statsBar.innerHTML = html;
+  }
   // Search filter
   var searchEl = document.getElementById('contacts-search');
   var q = searchEl ? searchEl.value.trim().toLowerCase() : '';
@@ -2584,31 +2604,115 @@ document.getElementById('sidebar-date').textContent=days[n.getDay()]+' '+n.getDa
     if(!list)return;
     var tc={'Virtual Staging':'badge-gold','Brightness & Colour':'badge-blue','Clutter Removal':'badge-green'};
 
+    // Add prompt button + category manager
+    var headerHtml='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">'
+      +'<div style="font-size:11px;color:var(--text-muted)">'+PROMPTS.reduce(function(t,c){return t+c.items.length;},0)+' prompts across '+PROMPTS.length+' categories</div>'
+      +'<button class="topbar-btn" onclick="openAddPromptModal()" style="font-size:11px;padding:6px 12px">+ Add Prompt</button>'
+      +'</div>';
+
     // Build tabs header
     var tabsHtml='<div class="prompt-tabs">';
     PROMPTS.forEach(function(cat,i){
-      tabsHtml+='<div class="prompt-tab'+(i===0?' active':'')+'" onclick="switchPromptTab('+i+')">'+cat.category+'</div>';
+      tabsHtml+='<div class="prompt-tab'+(i===activePromptTab?' active':'')+'" onclick="switchPromptTab('+i+')">'+cat.category+'</div>';
     });
     tabsHtml+='</div>';
 
     // Build tab contents
     var contentsHtml='';
     PROMPTS.forEach(function(cat,i){
-      contentsHtml+='<div class="prompt-tab-content'+(i===0?' active':'')+'">';
+      contentsHtml+='<div class="prompt-tab-content'+(i===activePromptTab?' active':'')+'">';
       cat.items.forEach(function(p){
         var safeBody=escapeBody(p.body);
         contentsHtml+='<div class="template-card" style="margin-bottom:12px">';
         contentsHtml+='<div class="template-header"><div><div class="template-name">'+p.name+'</div>';
-        contentsHtml+='<div style="margin-top:4px"><span class="badge '+(tc[p.tag]||'badge-grey')+'">'+p.tag+'</span></div></div></div>';
+        contentsHtml+='<div style="margin-top:4px"><span class="badge '+(tc[p.tag]||'badge-grey')+'">'+p.tag+'</span></div></div>';
+        contentsHtml+='<div style="display:flex;gap:6px">';
+        contentsHtml+='<button onclick="openEditPromptModal(\''+cat.category+'\',\''+p.id+'\')" style="background:none;border:1px solid var(--border);border-radius:6px;color:var(--text-muted);cursor:pointer;padding:4px 8px;font-size:11px;font-family:var(--body)">Edit</button>';
+        contentsHtml+='<button onclick="deletePrompt(\''+cat.category+'\',\''+p.id+'\')" style="background:none;border:1px solid var(--border);border-radius:6px;color:var(--red);cursor:pointer;padding:4px 8px;font-size:11px;font-family:var(--body)">Delete</button>';
+        contentsHtml+='</div></div>';
         contentsHtml+='<div class="template-body" style="font-size:11px;line-height:1.7;max-height:200px;overflow-y:auto">'+safeBody+'</div>';
         contentsHtml+='<button class="copy-btn" id="pcopy-'+p.id+'" onclick="copyPromptById(this)">Copy Prompt</button>';
         contentsHtml+='</div>';
       });
+      // Add prompt to this category button
+      contentsHtml+='<button onclick="openAddPromptModal(\''+cat.category+'\')" style="width:100%;padding:10px;background:none;border:1px dashed var(--border2);border-radius:8px;color:var(--text-muted);cursor:pointer;font-size:12px;font-family:var(--body);margin-top:4px">+ Add to '+cat.category+'</button>';
       contentsHtml+='</div>';
     });
 
-    list.innerHTML = tabsHtml + contentsHtml;
+    list.innerHTML = headerHtml + tabsHtml + contentsHtml;
   }
+
+  function openAddPromptModal(category){
+    var sel=document.getElementById('pm-category');
+    sel.innerHTML=PROMPTS.map(function(c){return '<option'+(c.category===category?' selected':'')+'>'+c.category+'</option>';}).join('');
+    document.getElementById('pm-id').value='';
+    document.getElementById('pm-name').value='';
+    document.getElementById('pm-body').value='';
+    document.getElementById('modal-prompt-title').textContent='Add Prompt';
+    document.getElementById('modal-prompt').style.display='flex';
+  }
+
+  function openEditPromptModal(category, id){
+    var sel=document.getElementById('pm-category');
+    sel.innerHTML=PROMPTS.map(function(c){return '<option'+(c.category===category?' selected':'')+'>'+c.category+'</option>';}).join('');
+    var cat=PROMPTS.find(function(c){return c.category===category;});
+    if(!cat)return;
+    var p=cat.items.find(function(x){return x.id===id;});
+    if(!p)return;
+    document.getElementById('pm-id').value=id;
+    document.getElementById('pm-name').value=p.name;
+    document.getElementById('pm-body').value=p.body;
+    document.getElementById('modal-prompt-title').textContent='Edit Prompt';
+    document.getElementById('modal-prompt').style.display='flex';
+  }
+
+  function savePromptModal(){
+    var id=document.getElementById('pm-id').value;
+    var name=document.getElementById('pm-name').value.trim();
+    var body=document.getElementById('pm-body').value.trim();
+    var category=document.getElementById('pm-category').value;
+    if(!name||!body){alert('Please fill in name and prompt body.');return;}
+    if(id){
+      // Edit existing
+      PROMPTS.forEach(function(cat){
+        var p=cat.items.find(function(x){return x.id===id;});
+        if(p){p.name=name;p.body=body;}
+      });
+    } else {
+      // Add new
+      var cat=PROMPTS.find(function(c){return c.category===category;});
+      if(!cat){ PROMPTS.push({category:category,items:[]}); cat=PROMPTS[PROMPTS.length-1]; }
+      cat.items.push({id:'p'+Date.now(),name:name,tag:category,body:body});
+    }
+    savePromptsToStorage();
+    document.getElementById('modal-prompt').style.display='none';
+    renderPrompts();
+  }
+
+  function deletePrompt(category,id){
+    if(!confirm('Delete this prompt?'))return;
+    var cat=PROMPTS.find(function(c){return c.category===category;});
+    if(!cat)return;
+    cat.items=cat.items.filter(function(p){return p.id!==id;});
+    savePromptsToStorage();
+    renderPrompts();
+  }
+
+  function savePromptsToStorage(){
+    try{localStorage.setItem('ls_crm_prompts',JSON.stringify(PROMPTS));}catch(e){}
+  }
+
+  function loadPromptsFromStorage(){
+    try{
+      var saved=localStorage.getItem('ls_crm_prompts');
+      if(saved){
+        var parsed=JSON.parse(saved);
+        if(parsed&&parsed.length){ PROMPTS.length=0; parsed.forEach(function(c){PROMPTS.push(c);}); }
+      }
+    }catch(e){}
+  }
+
+  loadPromptsFromStorage();
   // ── END PROMPTS ───────────────────────────────────────────────────────────
 
   // ── ROADMAP ───────────────────────────────────────────────────────────────
@@ -3622,6 +3726,30 @@ function updatePwaDarkToggle() {
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- PROMPT MODAL -->
+<div class="modal-bg" id="modal-prompt" style="display:none">
+  <div class="modal">
+    <div class="modal-title" id="modal-prompt-title">Add Prompt</div>
+    <input type="hidden" id="pm-id">
+    <div class="form-group">
+      <label class="form-label">Prompt Name</label>
+      <input class="form-input" id="pm-name" placeholder="e.g. Golden Hour Staging">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Category</label>
+      <select class="form-select" id="pm-category"></select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Prompt Body</label>
+      <textarea class="form-textarea" id="pm-body" placeholder="Enter your full AI prompt here..." style="min-height:200px;font-size:12px;line-height:1.6"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="topbar-btn outline" onclick="document.getElementById('modal-prompt').style.display='none'">Cancel</button>
+      <button class="topbar-btn" onclick="savePromptModal()">Save Prompt</button>
+    </div>
   </div>
 </div>
 

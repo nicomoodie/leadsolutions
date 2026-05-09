@@ -2667,48 +2667,72 @@ function renderPersonal(){
   var st=document.getElementById('personal-subs-total');if(st)st.textContent='£'+subsTotal.toFixed(2);
   var lo=document.getElementById('personal-leftover');if(lo){lo.textContent='£'+leftover.toFixed(2);lo.style.color=leftover>=0?'var(--green)':'var(--red)';}
 
-  var billsTbody=document.getElementById('personal-bills-tbody');
-  if(billsTbody){
-    billsTbody.innerHTML=PERSONAL.bills.length?PERSONAL.bills.map(function(b){
-      return '<tr><td style="font-weight:500">'+b.name+'</td>'
-        +'<td style="color:var(--red);font-weight:600">£'+b.amount.toFixed(2)+'</td>'
-        +'<td style="color:var(--text-muted)">'+(b.due||'—')+'</td>'
-        +'<td style="color:var(--text-muted);font-size:11px">'+(b.notes||'—')+'</td>'
-        +'<td style="text-align:right"><div style="display:inline-flex;gap:6px;justify-content:flex-end">'
-        +'<button style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:12px;padding:3px 7px;border-radius:4px" onclick="editPersonalItem(\'bill\',\''+b.id+'\')">Edit</button>'
-        +'<button class="del-btn" onclick="deletePersonalItem(\'bill\',\''+b.id+'\')">✕</button>'
+  function buildRows(list, type, amtColor, col3Key, col3Label){
+    return list.length ? list.map(function(item, idx){
+      return '<tr draggable="true" data-type="'+type+'" data-id="'+item.id+'" data-idx="'+idx+'" '
+        +'style="cursor:grab;transition:opacity 0.15s" '
+        +'ondragstart="personalDragStart(event)" '
+        +'ondragover="personalDragOver(event)" '
+        +'ondrop="personalDrop(event)" '
+        +'ondragend="personalDragEnd(event)">'
+        +'<td style="font-weight:500"><span style="color:var(--border2);margin-right:8px;font-size:11px;cursor:grab">⠿</span>'+item.name+'</td>'
+        +'<td style="color:'+amtColor+';font-weight:600">£'+item.amount.toFixed(2)+'</td>'
+        +'<td style="color:var(--text-muted)">'+(item[col3Key]||'—')+'</td>'
+        +'<td style="color:var(--text-muted);font-size:11px">'+(item.notes||'—')+'</td>'
+        +'<td style="text-align:right"><div style="display:inline-flex;gap:6px;align-items:center;justify-content:flex-end">'
+        +'<button style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:12px;padding:3px 7px;border-radius:4px" onclick="editPersonalItem(\''+type+'\',\''+item.id+'\')">Edit</button>'
+        +'<button class="del-btn" onclick="deletePersonalItem(\''+type+'\',\''+item.id+'\')">✕</button>'
         +'</div></td></tr>';
-    }).join(''):'<tr><td colspan="5"><div class="empty"><div class="empty-text">No bills added yet.</div></div></td></tr>';
+    }).join('') : '<tr><td colspan="5"><div class="empty"><div class="empty-text">Nothing added yet.</div></div></td></tr>';
   }
+
+  var billsTbody=document.getElementById('personal-bills-tbody');
+  if(billsTbody) billsTbody.innerHTML=buildRows(PERSONAL.bills,'bill','var(--red)','due','Due Date');
 
   var subsTbody=document.getElementById('personal-subs-tbody');
-  if(subsTbody){
-    subsTbody.innerHTML=PERSONAL.subs.length?PERSONAL.subs.map(function(s){
-      return '<tr><td style="font-weight:500">'+s.name+'</td>'
-        +'<td style="color:var(--amber);font-weight:600">£'+s.amount.toFixed(2)+'</td>'
-        +'<td style="color:var(--text-muted)">'+(s.due||'—')+'</td>'
-        +'<td style="color:var(--text-muted);font-size:11px">'+(s.notes||'—')+'</td>'
-        +'<td style="text-align:right"><div style="display:inline-flex;gap:6px;justify-content:flex-end">'
-        +'<button style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:12px;padding:3px 7px;border-radius:4px" onclick="editPersonalItem(\'sub\',\''+s.id+'\')">Edit</button>'
-        +'<button class="del-btn" onclick="deletePersonalItem(\'sub\',\''+s.id+'\')">✕</button>'
-        +'</div></td></tr>';
-    }).join(''):'<tr><td colspan="5"><div class="empty"><div class="empty-text">No subscriptions added yet.</div></div></td></tr>';
-  }
+  if(subsTbody) subsTbody.innerHTML=buildRows(PERSONAL.subs,'sub','var(--amber)','due','Billing Date');
 
   var incomeTbody=document.getElementById('personal-income-tbody');
-  if(incomeTbody){
-    incomeTbody.innerHTML=PERSONAL.income.length?PERSONAL.income.map(function(i){
-      return '<tr><td style="font-weight:500">'+i.name+'</td>'
-        +'<td style="color:var(--green);font-weight:600">£'+i.amount.toFixed(2)+'</td>'
-        +'<td style="color:var(--text-muted)">'+(i.frequency||'Monthly')+'</td>'
-        +'<td style="color:var(--text-muted);font-size:11px">'+(i.notes||'—')+'</td>'
-        +'<td style="text-align:right"><div style="display:inline-flex;gap:6px;justify-content:flex-end">'
-        +'<button style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:12px;padding:3px 7px;border-radius:4px" onclick="editPersonalItem(\'income\',\''+i.id+'\')">Edit</button>'
-        +'<button class="del-btn" onclick="deletePersonalItem(\'income\',\''+i.id+'\')">✕</button>'
-        +'</div></td></tr>';
-    }).join(''):'<tr><td colspan="5"><div class="empty"><div class="empty-text">No income added yet.</div></div></td></tr>';
-  }
+  if(incomeTbody) incomeTbody.innerHTML=buildRows(PERSONAL.income,'income','var(--green)','frequency','Frequency');
 }
+
+// ── PERSONAL DRAG AND DROP ────────────────────────────────────────────────────
+var _pdDragIdx=null, _pdDragType=null;
+
+function personalDragStart(e){
+  _pdDragIdx=parseInt(e.currentTarget.dataset.idx);
+  _pdDragType=e.currentTarget.dataset.type;
+  e.currentTarget.style.opacity='0.4';
+  e.dataTransfer.effectAllowed='move';
+}
+
+function personalDragOver(e){
+  e.preventDefault();
+  e.dataTransfer.dropEffect='move';
+  var rows=e.currentTarget.closest('tbody').querySelectorAll('tr[draggable]');
+  rows.forEach(function(r){r.style.borderTop='';});
+  var toIdx=parseInt(e.currentTarget.dataset.idx);
+  if(toIdx!==_pdDragIdx) e.currentTarget.style.borderTop='2px solid var(--gold)';
+}
+
+function personalDrop(e){
+  e.preventDefault();
+  var toIdx=parseInt(e.currentTarget.dataset.idx);
+  var type=e.currentTarget.dataset.type;
+  if(toIdx===_pdDragIdx||type!==_pdDragType) return;
+  var list=type==='bill'?PERSONAL.bills:type==='sub'?PERSONAL.subs:PERSONAL.income;
+  var item=list.splice(_pdDragIdx,1)[0];
+  list.splice(toIdx,0,item);
+  savePersonal();
+  renderPersonal();
+}
+
+function personalDragEnd(e){
+  e.currentTarget.style.opacity='';
+  var rows=document.querySelectorAll('tr[draggable]');
+  rows.forEach(function(r){r.style.borderTop='';});
+}
+// ── END PERSONAL DRAG ─────────────────────────────────────────────────────────
 
 function openAddPersonalModal(){
   document.getElementById('pm-personal-id').value='';

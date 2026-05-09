@@ -418,6 +418,7 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
 @media(max-width:600px){
   .contact-card-mobile{display:block}
   .contact-table-desktop{display:none}
+.contact-card-mobile-list{background:var(--dark);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px}
 }
 .cc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
 .cc-name{font-size:14px;font-weight:600;color:var(--off-white)}
@@ -1090,6 +1091,14 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
 /* Hide tab bar in browser mode */
 .pwa-tabbar { display: none; }
 .pwa-more-menu { display: none; }
+/* Personal stats - 4 col desktop, 2 col mobile */
+.personal-stats-row { grid-template-columns: repeat(4,1fr); }
+@media(max-width:600px){ .personal-stats-row { grid-template-columns: repeat(2,1fr); } }
+/* On desktop show tables, hide mobile cards */
+@media(min-width:601px){
+  .contact-card-mobile-list{display:none}
+  .contact-table-desktop{display:block}
+}
 </style>
 </head>
 <body>
@@ -1362,8 +1371,8 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
 
     <!-- PERSONAL PAGE -->
     <div class="page" id="page-personal">
-      <!-- Summary stats -->
-      <div class="stats-row" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px">
+      <!-- Summary stats - 4 cols desktop, 2x2 mobile -->
+      <div class="stats-row personal-stats-row" style="margin-bottom:16px">
         <div class="stat-card"><div class="stat-label">Monthly Income</div><div class="stat-value" id="personal-income-total" style="color:var(--green)">£0</div></div>
         <div class="stat-card"><div class="stat-label">Monthly Bills</div><div class="stat-value" id="personal-bills-total" style="color:var(--red)">£0</div></div>
         <div class="stat-card"><div class="stat-label">Monthly Subscriptions</div><div class="stat-value" id="personal-subs-total" style="color:var(--amber)">£0</div></div>
@@ -1377,7 +1386,8 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
       </div>
       <!-- Bills tab -->
       <div id="personal-tab-bills">
-        <div class="card">
+        <!-- Desktop table -->
+        <div class="card contact-table-desktop">
           <div class="table-wrap">
             <table>
               <thead><tr><th>Name</th><th>Amount</th><th>Due Date</th><th>Notes</th><th style="text-align:right">Actions</th></tr></thead>
@@ -1385,10 +1395,13 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
             </table>
           </div>
         </div>
+        <!-- Mobile cards -->
+        <div id="personal-bills-mobile" class="contact-card-mobile-list"></div>
       </div>
       <!-- Subscriptions tab -->
       <div id="personal-tab-subs" style="display:none">
-        <div class="card">
+        <!-- Desktop table -->
+        <div class="card contact-table-desktop">
           <div class="table-wrap">
             <table>
               <thead><tr><th>Service</th><th>Amount</th><th>Billing Date</th><th>Notes</th><th style="text-align:right">Actions</th></tr></thead>
@@ -1396,10 +1409,13 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
             </table>
           </div>
         </div>
+        <!-- Mobile cards -->
+        <div id="personal-subs-mobile" class="contact-card-mobile-list"></div>
       </div>
       <!-- Income tab -->
       <div id="personal-tab-income" style="display:none">
-        <div class="card">
+        <!-- Desktop table -->
+        <div class="card contact-table-desktop">
           <div class="table-wrap">
             <table>
               <thead><tr><th>Source</th><th>Amount</th><th>Frequency</th><th>Notes</th><th style="text-align:right">Actions</th></tr></thead>
@@ -1407,6 +1423,8 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
             </table>
           </div>
         </div>
+        <!-- Mobile cards -->
+        <div id="personal-income-mobile" class="contact-card-mobile-list"></div>
       </div>
     </div>
 
@@ -2694,6 +2712,27 @@ function renderPersonal(){
 
   var incomeTbody=document.getElementById('personal-income-tbody');
   if(incomeTbody) incomeTbody.innerHTML=buildRows(PERSONAL.income,'income','var(--green)','frequency','Frequency');
+
+  // Mobile cards
+  function buildMobileCards(list, type, amtColor, col3Key){
+    return list.length ? list.map(function(item){
+      return '<div class="contact-row-mobile" style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--border)">'
+        +'<div><div style="font-size:13px;font-weight:500;color:var(--off-white)">'+item.name+'</div>'
+        +'<div style="font-size:11px;color:var(--text-muted);margin-top:2px">'+(item[col3Key]||'Monthly')+(item.notes?' · '+item.notes:'')+'</div></div>'
+        +'<div style="display:flex;align-items:center;gap:10px">'
+        +'<span style="font-size:14px;font-weight:600;color:'+amtColor+'">£'+item.amount.toFixed(2)+'</span>'
+        +'<button style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:12px;padding:3px 6px;border-radius:4px;border:1px solid var(--border)" onclick="editPersonalItem(\''+type+'\',\''+item.id+'\')">Edit</button>'
+        +'<button class="del-btn" onclick="deletePersonalItem(\''+type+'\',\''+item.id+'\')">✕</button>'
+        +'</div></div>';
+    }).join('') : '<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:12px">Nothing added yet.</div>';
+  }
+
+  var bm=document.getElementById('personal-bills-mobile');
+  if(bm) bm.innerHTML=buildMobileCards(PERSONAL.bills,'bill','var(--red)','due');
+  var sm=document.getElementById('personal-subs-mobile');
+  if(sm) sm.innerHTML=buildMobileCards(PERSONAL.subs,'sub','var(--amber)','due');
+  var im=document.getElementById('personal-income-mobile');
+  if(im) im.innerHTML=buildMobileCards(PERSONAL.income,'income','var(--green)','frequency');
 }
 
 // ── PERSONAL DRAG AND DROP ────────────────────────────────────────────────────
@@ -3853,6 +3892,14 @@ function openPwaMore() {
     var monthlyTotal = activeSubs.reduce(function(a,s){return a+s.price;},0);
     subsSub.textContent = activeSubs.length+' active · £'+monthlyTotal.toFixed(2)+'/mo';
   }
+  var personalSub = document.getElementById('more-personal-sub');
+  if(personalSub && typeof PERSONAL !== 'undefined') {
+    var billsT=PERSONAL.bills.reduce(function(a,b){return a+b.amount;},0);
+    var subsT=PERSONAL.subs.reduce(function(a,s){return a+s.amount;},0);
+    var incT=PERSONAL.income.reduce(function(a,i){return a+i.amount;},0);
+    var left=incT-billsT-subsT;
+    personalSub.textContent='£'+incT.toFixed(2)+' in · £'+(billsT+subsT).toFixed(2)+' out · £'+left.toFixed(2)+' left';
+  }
   var rmSub = document.getElementById('more-roadmap-sub');
   if(rmSub && typeof rmEffectivePhases === 'function' && rmState){
     var t=0,d=0;
@@ -3957,6 +4004,14 @@ function updatePwaDarkToggle() {
         <div class="pwa-menu-text">
           <div class="pwa-menu-name">Subscriptions</div>
           <div class="pwa-menu-sub" id="more-subs-sub">Track monthly costs</div>
+        </div>
+        <span class="pwa-menu-arrow">›</span>
+      </div>
+      <div class="pwa-menu-item" id="more-personal" onclick="pwaNavMore('personal')">
+        <div class="pwa-menu-icon-wrap" style="background:rgba(201,168,76,0.12)">🏠</div>
+        <div class="pwa-menu-text">
+          <div class="pwa-menu-name">Personal</div>
+          <div class="pwa-menu-sub" id="more-personal-sub">Bills, subscriptions & income</div>
         </div>
         <span class="pwa-menu-arrow">›</span>
       </div>

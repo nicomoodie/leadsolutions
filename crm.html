@@ -1157,6 +1157,8 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
     <div class="nav-item" onclick="nav('jobs')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span>Jobs</div>
     <div class="nav-item" onclick="nav('finance')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>Finance</div>
     <div class="nav-item" onclick="nav('subscriptions')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span>Subscriptions</div>
+    <div class="nav-section">Personal</div>
+    <div class="nav-item" onclick="nav('personal')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>Personal</div>
   </nav>
   <div class="sidebar-footer">
     <div class="sidebar-date" id="sidebar-date"></div>
@@ -1354,6 +1356,56 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
             <thead><tr><th>Service</th><th>Category</th><th>Price/mo</th><th>Billing Date</th><th>Status</th><th>Notes</th><th></th></tr></thead>
             <tbody id="sub-tbody"></tbody>
           </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- PERSONAL PAGE -->
+    <div class="page" id="page-personal">
+      <!-- Summary stats -->
+      <div class="stats-row" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px">
+        <div class="stat-card"><div class="stat-label">Monthly Income</div><div class="stat-value" id="personal-income-total" style="color:var(--green)">£0</div></div>
+        <div class="stat-card"><div class="stat-label">Monthly Bills</div><div class="stat-value" id="personal-bills-total" style="color:var(--red)">£0</div></div>
+        <div class="stat-card"><div class="stat-label">Monthly Subscriptions</div><div class="stat-value" id="personal-subs-total" style="color:var(--amber)">£0</div></div>
+        <div class="stat-card"><div class="stat-label">Left Over</div><div class="stat-value" id="personal-leftover" style="color:var(--gold)">£0</div></div>
+      </div>
+      <!-- Tabs -->
+      <div class="prompt-tabs" style="margin-bottom:12px">
+        <div class="prompt-tab active" onclick="switchPersonalTab(0)" id="ptab-bills">Bills</div>
+        <div class="prompt-tab" onclick="switchPersonalTab(1)" id="ptab-subs">Subscriptions</div>
+        <div class="prompt-tab" onclick="switchPersonalTab(2)" id="ptab-income">Income</div>
+      </div>
+      <!-- Bills tab -->
+      <div id="personal-tab-bills">
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Name</th><th>Amount</th><th>Due Date</th><th>Notes</th><th style="text-align:right">Actions</th></tr></thead>
+              <tbody id="personal-bills-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- Subscriptions tab -->
+      <div id="personal-tab-subs" style="display:none">
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Service</th><th>Amount</th><th>Billing Date</th><th>Notes</th><th style="text-align:right">Actions</th></tr></thead>
+              <tbody id="personal-subs-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- Income tab -->
+      <div id="personal-tab-income" style="display:none">
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Source</th><th>Amount</th><th>Frequency</th><th>Notes</th><th style="text-align:right">Actions</th></tr></thead>
+              <tbody id="personal-income-tbody"></tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -1839,6 +1891,7 @@ var pageCfg = {
   jobs:      {title:'Jobs',        btn:'+ Add Job',       sec:null},
   finance:   {title:'Finance',     btn:'+ Add Job',       sec:null},
   subscriptions: {title:'Subscriptions', btn:'+ Add Subscription', sec:null},
+  personal: {title:'Personal', btn:'+ Add', sec:null},
 };
 
 function nav(page){
@@ -1858,7 +1911,8 @@ function nav(page){
 }
 
 function topbarAction(){
-  var m={dashboard:'modal-contact',contacts:'modal-contact',pipeline:'modal-contact',jobs:'modal-job',finance:'modal-job',templates:'modal-template',subscriptions:'modal-subscription'};
+  var m={dashboard:'modal-contact',contacts:'modal-contact',pipeline:'modal-contact',jobs:'modal-job',finance:'modal-job',templates:'modal-template',subscriptions:'modal-subscription',personal:'modal-personal'};
+  if(currentPage==='personal'){openAddPersonalModal();return;}
   openModal(m[currentPage]||'modal-contact');
 }
 function topbarSecondary(){ if(currentPage==='contacts') exportCSV(); }
@@ -1881,6 +1935,7 @@ function closeModal(id){
   if(id==='modal-subscription') document.getElementById('modal-sub-title').textContent='Add Subscription';
   if(id==='modal-template') document.getElementById('modal-tpl-title').textContent='Add Template';
   if(id==='modal-prompt') document.getElementById('modal-prompt-title').textContent='Add Prompt';
+  if(id==='modal-personal') document.getElementById('modal-personal-title').textContent='Add Bill';
 }
 document.querySelectorAll('.modal-bg').forEach(function(bg){
   bg.addEventListener('click',function(e){if(e.target===bg)closeModal(bg.id);});
@@ -2546,8 +2601,177 @@ function renderSubscriptions(){
 
 // ── RENDER ────────────────────────────────────────────────────────────────────
 function render(){
-  renderDashboard();renderContacts();renderPipeline();renderTemplates();renderJobs();renderFinance();renderGoals();renderPrompts();renderSubscriptions();renderRoadmap();
+  renderDashboard();renderContacts();renderPipeline();renderTemplates();renderJobs();renderFinance();renderGoals();renderPrompts();renderSubscriptions();renderRoadmap();renderPersonal();
 }
+
+// ── PERSONAL ─────────────────────────────────────────────────────────────────
+var PERSONAL_KEY = 'ls_personal_data';
+var PERSONAL = {
+  bills: [
+    {id:'b1',name:'Rent',amount:950,due:'3rd',notes:''},
+    {id:'b2',name:'Hyperoptic',amount:18.98,due:'20th',notes:'Broadband'},
+    {id:'b3',name:'Octopus',amount:53.38,due:'7th',notes:'Energy'},
+    {id:'b4',name:'Council Tax',amount:127.42,due:'1st',notes:''},
+    {id:'b5',name:'JD Gym',amount:30,due:'27th',notes:''},
+    {id:'b6',name:'Food Shop',amount:150,due:'Monthly',notes:'Estimated'}
+  ],
+  subs: [
+    {id:'s1',name:'Crunchyroll',amount:6.99,due:'8th',notes:''},
+    {id:'s2',name:'Claude',amount:18,due:'13th',notes:''},
+    {id:'s3',name:'Three',amount:16.68,due:'',notes:'Phone'},
+    {id:'s4',name:'Netflix',amount:18.99,due:'30th',notes:''},
+    {id:'s5',name:'ChatGPT',amount:18.27,due:'29th',notes:''},
+    {id:'s6',name:'PlayStation',amount:10.99,due:'20th',notes:'PS Plus'},
+    {id:'s7',name:'OpenArt',amount:10.73,due:'13th',notes:''},
+    {id:'s8',name:'Amazon Prime',amount:8.99,due:'10th',notes:''},
+    {id:'s9',name:'Prime Ad Free',amount:2.99,due:'10th',notes:''},
+    {id:'s10',name:'Disney+',amount:14.99,due:'2nd',notes:''},
+    {id:'s11',name:'iCloud+',amount:8.99,due:'23rd',notes:''},
+    {id:'s12',name:'Calorie',amount:6.99,due:'8th',notes:'App'}
+  ],
+  income: [
+    {id:'i1',name:'Wages',amount:1800,frequency:'Monthly',notes:''},
+    {id:'i2',name:'Commission',amount:500,frequency:'Monthly',notes:'Estimate'}
+  ]
+};
+
+function loadPersonal(){
+  try{
+    var saved=localStorage.getItem(PERSONAL_KEY);
+    if(saved){var p=JSON.parse(saved);if(p&&p.bills&&p.subs){PERSONAL.bills=p.bills;PERSONAL.subs=p.subs;if(p.income)PERSONAL.income=p.income;}}
+  }catch(e){}
+}
+function savePersonal(){
+  try{localStorage.setItem(PERSONAL_KEY,JSON.stringify(PERSONAL));}catch(e){}
+}
+loadPersonal();
+
+var personalTabIdx=0;
+function switchPersonalTab(idx){
+  personalTabIdx=idx;
+  document.getElementById('ptab-bills').classList.toggle('active',idx===0);
+  document.getElementById('ptab-subs').classList.toggle('active',idx===1);
+  document.getElementById('ptab-income').classList.toggle('active',idx===2);
+  document.getElementById('personal-tab-bills').style.display=idx===0?'':'none';
+  document.getElementById('personal-tab-subs').style.display=idx===1?'':'none';
+  document.getElementById('personal-tab-income').style.display=idx===2?'':'none';
+}
+
+function renderPersonal(){
+  var billsTotal=PERSONAL.bills.reduce(function(a,b){return a+b.amount;},0);
+  var subsTotal=PERSONAL.subs.reduce(function(a,s){return a+s.amount;},0);
+  var incomeTotal=PERSONAL.income.reduce(function(a,i){return a+i.amount;},0);
+  var leftover=incomeTotal-billsTotal-subsTotal;
+  var it=document.getElementById('personal-income-total');if(it)it.textContent='£'+incomeTotal.toFixed(2);
+  var bt=document.getElementById('personal-bills-total');if(bt)bt.textContent='£'+billsTotal.toFixed(2);
+  var st=document.getElementById('personal-subs-total');if(st)st.textContent='£'+subsTotal.toFixed(2);
+  var lo=document.getElementById('personal-leftover');if(lo){lo.textContent='£'+leftover.toFixed(2);lo.style.color=leftover>=0?'var(--green)':'var(--red)';}
+
+  var billsTbody=document.getElementById('personal-bills-tbody');
+  if(billsTbody){
+    billsTbody.innerHTML=PERSONAL.bills.length?PERSONAL.bills.map(function(b){
+      return '<tr><td style="font-weight:500">'+b.name+'</td>'
+        +'<td style="color:var(--red);font-weight:600">£'+b.amount.toFixed(2)+'</td>'
+        +'<td style="color:var(--text-muted)">'+(b.due||'—')+'</td>'
+        +'<td style="color:var(--text-muted);font-size:11px">'+(b.notes||'—')+'</td>'
+        +'<td style="text-align:right"><div style="display:inline-flex;gap:6px;justify-content:flex-end">'
+        +'<button style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:12px;padding:3px 7px;border-radius:4px" onclick="editPersonalItem(\'bill\',\''+b.id+'\')">Edit</button>'
+        +'<button class="del-btn" onclick="deletePersonalItem(\'bill\',\''+b.id+'\')">✕</button>'
+        +'</div></td></tr>';
+    }).join(''):'<tr><td colspan="5"><div class="empty"><div class="empty-text">No bills added yet.</div></div></td></tr>';
+  }
+
+  var subsTbody=document.getElementById('personal-subs-tbody');
+  if(subsTbody){
+    subsTbody.innerHTML=PERSONAL.subs.length?PERSONAL.subs.map(function(s){
+      return '<tr><td style="font-weight:500">'+s.name+'</td>'
+        +'<td style="color:var(--amber);font-weight:600">£'+s.amount.toFixed(2)+'</td>'
+        +'<td style="color:var(--text-muted)">'+(s.due||'—')+'</td>'
+        +'<td style="color:var(--text-muted);font-size:11px">'+(s.notes||'—')+'</td>'
+        +'<td style="text-align:right"><div style="display:inline-flex;gap:6px;justify-content:flex-end">'
+        +'<button style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:12px;padding:3px 7px;border-radius:4px" onclick="editPersonalItem(\'sub\',\''+s.id+'\')">Edit</button>'
+        +'<button class="del-btn" onclick="deletePersonalItem(\'sub\',\''+s.id+'\')">✕</button>'
+        +'</div></td></tr>';
+    }).join(''):'<tr><td colspan="5"><div class="empty"><div class="empty-text">No subscriptions added yet.</div></div></td></tr>';
+  }
+
+  var incomeTbody=document.getElementById('personal-income-tbody');
+  if(incomeTbody){
+    incomeTbody.innerHTML=PERSONAL.income.length?PERSONAL.income.map(function(i){
+      return '<tr><td style="font-weight:500">'+i.name+'</td>'
+        +'<td style="color:var(--green);font-weight:600">£'+i.amount.toFixed(2)+'</td>'
+        +'<td style="color:var(--text-muted)">'+(i.frequency||'Monthly')+'</td>'
+        +'<td style="color:var(--text-muted);font-size:11px">'+(i.notes||'—')+'</td>'
+        +'<td style="text-align:right"><div style="display:inline-flex;gap:6px;justify-content:flex-end">'
+        +'<button style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:12px;padding:3px 7px;border-radius:4px" onclick="editPersonalItem(\'income\',\''+i.id+'\')">Edit</button>'
+        +'<button class="del-btn" onclick="deletePersonalItem(\'income\',\''+i.id+'\')">✕</button>'
+        +'</div></td></tr>';
+    }).join(''):'<tr><td colspan="5"><div class="empty"><div class="empty-text">No income added yet.</div></div></td></tr>';
+  }
+}
+
+function openAddPersonalModal(){
+  document.getElementById('pm-personal-id').value='';
+  document.getElementById('pm-personal-name').value='';
+  document.getElementById('pm-personal-amount').value='';
+  document.getElementById('pm-personal-due').value='';
+  document.getElementById('pm-personal-notes').value='';
+  var type=personalTabIdx===0?'bill':personalTabIdx===1?'sub':'income';
+  document.getElementById('pm-personal-type').value=type;
+  document.getElementById('pm-personal-due-label').textContent=type==='income'?'Frequency':'Due Date';
+  document.getElementById('pm-personal-due').placeholder=type==='income'?'e.g. Monthly':'e.g. 1st';
+  document.getElementById('modal-personal-title').textContent=type==='bill'?'Add Bill':type==='sub'?'Add Subscription':'Add Income';
+  openModal('modal-personal');
+}
+
+function editPersonalItem(type,id){
+  var list=type==='bill'?PERSONAL.bills:type==='sub'?PERSONAL.subs:PERSONAL.income;
+  var item=list.find(function(x){return x.id===id;});
+  if(!item)return;
+  document.getElementById('pm-personal-id').value=id;
+  document.getElementById('pm-personal-name').value=item.name;
+  document.getElementById('pm-personal-amount').value=item.amount;
+  document.getElementById('pm-personal-due').value=item.due||item.frequency||'';
+  document.getElementById('pm-personal-notes').value=item.notes||'';
+  document.getElementById('pm-personal-type').value=type;
+  document.getElementById('pm-personal-due-label').textContent=type==='income'?'Frequency':'Due Date';
+  document.getElementById('pm-personal-due').placeholder=type==='income'?'e.g. Monthly':'e.g. 1st';
+  document.getElementById('modal-personal-title').textContent=type==='bill'?'Edit Bill':type==='sub'?'Edit Subscription':'Edit Income';
+  openModal('modal-personal');
+}
+
+function savePersonalItem(){
+  var id=document.getElementById('pm-personal-id').value;
+  var type=document.getElementById('pm-personal-type').value;
+  var name=document.getElementById('pm-personal-name').value.trim();
+  var amount=parseFloat(document.getElementById('pm-personal-amount').value)||0;
+  var due=document.getElementById('pm-personal-due').value.trim();
+  var notes=document.getElementById('pm-personal-notes').value.trim();
+  if(!name){alert('Please enter a name.');return;}
+  var list=type==='bill'?PERSONAL.bills:type==='sub'?PERSONAL.subs:PERSONAL.income;
+  var newItem=type==='income'
+    ?{id:id||'p'+Date.now(),name:name,amount:amount,frequency:due,notes:notes}
+    :{id:id||'p'+Date.now(),name:name,amount:amount,due:due,notes:notes};
+  if(id){
+    var idx=list.findIndex(function(x){return x.id===id;});
+    if(idx>=0)list[idx]=newItem;
+  } else {
+    list.push(newItem);
+  }
+  savePersonal();
+  closeModal('modal-personal');
+  renderPersonal();
+}
+
+function deletePersonalItem(type,id){
+  if(!confirm('Remove this item?'))return;
+  if(type==='bill')PERSONAL.bills=PERSONAL.bills.filter(function(x){return x.id!==id;});
+  else if(type==='sub')PERSONAL.subs=PERSONAL.subs.filter(function(x){return x.id!==id;});
+  else PERSONAL.income=PERSONAL.income.filter(function(x){return x.id!==id;});
+  savePersonal();
+  renderPersonal();
+}
+// ── END PERSONAL ──────────────────────────────────────────────────────────────
 
 var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -3750,6 +3974,39 @@ function updatePwaDarkToggle() {
     <div class="modal-actions">
       <button class="topbar-btn outline" onclick="closeModal('modal-prompt')">Cancel</button>
       <button class="topbar-btn" onclick="savePromptModal()">Save Prompt</button>
+    </div>
+  </div>
+</div>
+
+<!-- PERSONAL MODAL -->
+<div class="modal-bg" id="modal-personal">
+  <div class="modal">
+    <div class="modal-title" id="modal-personal-title">Add Bill</div>
+    <input type="hidden" id="pm-personal-id">
+    <input type="hidden" id="pm-personal-type" value="bill">
+    <div class="form-row-2">
+      <div class="form-group">
+        <label class="form-label">Name</label>
+        <input class="form-input" id="pm-personal-name" placeholder="e.g. Rent">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Amount (£)</label>
+        <input class="form-input" id="pm-personal-amount" type="number" step="0.01" placeholder="0.00">
+      </div>
+    </div>
+    <div class="form-row-2">
+      <div class="form-group">
+        <label class="form-label" id="pm-personal-due-label">Due Date <span class="opt">(e.g. 1st, 15th)</span></label>
+        <input class="form-input" id="pm-personal-due" placeholder="e.g. 1st">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Notes <span class="opt">(optional)</span></label>
+        <input class="form-input" id="pm-personal-notes" placeholder="Optional note">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="topbar-btn outline" onclick="closeModal('modal-personal')">Cancel</button>
+      <button class="topbar-btn" onclick="savePersonalItem()">Save</button>
     </div>
   </div>
 </div>

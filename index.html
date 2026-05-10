@@ -188,6 +188,7 @@
     height: 100%;
     pointer-events: none;
     z-index: 0;
+    display: block;
   }
 
   /* Radial vignette over canvas */
@@ -1778,17 +1779,34 @@
     #contact { padding: 60px 5vw; }
 
     /* Hero */
-    #hero { padding: 100px 5vw 80px; }
-    .hero-h1 { font-size: clamp(2rem, 7vw, 2.6rem); }
-    .hero-actions { flex-direction: column; align-items: center; gap: 0.75rem; }
+    #hero { padding: 90px 6vw 0; min-height: auto; }
+    .hero-inner { gap: 0; }
+    .hero-eyebrow { font-size: 0.6rem; letter-spacing: 0.16em; margin-bottom: 1.2rem; }
+    .hero-eyebrow-line { width: 24px; }
+    .hero-h1 { font-size: clamp(1.9rem, 7.5vw, 2.4rem); line-height: 1.13; margin-bottom: 1rem; }
+    .hero-sub { font-size: 0.9rem; line-height: 1.7; max-width: 100%; margin-bottom: 0; }
+    .hero-features {
+      flex-wrap: wrap;
+      border-radius: 10px;
+      margin: 1.4rem 0;
+      gap: 0;
+    }
+    .hero-feature {
+      padding: 8px 14px;
+      font-size: 0.7rem;
+      flex: 0 0 50%;
+      border-bottom: 1px solid rgba(201,168,76,0.12);
+      justify-content: center;
+    }
+    .hero-feature:nth-child(odd) { border-right: 1px solid rgba(201,168,76,0.12); }
+    .hero-feature + .hero-feature::before { display: none; }
+    .hero-actions { flex-direction: column; align-items: center; gap: 0.65rem; margin-bottom: 1.8rem; }
+    .btn-primary { width: 100%; justify-content: center; padding: 14px; }
+    .btn-ghost { padding: 10px 0; }
     .hero-stats { position: static; border-top: 1px solid rgba(255,255,255,0.06); }
-    .hstat { padding: 14px 0; }
-    .hstat-val { font-size: 1rem; }
-    .hstat-lbl { font-size: 0.55rem; }
-    .hero-sub { font-size: 0.95rem; margin-bottom: 2rem; }
-    .hero-actions { flex-direction: column; align-items: center; gap: 0.75rem; }
-    .btn-primary { width: 100%; justify-content: center; }
-    .hero-free-badge { font-size: 0.65rem; }
+    .hstat { padding: 14px 4px; }
+    .hstat-val { font-size: 1.05rem; }
+    .hstat-lbl { font-size: 0.52rem; letter-spacing: 0.1em; }
 
 
     /* Trust bar */
@@ -2729,8 +2747,8 @@
     var COUNT = 55;
     for (var i = 0; i < COUNT; i++) {
       particles.push({
-        x:    Math.random() * 1400,
-        y:    Math.random() * 900,
+        x:    Math.random() * (W || window.innerWidth),
+        y:    Math.random() * (H || window.innerHeight),
         r:    Math.random() * 1.4 + 0.3,
         vx:   (Math.random() - 0.5) * 0.18,
         vy:   (Math.random() - 0.5) * 0.18,

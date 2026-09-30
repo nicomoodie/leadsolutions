@@ -1159,6 +1159,7 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
     <div class="nav-item" onclick="nav('contacts')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>Contacts</div>
     <div class="nav-item" onclick="nav('pipeline')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></span>Pipeline</div>
     <div class="nav-item" onclick="nav('templates')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span>Templates</div>
+    <div class="nav-item" onclick="nav('pitch')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>Pitch</div>
     <div class="nav-section">Tools</div>
     <div class="nav-item" onclick="nav('prompts')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></span>AI Prompts</div>
     <div class="nav-item" onclick="nav('roadmap')"><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M7 12h14"/><path d="M11 18h10"/><circle cx="3" cy="6" r="1.2" fill="currentColor"/><circle cx="7" cy="12" r="1.2" fill="currentColor"/><circle cx="11" cy="18" r="1.2" fill="currentColor"/></svg></span>Roadmap</div>
@@ -1233,6 +1234,8 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
           <input id="contacts-search" type="text" placeholder="Search name, agency, handle…" oninput="renderContacts()" style="width:100%;background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:8px 10px 8px 30px;font-family:var(--body);font-size:12px;color:var(--off-white);outline:none;box-sizing:border-box" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
         </div>
         <button id="contacts-search-clear" onclick="document.getElementById('contacts-search').value='';renderContacts()" style="display:none;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:11px;padding:4px 8px;border-radius:6px;border:1px solid var(--border)">Clear</button>
+        <button id="filter-called-btn" onclick="setCallFilter('called')" style="background:var(--panel);border:1px solid var(--border);border-radius:20px;color:var(--text-muted);font-family:var(--body);font-size:11px;padding:5px 12px;cursor:pointer;white-space:nowrap;transition:all 0.15s">✅ Called</button>
+        <button id="filter-uncalled-btn" onclick="setCallFilter('uncalled')" style="background:var(--panel);border:1px solid var(--border);border-radius:20px;color:var(--text-muted);font-family:var(--body);font-size:11px;padding:5px 12px;cursor:pointer;white-space:nowrap;transition:all 0.15s">📞 Haven&#39;t Called</button>
       </div>
       <div class="card contact-table-desktop" style="margin-bottom:0">
         <div class="table-wrap">
@@ -1278,6 +1281,11 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
       <div id="templates-list"></div>
     </div>
 
+
+    <!-- PITCH -->
+    <div class="page" id="page-pitch">
+      <div id="pitch-list"></div>
+    </div>
 
     <!-- PROMPTS -->
     <div class="page" id="page-prompts">
@@ -1910,6 +1918,7 @@ var pageCfg = {
   finance:   {title:'Finance',     btn:'+ Add Job',       sec:null},
   subscriptions: {title:'Subscriptions', btn:'+ Add Subscription', sec:null},
   personal: {title:'Personal', btn:'+ Add', sec:null},
+  pitch:    {title:'Pitch Scripts', btn:'+ Add Script', sec:null},
 };
 
 function nav(page){
@@ -1929,7 +1938,7 @@ function nav(page){
 }
 
 function topbarAction(){
-  var m={dashboard:'modal-contact',contacts:'modal-contact',pipeline:'modal-contact',jobs:'modal-job',finance:'modal-job',templates:'modal-template',subscriptions:'modal-subscription',personal:'modal-personal'};
+  var m={dashboard:'modal-contact',contacts:'modal-contact',pipeline:'modal-contact',jobs:'modal-job',finance:'modal-job',templates:'modal-template',subscriptions:'modal-subscription',personal:'modal-personal',pitch:'modal-pitch'};
   if(currentPage==='personal'){openAddPersonalModal();return;}
   openModal(m[currentPage]||'modal-contact');
 }
@@ -1954,6 +1963,7 @@ function closeModal(id){
   if(id==='modal-template') document.getElementById('modal-tpl-title').textContent='Add Template';
   if(id==='modal-prompt') document.getElementById('modal-prompt-title').textContent='Add Prompt';
   if(id==='modal-personal') document.getElementById('modal-personal-title').textContent='Add Bill';
+  if(id==='modal-pitch') document.getElementById('modal-pitch-title').textContent='Add Script';
 }
 document.querySelectorAll('.modal-bg').forEach(function(bg){
   bg.addEventListener('click',function(e){if(e.target===bg)closeModal(bg.id);});
@@ -2173,6 +2183,34 @@ function saveNotesPopout() {
   renderContacts();
 }
 
+var callFilter = 'all'; // 'all' | 'called' | 'uncalled'
+function setCallFilter(f){
+  callFilter = callFilter === f ? 'all' : f;
+  updateCallFilterBtns();
+  renderContacts();
+}
+function updateCallFilterBtns(){
+  var calledCount   = DB.contacts.filter(function(c){ return !!(c.phone&&c.phone.trim()) && !!c.called; }).length;
+  var uncalledCount = DB.contacts.filter(function(c){ return !!(c.phone&&c.phone.trim()) && !c.called; }).length;
+  var labels = { called: '✅ Called ('+calledCount+')', uncalled: '📞 Haven\'t Called ('+uncalledCount+')' };
+  ['called','uncalled'].forEach(function(key){
+    var btn = document.getElementById('filter-'+key+'-btn');
+    if(!btn) return;
+    btn.textContent = labels[key];
+    var active = callFilter === key;
+    btn.style.background = active ? 'rgba(201,168,76,0.12)' : 'var(--panel)';
+    btn.style.borderColor = active ? 'rgba(201,168,76,0.4)' : 'var(--border)';
+    btn.style.color = active ? 'var(--gold)' : 'var(--text-muted)';
+  });
+}
+function toggleCalled(id){
+  var c = DB.contacts.find(function(x){return x.id===id;});
+  if(!c) return;
+  c.called = !c.called;
+  jbSave();
+  renderContacts();
+}
+
 function renderContacts(){
   // Platform stats
   var statsBar = document.getElementById('platform-stats-bar');
@@ -2192,13 +2230,19 @@ function renderContacts(){
     }).join('');
     statsBar.innerHTML = html;
   }
+  updateCallFilterBtns();
   // Search filter
   var searchEl = document.getElementById('contacts-search');
   var q = searchEl ? searchEl.value.trim().toLowerCase() : '';
   var clearBtn = document.getElementById('contacts-search-clear');
   if(clearBtn) clearBtn.style.display = q ? 'block' : 'none';
   var allContacts = DB.contacts.slice().sort(function(a,b){ return (b.created||0)-(a.created||0); });
-  var filtered = q ? allContacts.filter(function(c){
+  var preFiltered = allContacts.filter(function(c){
+    if(callFilter === 'called')   return !!(c.phone && c.phone.trim()) && !!c.called;
+    if(callFilter === 'uncalled') return !!(c.phone && c.phone.trim()) && !c.called;
+    return true;
+  });
+  var filtered = q ? preFiltered.filter(function(c){
     return (c.name||'').toLowerCase().includes(q) ||
            (c.instagram||'').toLowerCase().includes(q) ||
            (c.agency||'').toLowerCase().includes(q) ||
@@ -2206,7 +2250,7 @@ function renderContacts(){
            (c.notes||'').toLowerCase().includes(q) ||
            (c.platform||'').toLowerCase().includes(q) ||
            (c.status||'').toLowerCase().includes(q);
-  }) : allContacts;
+  }) : preFiltered;
 
   // Desktop
   var tbody=document.getElementById('contacts-tbody');
@@ -2219,7 +2263,8 @@ function renderContacts(){
     var followupCell='<td>'+inlineDateCell(c,'followup')+'</td>';
     var notesCell='<td style="cursor:pointer" onclick="openNotesPopout(\''+c.id+'\')" title="Click to view/edit notes"><span style="color:'+(c.notes?'var(--text-mid)':'var(--border2)')+';font-size:11px;max-width:100px;display:inline-block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(c.notes||'+ Add note')+'</span></td>';
     var cb='<td><input type="checkbox" class="contact-checkbox" data-id="'+c.id+'" onchange="onContactCheck(this)"></td>';
-    return '<tr id="crow-'+c.id+'">'+cb+'<td><span style="cursor:pointer;font-weight:500" onclick="editContact(\''+c.id+'\')">'+displayName(c)+'</span>'+(c.instagram&&c.name?'<br><span style="font-size:10px;color:var(--gold)">'+c.instagram+'</span>':'')+'</td><td style="color:var(--text-muted)">'+(c.agency||'—')+'</td>'+platformCell+'<td>'+statusBadge(c.status,c.id)+'</td>'+contactedCell+followupCell+notesCell+'<td><div style="display:flex;gap:4px;align-items:center"><button title="Duplicate" style="background:none;border:none;color:var(--text-muted);cursor:pointer;padding:4px;border-radius:4px;display:flex;align-items:center;line-height:1" onclick="duplicateContact(\''+c.id+'\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button><button class="del-btn" onclick="deleteContact(\''+c.id+'\')">✕</button></div></td></tr>';
+    var callIcon = c.phone&&c.phone.trim() ? '<button title="'+(c.called?'Called':'Mark as called')+'" onclick="toggleCalled(\''+c.id+'\')" style="background:none;border:none;cursor:pointer;padding:0 0 0 5px;display:inline-flex;align-items:center;vertical-align:middle;color:'+(c.called?'#4CAF50':'var(--border2)')+'"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></button>' : '';
+    return '<tr id="crow-'+c.id+'">'+cb+'<td><span style="cursor:pointer;font-weight:500" onclick="editContact(\''+c.id+'\')">'+displayName(c)+'</span>'+callIcon+(c.instagram&&c.name?'<br><span style="font-size:10px;color:var(--gold)">'+c.instagram+'</span>':'')+'</td><td style="color:var(--text-muted)">'+(c.agency||'—')+'</td>'+platformCell+'<td>'+statusBadge(c.status,c.id)+'</td>'+contactedCell+followupCell+notesCell+'<td><div style="display:flex;gap:4px;align-items:center"><button title="Duplicate" style="background:none;border:none;color:var(--text-muted);cursor:pointer;padding:4px;border-radius:4px;display:flex;align-items:center;line-height:1" onclick="duplicateContact(\''+c.id+'\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button><button class="del-btn" onclick="deleteContact(\''+c.id+'\')">✕</button></div></td></tr>';
   }).join(''):'<tr><td colspan="9"><div class="empty"><div class="empty-icon">◈</div><div class="empty-text">No contacts yet.</div></div></td></tr>';
   updateSelectBar();
 
@@ -2618,8 +2663,71 @@ function renderSubscriptions(){
 }
 
 // ── RENDER ────────────────────────────────────────────────────────────────────
+
+// ── PITCH SCRIPTS ─────────────────────────────────────────────────────────────
+function renderPitch(){
+  if(!DB.pitchScripts) DB.pitchScripts = [];
+  var list = document.getElementById('pitch-list');
+  if(!list) return;
+  if(!DB.pitchScripts.length){
+    list.innerHTML='<div class="empty" style="margin-top:40px"><div class="empty-icon">◈</div><div class="empty-text">No pitch scripts yet.<br>Hit "+ Add Script" to create one.</div></div>';
+    return;
+  }
+  var PCLS = {Instagram:'pill-instagram',Email:'pill-email',LinkedIn:'pill-linkedin',Facebook:'pill-facebook',WhatsApp:'pill-whatsapp',Phone:'pill-phone',Any:'pill-other'};
+  list.innerHTML = DB.pitchScripts.map(function(s){
+    var pillCls = PCLS[s.platform]||'pill-other';
+    return '<div class="card" style="margin-bottom:12px">'+
+      '<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px">'+
+        '<div>'+
+          '<div style="font-family:var(--display);font-size:14px;font-weight:700;color:var(--off-white);margin-bottom:6px">'+escH(s.name)+'</div>'+
+          '<span class="pill '+pillCls+'" style="font-size:10px;padding:2px 8px">'+s.platform+'</span>'+
+          (s.notes?'<span style="font-size:11px;color:var(--text-muted);margin-left:8px">'+escH(s.notes)+'</span>':'')+
+        '</div>'+
+        '<div style="display:flex;gap:6px">'+
+          '<button onclick="copyPitch(\''+s.id+'\')" id="copybtn-'+s.id+'" style="background:none;border:1px solid var(--border);color:var(--text-muted);cursor:pointer;padding:5px 10px;border-radius:6px;font-size:11px;font-family:var(--body)">Copy</button>'+
+          '<button onclick="editPitch(\''+s.id+'\')" style="background:none;border:1px solid var(--border);color:var(--text-muted);cursor:pointer;padding:5px 10px;border-radius:6px;font-size:11px;font-family:var(--body)">Edit</button>'+
+          '<button onclick="deletePitch(\''+s.id+'\')" class="del-btn">✕</button>'+
+        '</div>'+
+      '</div>'+
+      '<pre style="white-space:pre-wrap;word-break:break-word;font-family:var(--body);font-size:12px;color:var(--text-mid);background:var(--dark2);border-radius:8px;padding:12px;margin:0;border:1px solid var(--border);line-height:1.6">'+escH(s.body)+'</pre>'+
+    '</div>';
+  }).join('');
+}
+function escH(t){ return (t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function savePitchScript(){
+  if(!DB.pitchScripts) DB.pitchScripts=[];
+  var id=document.getElementById('ps-id').value||Date.now().toString();
+  var s={id:id,name:document.getElementById('ps-name').value.trim()||'Untitled',platform:document.getElementById('ps-platform').value,body:document.getElementById('ps-body').value.trim(),notes:document.getElementById('ps-notes').value.trim()};
+  var idx=DB.pitchScripts.findIndex(function(x){return x.id===id;});
+  if(idx>-1) DB.pitchScripts[idx]=s; else DB.pitchScripts.unshift(s);
+  jbSave(); closeModal('modal-pitch'); renderPitch();
+}
+function editPitch(id){
+  var s=DB.pitchScripts.find(function(x){return x.id===id;});
+  if(!s) return;
+  document.getElementById('ps-id').value=s.id;
+  document.getElementById('ps-name').value=s.name;
+  document.getElementById('ps-platform').value=s.platform;
+  document.getElementById('ps-body').value=s.body;
+  document.getElementById('ps-notes').value=s.notes||'';
+  document.getElementById('modal-pitch-title').textContent='Edit Script';
+  openModal('modal-pitch');
+}
+function deletePitch(id){
+  DB.pitchScripts=DB.pitchScripts.filter(function(x){return x.id!==id;});
+  jbSave(); renderPitch();
+}
+function copyPitch(id){
+  var s=DB.pitchScripts.find(function(x){return x.id===id;});
+  if(!s) return;
+  navigator.clipboard.writeText(s.body).then(function(){
+    var btn=document.getElementById('copybtn-'+id);
+    if(btn){btn.textContent='Copied!';setTimeout(function(){btn.textContent='Copy';},1500);}
+  });
+}
 function render(){
-  renderDashboard();renderContacts();renderPipeline();renderTemplates();renderJobs();renderFinance();renderGoals();renderPrompts();renderSubscriptions();renderRoadmap();renderPersonal();
+  if(!DB.pitchScripts) DB.pitchScripts=[];
+  renderDashboard();renderContacts();renderPipeline();renderTemplates();renderJobs();renderFinance();renderGoals();renderPrompts();renderSubscriptions();renderRoadmap();renderPersonal();renderPitch();
 }
 
 // ── PERSONAL ─────────────────────────────────────────────────────────────────
@@ -4090,5 +4198,28 @@ function updatePwaDarkToggle() {
   </div>
 </div>
 
+
+  <!-- PITCH MODAL -->
+  <div class="modal-bg" id="modal-pitch">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title" id="modal-pitch-title">Add Script</div>
+        <button class="modal-close" onclick="closeModal('modal-pitch')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group"><label>Script Name</label><input type="text" id="ps-name" placeholder="e.g. Cold Instagram DM" /></div>
+        <div class="form-group"><label>Platform</label>
+          <select id="ps-platform"><option>Instagram</option><option>Email</option><option>LinkedIn</option><option>Facebook</option><option>WhatsApp</option><option>Phone</option><option>Any</option></select>
+        </div>
+        <div class="form-group"><label>Script</label><textarea id="ps-body" rows="8" placeholder="Write your pitch script here. Use {name} or {agency} as placeholders."></textarea></div>
+        <div class="form-group"><label>Notes</label><input type="text" id="ps-notes" placeholder="Optional — when to use this" /></div>
+        <input type="hidden" id="ps-id" />
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeModal('modal-pitch')">Cancel</button>
+        <button class="btn-primary" onclick="savePitchScript()">Save Script</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

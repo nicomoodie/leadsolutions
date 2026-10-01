@@ -1378,7 +1378,30 @@ tr.contact-selected td{background:rgba(201,168,76,0.06)}
     </div>
 
     <!-- PERSONAL PAGE -->
-    <div class="page" id="page-personal">
+    <!-- TO DO -->
+    <div class="page" id="page-todos">
+      <div class="todo-add-box">
+        <input type="text" id="todo-input" class="todo-input" placeholder="Add a task..." onkeydown="if(event.key==='Enter')submitTodo()">
+        <div class="todo-add-meta">
+          <select id="todo-priority-select" class="todo-select">
+            <option value="high">🔴 High</option>
+            <option value="medium" selected>🟡 Medium</option>
+            <option value="low">🟢 Low</option>
+          </select>
+          <input type="text" id="todo-due-input" class="todo-due-field" placeholder="Due date (optional)">
+          <button class="todo-add-btn" onclick="submitTodo()">Add</button>
+        </div>
+      </div>
+      <div class="todo-filters">
+        <button class="todo-filter-btn active" onclick="filterTodos('all')">All</button>
+        <button class="todo-filter-btn" onclick="filterTodos('active')">Active</button>
+        <button class="todo-filter-btn" onclick="filterTodos('done')">Completed</button>
+        <button class="todo-filter-btn" onclick="filterTodos('high')">High Priority</button>
+      </div>
+      <div class="todo-list" id="todo-list"></div>
+    </div>
+
+        <div class="page" id="page-personal">
       <!-- Summary stats - 4 cols desktop, 2x2 mobile -->
       <div class="stats-row personal-stats-row" style="margin-bottom:16px">
         <div class="stat-card"><div class="stat-label">Monthly Income</div><div class="stat-value" id="personal-income-total" style="color:var(--green)">£0</div></div>
@@ -1804,9 +1827,10 @@ async function loadAll() {
     var cached = localStorage.getItem('ls_crm_cache');
     if(cached) {
       var cdata = JSON.parse(cached);
-      DB.contacts  = cdata.contacts  || [];
-      DB.jobs      = cdata.jobs      || [];
-      DB.templates = cdata.templates && cdata.templates.length ? cdata.templates : getDefaultTemplates();
+      DB.contacts     = cdata.contacts  || [];
+      DB.jobs         = cdata.jobs      || [];
+      DB.templates    = cdata.templates && cdata.templates.length ? cdata.templates : getDefaultTemplates();
+      DB.pitchScripts = cdata.pitchScripts || [];
       if(DB.templates.length < 10) { DB.templates = getDefaultTemplates(); }
       DB.subscriptions = cdata.subscriptions || [];
       DB.theme     = cdata.theme || 'dark';
@@ -1819,9 +1843,10 @@ async function loadAll() {
   showLoading(true);
   try {
     var data = await jbGet();
-    DB.contacts  = data.contacts  || [];
-    DB.jobs      = data.jobs      || [];
-    DB.templates = data.templates && data.templates.length ? data.templates : getDefaultTemplates();
+    DB.contacts     = data.contacts  || [];
+    DB.jobs         = data.jobs      || [];
+    DB.templates    = data.templates && data.templates.length ? data.templates : getDefaultTemplates();
+    DB.pitchScripts = data.pitchScripts || [];
     // Auto-upgrade old templates (old set had 6, new set has 17)
     if(DB.templates.length < 10) { DB.templates = getDefaultTemplates(); jbSave(); }
     DB.subscriptions = data.subscriptions || [];
@@ -1832,7 +1857,7 @@ async function loadAll() {
     // Update local cache
     localStorage.setItem('ls_crm_cache', JSON.stringify({
       contacts: DB.contacts, jobs: DB.jobs,
-      templates: DB.templates, subscriptions: DB.subscriptions, theme: DB.theme
+      templates: DB.templates, subscriptions: DB.subscriptions, theme: DB.theme, pitchScripts: DB.pitchScripts || []
     }));
   } catch(e) { console.error('Load error', e); }
   showLoading(false);
@@ -1842,7 +1867,7 @@ async function loadAll() {
 
 async function jbSave() {
   try {
-    var payload = { contacts: DB.contacts, jobs: DB.jobs, templates: DB.templates, subscriptions: DB.subscriptions, theme: DB.theme };
+    var payload = { contacts: DB.contacts, jobs: DB.jobs, templates: DB.templates, subscriptions: DB.subscriptions, theme: DB.theme, pitchScripts: DB.pitchScripts || [] };
     localStorage.setItem('ls_crm_cache', JSON.stringify(payload));
     await jbSet(payload);
   } catch(e) { console.error('Save error', e); }
